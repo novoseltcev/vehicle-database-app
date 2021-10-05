@@ -1,30 +1,30 @@
 import java.util.Scanner;
-import java.util.Properties;
 
 public class Main {
     private final Menu _view;
-    private final Properties _properties;
-    private String _enteredPassword = null;
-    Main(Menu view, Properties  properties) throws InterruptedException {
-        this._view =view;
-        this._properties = properties;
+    private final User _user;
+    private String _enteredPassword = "";
+
+    Main(Menu view, User user) throws InterruptedException {
+        this._view = view;
+        this._user = user;
         tryEnterPassword();
     }
 
     private void tryEnterPassword() throws InterruptedException {
-        int maxAttempts = 3;
-        int attempts = 0;
+        int attempts = 3;
         Scanner sc = new Scanner(System.in);
-        while (attempts< maxAttempts) {
+        while (attempts != 0) {
             String password = sc.nextLine();
-            if (!password.equals(_properties.getProperty("USER_PASSWORD"))) {
+            if (_user.checkPassword(password)) {
                 this._enteredPassword =  password;
                 break;
             }
-            attempts++;
+            _view.error("Invalid Password. Lost attempts - " + attempts);
+            attempts--;
         }
         sc.close();
-        if (attempts >= maxAttempts) {
+        if (attempts <= 0) {
             throw new InterruptedException();
         }
 
@@ -37,19 +37,44 @@ public class Main {
         sc.close();
         return result;
     }
+
     public Boolean run() {
-        String userMode = _properties.getProperty("USER_MODE");
-        _view.run(userMode.equals("root"));
+        boolean rootMode = _user.getMode().equals("root");
+        _view.run(rootMode);
+        int command = enterCommand();
         // TODO
-        switch (enterCommand()) {
+        switch (command) {
             case (1):
-//                commandOne();
-                break;
+                //  TODO - operation 1
+                return true;
             case (2):
-//                commandTwo();
-                break;
-            case (3):
+                //  TODO - operation 2
+                return true;
+        }
+
+        if (!rootMode) {
+            if (command == 3) {
                 return false;
+            }
+            _view.error("Invalid function - " + command);
+        } else {
+            switch (command)  {
+                case (3):
+                    //  TODO - launch auto tests
+                    break;
+
+                case (4):
+                    //  TODO
+                    break;
+
+                case (5):
+                    //  TODO
+                    return false;
+
+                default:
+                    _view.error("Invalid function - " + command);
+                    break;
+            }
         }
         return true;
     }
