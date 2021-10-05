@@ -1,3 +1,4 @@
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class Main {
@@ -6,8 +7,11 @@ public class Main {
     private String _enteredPassword = "";
 
     Main(Menu view, User user) throws InterruptedException {
-        this._view = view;
         this._user = user;
+        this._view = view;
+        _view.welcome(user.getName());
+        _view.welcome(user);
+        // this._view.setLang(user.getLanguage())
         tryEnterPassword();
     }
 
@@ -20,7 +24,7 @@ public class Main {
                 this._enteredPassword =  password;
                 break;
             }
-            _view.error("Invalid Password. Lost attempts - " + attempts);
+            _view.invalidPassword(attempts);
             attempts--;
         }
         sc.close();
@@ -33,12 +37,20 @@ public class Main {
     private int enterCommand() {
         Scanner sc = new Scanner(System.in);
         int result = 0;
-        // TODO
-        sc.close();
+        while(true) {
+            if (sc.hasNext()) {
+                result = sc.nextInt();
+                break;
+            } else {
+                _view.errorCommand(result);
+                sc.nextLine();
+            }
+        } sc.close();
         return result;
     }
 
     public Boolean run() {
+        boolean result = false;
         boolean rootMode = _user.getMode().equals("root");
         _view.run(rootMode);
         int command = enterCommand();
@@ -46,17 +58,20 @@ public class Main {
         switch (command) {
             case (1):
                 //  TODO - operation 1
-                return true;
+                result = true;
+                break;
             case (2):
                 //  TODO - operation 2
-                return true;
+               result = true;
+               break;
         }
 
-        if (!rootMode) {
+        if (!rootMode || result) {
             if (command == 3) {
-                return false;
+                result = false;
+            } else {
+                _view.errorCommand(command);
             }
-            _view.error("Invalid function - " + command);
         } else {
             switch (command)  {
                 case (3):
@@ -69,10 +84,11 @@ public class Main {
 
                 case (5):
                     //  TODO
-                    return false;
+                    result = false;
+                    break;
 
                 default:
-                    _view.error("Invalid function - " + command);
+                    _view.errorCommand(command);
                     break;
             }
         }
