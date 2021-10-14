@@ -1,4 +1,4 @@
-package vehicle.exception;
+package model.vehicle.exception;
 
 public class InvalidNumPassengerExceptions extends Exception{
     protected int downBorder;

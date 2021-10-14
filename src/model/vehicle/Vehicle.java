@@ -1,6 +1,6 @@
-package vehicle;
+package model.vehicle;
 
-import vehicle.exception.*;
+import model.vehicle.exception.*;
 import java.util.Objects;
 
 /**

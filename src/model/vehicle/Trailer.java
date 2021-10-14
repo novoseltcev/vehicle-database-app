@@ -1,6 +1,6 @@
-package vehicle;
+package model.vehicle;
 
-import vehicle.exception.*;
+import model.vehicle.exception.*;
 
 /**
  * Represents a trailer extended from {@link Vehicle}
@@ -27,7 +27,7 @@ public class Trailer extends Vehicle {
     }
 
     /**
-     * @throws NonSelfWalkableVehicleException calling a method that is not available for the current vehicle
+     * @throws NonSelfWalkableVehicleException calling a method that is not available for the current model.vehicle
      */
     @Override
     public Integer getThresholdSpeed() throws NonSelfWalkableVehicleException {

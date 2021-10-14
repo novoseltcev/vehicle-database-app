@@ -1,4 +1,4 @@
-package vehicle;
+package model.vehicle;
 
 public interface IWithTrailer {
     public String getTrailerBrand();

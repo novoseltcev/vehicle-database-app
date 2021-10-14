@@ -1,3 +1,5 @@
+package model;
+
 import utils.PropertyStreamer;
 
 import java.io.File;
@@ -15,7 +17,7 @@ public class User {
     private boolean _tests;
     private final Properties _properties;
 
-    User() throws IOException {
+    public User() throws IOException {
         _properties = PropertyStreamer.read(BASE_CONFIG);
         _name = _properties.getProperty("USER_NAME");
         _password = _properties.getProperty("USER_PASSWORD");
@@ -113,7 +115,7 @@ public class User {
 
     @Override
     public String toString() {
-        return  "User {" +
+        return  "model.User {" +
                 "\n\tname='" + getName() + '\'' +
                 ", \n\tpassword='*******'" +
                 ", \n\tlang=" + getLanguage() +

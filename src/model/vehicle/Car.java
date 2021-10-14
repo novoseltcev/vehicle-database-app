@@ -1,16 +1,17 @@
-package vehicle;
+package model.vehicle;
 
-import vehicle.exception.*;
+import model.vehicle.exception.*;
 
 /**
- * Represents a bus extended from {@link Vehicle}
+ * Represents a car class extended from {@link Vehicle}
  * @author <a href="https://github.com/st-a-novoseltcev">Novoseltcev Stanislav</a>
  * @version 1.0
  */
-public class Bus extends Vehicle {
+public class Car extends Vehicle {
+
     /**
-     * @param brand vehicle brand, as example "Ikarus"
-     * @param model vehicle brand, as example "280"
+     * @param brand model.vehicle brand, as example "VAZ"
+     * @param model model.vehicle brand, as example "3110 Volga"
      * @param maxCargoWeight weight of the transported cargo
      * @param numPassengers number of passengers
      * @throws InvalidBrandExceptions passing an invalid brand to the constructor
@@ -18,12 +19,12 @@ public class Bus extends Vehicle {
      * @throws InvalidMaxCargoWeightExceptions passing an invalid maxCargoWeight to the constructor
      * @throws InvalidNumPassengerExceptions passing an invalid numPassengers to the constructor
      */
-    public Bus(String brand, String model, int maxCargoWeight, int numPassengers) throws InvalidNumPassengerExceptions, InvalidMaxCargoWeightExceptions, InvalidModelExceptions, InvalidBrandExceptions {
+    public Car(String brand, String model, int maxCargoWeight, int numPassengers) throws InvalidNumPassengerExceptions, InvalidMaxCargoWeightExceptions, InvalidModelExceptions, InvalidBrandExceptions {
         setBrand(brand);
         setModel(model);
-        setMaxCargoWeight(maxCargoWeight, 0, 10000);
-        setNumPassengers(numPassengers, 8);
-        this.thresholdSpeed = 90;
-        name = Name.BUS.name();
+        setMaxCargoWeight(maxCargoWeight, 0, 1000);
+        setNumPassengers(numPassengers, 1, 8);
+        this.thresholdSpeed = 110;
+        name = Name.CAR.name();
     }
 }

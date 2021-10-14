@@ -1,24 +1,25 @@
-package vehicle;
+package model.vehicle;
 
-import vehicle.exception.*;
+import model.vehicle.exception.*;
 
 /**
  * Represents a car with trailer class extended from {@link Car}
  * @author <a href="https://github.com/st-a-novoseltcev">Novoseltcev Stanislav</a>
  * @version 1.0
  */
-public class TruckWithTrailer extends Truck implements IWithTrailer {
+public class CarWithTrailer extends Car implements IWithTrailer{
     protected Trailer trailer;
 
     /**
-     * @param truck the car to which the trailer is attached
+     * @param car the car to which the trailer is attached
      * @param trailer trailer attached to the car
      * @throws InvalidBrandExceptions passing an invalid brand to the constructor
      * @throws InvalidModelExceptions passing an invalid model to the constructor
      * @throws InvalidMaxCargoWeightExceptions passing an invalid maxCargoWeight to the constructor
+     * @throws InvalidNumPassengerExceptions passing an invalid numPassengers to the constructor
      */
-    public TruckWithTrailer(Truck truck, Trailer trailer) throws InvalidMaxCargoWeightExceptions, InvalidModelExceptions, InvalidBrandExceptions {
-        super(truck.brand, truck.model, truck.maxCargoWeight);
+    public CarWithTrailer(Car car, Trailer trailer) throws InvalidNumPassengerExceptions, InvalidMaxCargoWeightExceptions, InvalidModelExceptions, InvalidBrandExceptions {
+        super(car.brand, car.model, car.maxCargoWeight , car.numPassengers);
         thresholdSpeed -= 20;
         this.trailer = trailer;
     }
