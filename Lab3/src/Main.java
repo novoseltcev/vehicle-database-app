@@ -1,4 +1,4 @@
-import java.util.NoSuchElementException;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class Main {
@@ -6,12 +6,11 @@ public class Main {
     private final User _user;
     private String _enteredPassword = "";
 
-    Main(Menu view, User user) throws InterruptedException {
+    Main(Menu view, User user) throws InterruptedException, IOException {
         this._user = user;
         this._view = view;
-        _view.welcome(user.getName());
-        _view.welcome(user);
-        // this._view.setLang(user.getLanguage())
+        _view.welcome(_user.getName());
+        _view.userData(_user);
         tryEnterPassword();
     }
 
@@ -24,12 +23,12 @@ public class Main {
                 this._enteredPassword =  password;
                 break;
             }
-            _view.invalidPassword(attempts);
             attempts--;
+            _view.invalidPassword(attempts);
         }
         sc.close();
         if (attempts <= 0) {
-            throw new InterruptedException();
+            throw new InterruptedException("-1");
         }
 
     }
@@ -49,49 +48,60 @@ public class Main {
         return result;
     }
 
-    public Boolean run() {
-        boolean result = false;
-        boolean rootMode = _user.getMode().equals("root");
-        _view.run(rootMode);
-        int command = enterCommand();
-        // TODO
+    private void chooseCommand(int command) throws InterruptedException { // TODO
         switch (command) {
             case (1):
                 //  TODO - operation 1
-                result = true;
                 break;
             case (2):
                 //  TODO - operation 2
-               result = true;
-               break;
-        }
-
-        if (!rootMode || result) {
-            if (command == 3) {
-                result = false;
-            } else {
+                break;
+            case (3):
+                throw new InterruptedException("0");
+            default:
                 _view.errorCommand(command);
-            }
-        } else {
-            switch (command)  {
-                case (3):
-                    //  TODO - launch auto tests
-                    break;
-
-                case (4):
-                    //  TODO
-                    break;
-
-                case (5):
-                    //  TODO
-                    result = false;
-                    break;
-
-                default:
-                    _view.errorCommand(command);
-                    break;
-            }
         }
-        return true;
+    }
+
+    private void chooseSudoCommand(int command) throws InterruptedException{
+        switch (command)  {
+            case (1):
+                //  TODO - operation 1
+                break;
+
+            case (2):
+                //  TODO - operation 2
+                break;
+
+            case (3):
+                //  TODO - launch auto tests
+                break;
+
+            case (4):
+                //  TODO
+                break;
+
+            case (5):
+                throw new InterruptedException("0");
+
+            default:
+                _view.errorCommand(command);
+        }
+    }
+
+    public void run() throws InterruptedException {
+        int command = enterCommand();
+        if (_user.isSudoMode()) {
+            _view.show();
+            chooseCommand(command);
+        } else {
+            _view.sudoShow();
+            chooseSudoCommand(command);
+        }
+
+    }
+
+    public String getEnteredPassword() {
+        return _enteredPassword;
     }
 }
