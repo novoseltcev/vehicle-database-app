@@ -1,27 +1,39 @@
+import java.util.Properties;
+
 public class Menu {
-    public void notify(String msg) {  // TODO
-        System.out.print(msg + "\n");
-    } 
-    public void error(String msg) {  // TODO
-        notify(msg);
-    }  
-    public void welcome(String username) {  //TODO
-        notify("Welcome " + username + "!");
+    private final Properties _langData;
+    public Menu(Properties langData) {
+        _langData = langData;
     }
-    
-    public void welcome(User user) {  //TODO
+
+    public void notify(String msg) {
+        System.out.println(msg);
+    }
+    public void error(String msg) {
+        notify(msg);
+    }
+    public void welcome(String username) {
+        notify(_langData.get("WELCOME") + " " + username + "!");
+    }
+
+    public void userData(User user) {
         notify(user.toString());
     }
-    
-    public void run(boolean sudoMode) {  // TODO
+
+    public void errorCommand(int command) {
+        error(_langData.get("INVALID_CMD") + " - " + command);
     }
-    
-    public void errorCommand(int command) {  // TODO
-        error("Invalid function - " + command);
+
+    public void invalidPassword(int attempts) {
+        String dopMsg = (attempts > 0) ? ". " + _langData.get("LOST_ATTEMPTS") + " - " + attempts : "";
+        error(_langData.get("INVALID_PASS") + dopMsg);
     }
-    
-    public void invalidPassword(int attempts) {  // TODO
-        String dopMsg = (attempts > 0) ? "Lost attempts - " + attempts : "";
-        error("Invalid Password." + dopMsg);
-    }    
+
+    public void show() {  // TODO
+
+    }
+
+    public void sudoShow() {  // TODO
+
+    }
 }

@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -42,8 +43,8 @@ public class User {
         return _language;
     }
 
-    public String getMode() {
-        return _mode;
+    public boolean isSudoMode() {
+        return _mode.equalsIgnoreCase("root");
     }
 
     public boolean isDebug() {
@@ -102,16 +103,23 @@ public class User {
     private boolean dumpProprieties() throws IOException {
         return PropertyStreamer.write(BASE_CONFIG, _properties);
     }
-    
+
+    public Properties getLangData() throws IOException{
+        Path langConfig = Path.of("lang", LANGUAGE_CONFIG.get(_language));
+        return PropertyStreamer.read(langConfig.toString());
+    }
+
     @Override
     public String toString() {
         return  "User {" +
                 "name='" + getName() + '\'' +
-                ", password='" + _password + '\'' +
+                ", password='*******'" +
                 ", lang=" + getLanguage() +
-                ", mode=" + getMode() +
-                ", debug=" + isDebug() +
-                ", tests=" + isTests() +
-                '}';
+                ", sudo_mode=" + isSudoMode() + (
+                        isSudoMode() ?
+                            ", debug=" + isDebug() +
+                            ", tests=" + isTests()
+                        : ""
+                ) + '}';
     }
 }
