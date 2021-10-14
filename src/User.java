@@ -1,17 +1,11 @@
+import utils.PropertyStreamer;
+
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Properties;
 
 public class User {
-    private static final Map<String, String> LANGUAGE_CONFIG = new HashMap<>();
-    static {
-        LANGUAGE_CONFIG.put("rus", "russian.ini");
-        LANGUAGE_CONFIG.put("eng", "english.ini");
-        LANGUAGE_CONFIG.put("sp", "spain.ini");
-    }
-    
     private static final String BASE_CONFIG = "config.ini";
     private String _name;
     private String _password;
@@ -29,6 +23,12 @@ public class User {
         _mode = _properties.getProperty("MODE");
         _debug = Boolean.parseBoolean(_properties.getProperty("DEBUG"));
         _tests = Boolean.parseBoolean(_properties.getProperty("TESTS"));
+        if (!isSudoMode())
+            _debug = _tests = false;
+    }
+
+    private void dumpProprieties() throws IOException {
+        PropertyStreamer.write(BASE_CONFIG, _properties);
     }
 
     public String getName() {
@@ -55,57 +55,59 @@ public class User {
         return _tests;
     }
 
-    public boolean setName(String currentPassword, String newName) {
+    public boolean setName(String currentPassword, String newName) throws IOException {
         if (!checkPassword(currentPassword)) {
             return false;
         }
         _name = newName;
         _properties.setProperty("USER_NAME", _name);
+        dumpProprieties();
         return true;
     }
 
-    public boolean setPassword(String currentPassword, String newPassword) {
+    public boolean setPassword(String currentPassword, String newPassword) throws IOException {
         if (!checkPassword(currentPassword)) {
             return false;
         }
         _password = newPassword;
         _properties.setProperty("USER_PASSWORD", _password);
+        dumpProprieties();
         return true;
     }
 
-    public boolean setDebug(String currentPassword, boolean value) {
+    public boolean setDebug(String currentPassword, boolean value) throws IOException {
         if (!checkPassword(currentPassword)) {
             return false;
         }
         _debug = value;
         _properties.setProperty("USER_PASSWORD", String.valueOf(_debug));
+        dumpProprieties();
         return true;
     }
 
-    public boolean setTests(String currentPassword, boolean value) {
+    public boolean setTests(String currentPassword, boolean value) throws IOException {
         if (!checkPassword(currentPassword)) {
             return false;
         }
         _tests = value;
         _properties.setProperty("USER_PASSWORD", String.valueOf(_tests));
+        dumpProprieties();
         return true;
     }
 
-    public boolean setLanguage(String value) {
-        if (!LANGUAGE_CONFIG.containsKey(value)) {
+    public boolean setLanguage(String language) throws IOException {
+        Path langConfig = Path.of("lang", language + ".ini");
+        if (!new File(langConfig.toString()).exists()) {
             return false;
         }
-        _language = value;
+        _language = language;
         _properties.setProperty("LANG", _language);
+        dumpProprieties();
         return true;
-    }
-    
-    private boolean dumpProprieties() throws IOException {
-        return PropertyStreamer.write(BASE_CONFIG, _properties);
     }
 
     public Properties getLangData() throws IOException{
-        Path langConfig = Path.of("lang", LANGUAGE_CONFIG.get(_language));
+        Path langConfig = Path.of("lang", _language + ".ini");
         return PropertyStreamer.read(langConfig.toString());
     }
 

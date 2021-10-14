@@ -50,39 +50,33 @@ public class Main {
 
     private void chooseCommand(int command) throws InterruptedException { // TODO
         switch (command) {
+            case (0):
+                throw new InterruptedException("0");
+
             case (1):
                 //  TODO - operation 1
                 break;
+
             case (2):
                 //  TODO - operation 2
                 break;
-            case (3):
-                throw new InterruptedException("0");
             default:
-                _view.errorCommand(command);
+                if (_user.isSudoMode())
+                    chooseSudoCommand(command);
+                else
+                    _view.errorCommand(command);
         }
     }
 
-    private void chooseSudoCommand(int command) throws InterruptedException{
+    private void chooseSudoCommand(int command){
         switch (command)  {
-            case (1):
-                //  TODO - operation 1
-                break;
-
-            case (2):
-                //  TODO - operation 2
-                break;
-
             case (3):
                 //  TODO - launch auto tests
                 break;
 
             case (4):
-                //  TODO
+                //  TODO -
                 break;
-
-            case (5):
-                throw new InterruptedException("0");
 
             default:
                 _view.errorCommand(command);
@@ -91,14 +85,8 @@ public class Main {
 
     public void run() throws InterruptedException {
         int command = enterCommand();
-        if (_user.isSudoMode()) {
-            _view.show();
-            chooseCommand(command);
-        } else {
-            _view.sudoShow();
-            chooseSudoCommand(command);
-        }
-
+        _view.show(_user.isSudoMode());
+        chooseCommand(command);
     }
 
     public String getEnteredPassword() {

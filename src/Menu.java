@@ -29,11 +29,7 @@ public class Menu {
         error(_langData.get("INVALID_PASS") + dopMsg);
     }
 
-    public void show() {  // TODO
-
-    }
-
-    public void sudoShow() {  // TODO
+    public void show(boolean isSudo) {  // TODO
 
     }
 }

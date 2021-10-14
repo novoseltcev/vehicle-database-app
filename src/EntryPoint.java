@@ -1,7 +1,9 @@
+import utils.CrashNotifier;
+
 import java.io.IOException;
 
 public class EntryPoint {
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         try {
             User user = new User();
             Menu view = new Menu(user.getLangData());
