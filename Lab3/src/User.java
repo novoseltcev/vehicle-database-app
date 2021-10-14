@@ -11,7 +11,7 @@ public class User {
         LANGUAGE_CONFIG.put("sp", "spain.ini");
     }
     
-    private static String BASE_CONFIG = "config.ini";
+    private static final String BASE_CONFIG = "config.ini";
     private String _name;
     private String _password;
     private String _language;
@@ -26,8 +26,8 @@ public class User {
         _password = _properties.getProperty("USER_PASSWORD");
         _language = _properties.getProperty("LANG");
         _mode = _properties.getProperty("MODE");
-        _debug = Boolean.valueOf(_properties.getProperty("DEBUG"));
-        _tests = Boolean.valueOf(_properties.getProperty("TESTS"));
+        _debug = Boolean.parseBoolean(_properties.getProperty("DEBUG"));
+        _tests = Boolean.parseBoolean(_properties.getProperty("TESTS"));
     }
 
     public String getName() {
@@ -99,7 +99,7 @@ public class User {
         return true;
     }
     
-    private boolean dumpPropereties() throws IOException {
+    private boolean dumpProprieties() throws IOException {
         return PropertyStreamer.write(BASE_CONFIG, _properties);
     }
     
