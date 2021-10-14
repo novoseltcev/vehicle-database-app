@@ -17,9 +17,8 @@ public class PropertyStreamer {
         return properties;
     }
     
-    public static boolean write(String filePath, Properties properties) throws IOException {
+    public static void write(String filePath, Properties properties) throws IOException {
         File config = new File(filePath);
         properties.store(new FileOutputStream(config), null);
-        return true;
     }
 }

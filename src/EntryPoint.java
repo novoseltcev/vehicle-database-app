@@ -1,5 +1,4 @@
 import utils.CrashNotifier;
-
 import java.io.IOException;
 
 public class EntryPoint {
@@ -11,7 +10,7 @@ public class EntryPoint {
             while (true) {
                 controller.run();
             }
-        } catch (IOException | InterruptedException e) {
+        } catch (Exception e) {
             CrashNotifier crashNotifier = new CrashNotifier();
             crashNotifier.handler(e);
         }

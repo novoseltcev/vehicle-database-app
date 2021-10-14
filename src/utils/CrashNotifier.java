@@ -12,7 +12,7 @@ public class CrashNotifier {
         } else if(e instanceof InterruptedException) {
             print("Program close with code " + e.getMessage());
         } else {
-            print("Handling unexpected error: " + e.getMessage());
+            print("Handling unexpected error: " + e.toString());
         }
     }
 }

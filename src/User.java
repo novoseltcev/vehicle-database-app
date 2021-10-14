@@ -114,14 +114,14 @@ public class User {
     @Override
     public String toString() {
         return  "User {" +
-                "name='" + getName() + '\'' +
-                ", password='*******'" +
-                ", lang=" + getLanguage() +
-                ", sudo_mode=" + isSudoMode() + (
+                "\n\tname='" + getName() + '\'' +
+                ", \n\tpassword='*******'" +
+                ", \n\tlang=" + getLanguage() +
+                ", \n\tsudo_mode=" + isSudoMode() + (
                         isSudoMode() ?
-                            ", debug=" + isDebug() +
-                            ", tests=" + isTests()
+                            ", \n\tdebug=" + isDebug() +
+                            ", \n\ttests=" + isTests()
                         : ""
-                ) + '}';
+                ) + "\n}";
     }
 }
