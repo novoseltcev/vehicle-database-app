@@ -1,22 +1,67 @@
 package ctr;
 
-import model.vehicle.Bus;
+import ctr.vehicle.*;
 import model.vehicle.Vehicle;
+import utils.Command;
 import view.BaseMenu;
 import view.CrashNotifier;
 import view.DBMenu;
+import view.vehicle.*;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DBCtrl extends BaseCtrl{
+public class DBCtrl extends VehicleCtrl{
     private static final String SAVE_PATH = "vehicles.db";
-    protected List<Vehicle> vehicles;
     DBCtrl(BaseMenu menu) {
         super(menu);
+        load();
+    }
+
+    @Override
+    public void run() throws InterruptedException {
+        ((DBMenu)menu).show();
+        super.run();
+    }
+
+    @Override
+    protected void chooseCMD(Command command) throws InterruptedException {
+        super.chooseCMD(command);
+        int cmd = command.getValue();
+
+        switch (cmd) {
+            case (1):
+                show();
+                break;
+
+            case (2):
+                add();
+                break;
+
+            case (3):
+                show();
+                edit();
+                break;
+
+            case (4):
+                show();
+                remove();
+                break;
+
+            case (5):
+                save();
+                break;
+
+            default:
+                menu.errorCommand(String.valueOf(cmd));
+        }
+    }
+
+
+    private void load() {
         try {
-            load(SAVE_PATH);
+            loadVehicle(SAVE_PATH);
             ((DBMenu) menu).load();
         } catch (Exception e) {
             vehicles = new ArrayList<>();
@@ -25,56 +70,62 @@ public class DBCtrl extends BaseCtrl{
         }
     }
 
-    public void run() throws InterruptedException {
-        ((DBMenu)menu).show();
-        int cmd = enterInt();
-        chooseCMD(cmd);
-    }
-
-    private void chooseCMD(int command) throws InterruptedException {
-        switch (command) {
-            case (0):
-                throw new InterruptedException("0");
-
-            case (1):
-                ((DBMenu)menu).showVehicles(vehicles);
-                break;
-
-            case (2):
-                //addVehicle();  // TODO
-                try {
-                    Bus car = new Bus("Mersedes", "S", 800, 8);
-                    vehicles.add(car);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                break;
-
-            case (3):
-                ((DBMenu)menu).showVehicles(vehicles);
-                //editVehicle();  // TODO
-                break;
-
-            case (4):
-                ((DBMenu)menu).showVehicles(vehicles);
-                //removeVehicle();  // TODO
-                break;
-
-            case (5):
-                try {
-                    save(SAVE_PATH);
-                    ((DBMenu) menu).save();
-                } catch (IOException e) {
-                    CrashNotifier crashNotifier = new CrashNotifier();
-                    crashNotifier.handler(e);
-                } break;
-
-            default:
-                menu.errorCommand(String.valueOf(command));
+    private void loadVehicle(String path) throws IOException {
+        try {
+            FileInputStream inputStream = new FileInputStream(path);
+            ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+            vehicles = (List<Vehicle>) objectInputStream.readObject();
+        } catch (FileNotFoundException e) {
+            throw new IOException(path);
+        } catch (ClassNotFoundException e) {
+            throw new IOException("invalid data in " + path);
         }
     }
 
-    private void save(String path) throws IOException {
+    private void show() {
+        ((DBMenu)menu).showVehicles(vehicles);
+    }
+
+    private void add() {
+        AddMenu vehicleMenu = new AddMenu();
+        AddCtrl vehicleCtrl = new AddCtrl(vehicleMenu);
+        try {
+            while (true) {
+                vehicleCtrl.run();
+            }
+        } catch (InterruptedException ignored) {}
+    }
+
+    private void edit() {
+        EditMenu vehicleMenu = new EditMenu();
+        EditCtrl vehicleCtrl = new EditCtrl(vehicleMenu);
+        try {
+            while (true) {
+                vehicleCtrl.run();
+            }
+        } catch (InterruptedException ignored) {}
+    }
+
+    private void remove() {
+        RemoveMenu vehicleMenu = new RemoveMenu();
+        RemoveCtrl vehicleCtrl = new RemoveCtrl(vehicleMenu);
+        try {
+            while (true) {
+                vehicleCtrl.run();
+            }
+        } catch (InterruptedException ignored) {}
+    }
+    private void save() {
+        try {
+            saveVehicle(SAVE_PATH);
+            ((DBMenu) menu).save();
+        } catch (IOException e) {
+            CrashNotifier crashNotifier = new CrashNotifier();
+            crashNotifier.handler(e);
+        }
+    }
+
+    private void saveVehicle(String path) throws IOException {
         File file = new File(path);
         try {
             //noinspection ResultOfMethodCallIgnored
@@ -88,16 +139,5 @@ public class DBCtrl extends BaseCtrl{
         }
     }
 
-    // TODO - deserialize List
-    private void load(String path) throws IOException {
-        try {
-            FileInputStream inputStream = new FileInputStream(path);
-            ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
-            vehicles = (List<Vehicle>) objectInputStream.readObject();
-        } catch (FileNotFoundException e) {
-            throw new IOException(path);
-        } catch (ClassNotFoundException e) {
-            throw new IOException("invalid data in " + path);
-        }
-    }
+
 }
