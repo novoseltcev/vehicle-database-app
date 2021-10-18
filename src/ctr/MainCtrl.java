@@ -7,7 +7,6 @@ import view.BaseMenu;
 import view.DBMenu;
 import view.MainMenu;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainCtrl extends BaseCtrl {
@@ -54,12 +53,6 @@ public class MainCtrl extends BaseCtrl {
                 throw new InterruptedException("0");
 
             case (1):
-                runLoad();
-                runDB();
-                break;
-
-            case (2):
-                vehicles = new ArrayList<>();
                 runDB();
                 break;
 
@@ -80,13 +73,10 @@ public class MainCtrl extends BaseCtrl {
             menu.errorCommand(String.valueOf(cmd));
     }
 
-    // TODO - deserialize List
-    private void runLoad() {}
-
     private void runDB() {
         try {
             DBMenu dbMenu = new DBMenu();
-            DBCtrl dbCtrl = new DBCtrl(dbMenu, vehicles);
+            DBCtrl dbCtrl = new DBCtrl(dbMenu);
             while (true) {
                 dbCtrl.run();
             }

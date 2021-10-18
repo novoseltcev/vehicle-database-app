@@ -1,6 +1,8 @@
 package model.vehicle;
 
 import model.vehicle.exception.*;
+
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -8,7 +10,7 @@ import java.util.Objects;
  * @author <a href="https://github.com/st-a-novoseltcev">Novoseltcev Stanislav</a>
  * @version 1.0
  */
-public abstract class Vehicle {
+public abstract class Vehicle implements Serializable {
     protected String name = Name.VEHICLE.name();
     protected String brand;
     protected String model;
