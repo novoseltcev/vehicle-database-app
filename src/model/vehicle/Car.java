@@ -20,11 +20,21 @@ public class Car extends Vehicle {
      * @throws InvalidNumPassengerExceptions passing an invalid numPassengers to the constructor
      */
     public Car(String brand, String model, int maxCargoWeight, int numPassengers) throws InvalidNumPassengerExceptions, InvalidMaxCargoWeightExceptions, InvalidModelExceptions, InvalidBrandExceptions {
-        setBrand(brand);
-        setModel(model);
-        setMaxCargoWeight(maxCargoWeight, 0, 1000);
-        setNumPassengers(numPassengers, 1, 8);
+        check(brand, model, maxCargoWeight, numPassengers);
+        this.brand = brand;
+        this.model = model;
+        this.maxCargoWeight = maxCargoWeight;
+        this.numPassengers = numPassengers;
         this.thresholdSpeed = 110;
-        name = Name.CAR.name();
+        this.name = Name.CAR.name();
     }
+
+    public void checkMaxCargoWeight(int maxCargoWeight) throws InvalidMaxCargoWeightExceptions {
+        checkMaxCargoWeight(maxCargoWeight, 0, 1000);
+    }
+
+    public void checkNumPassengers(int numPassengers) throws InvalidNumPassengerExceptions {
+        checkNumPassengers(numPassengers, 1, 8);
+    }
+
 }

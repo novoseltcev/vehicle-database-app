@@ -24,34 +24,50 @@ public abstract class Vehicle implements Serializable {
     public Integer getNumPassengers() { return numPassengers; }
     public Integer getThresholdSpeed() throws NonSelfWalkableVehicleException { return thresholdSpeed; }
 
-    public void setBrand(String brand) throws InvalidBrandExceptions {
+    public void check(String brand, String model, int maxCargoWeight, int numPassengers) throws InvalidBrandExceptions, InvalidModelExceptions, InvalidMaxCargoWeightExceptions, InvalidNumPassengerExceptions {
+        checkBrand(brand);
+        checkModel(model);
+        checkMaxCargoWeight(maxCargoWeight);
+        checkNumPassengers(numPassengers);
+    }
+
+    public void check(String brand, String model, int maxCargoWeight) throws InvalidBrandExceptions, InvalidModelExceptions, InvalidMaxCargoWeightExceptions {
+        checkBrand(brand);
+        checkModel(model);
+        checkMaxCargoWeight(maxCargoWeight);
+    }
+
+    public abstract void checkMaxCargoWeight(int maxCargoWeight) throws InvalidMaxCargoWeightExceptions;
+    public abstract void checkNumPassengers(int numPassengers) throws InvalidNumPassengerExceptions;
+
+    public static void checkBrand(String brand) throws InvalidBrandExceptions {
         if (brand.isEmpty()) {
             throw new InvalidBrandExceptions();
-        } this.brand = brand;
+        }
     }
 
-    public void setModel(String model) throws InvalidModelExceptions {
+    public static void checkModel(String model) throws InvalidModelExceptions {
         if (model.isEmpty()) {
             throw new InvalidModelExceptions();
-        } this.model = model;
+        }
     }
 
-    public void setMaxCargoWeight(Integer maxCargoWeight, Integer minValue, Integer maxValue) throws InvalidMaxCargoWeightExceptions {
+    public static  void checkMaxCargoWeight(Integer maxCargoWeight, Integer minValue, Integer maxValue) throws InvalidMaxCargoWeightExceptions {
         if (maxCargoWeight < minValue || maxCargoWeight > maxValue) {
             throw new InvalidMaxCargoWeightExceptions(minValue, maxValue);
-        } this.maxCargoWeight = maxCargoWeight;
+        }
     }
 
-    public void setNumPassengers(Integer numPassengers, Integer minValue) throws InvalidNumPassengerExceptions {
+    public static void checkNumPassengers(Integer numPassengers, Integer minValue) throws InvalidNumPassengerExceptions {
         if (numPassengers < minValue) {
             throw new InvalidNumPassengerExceptions(minValue);
-        } this.numPassengers = numPassengers;
+        }
     }
 
-    public void setNumPassengers(Integer numPassengers, Integer minValue, Integer maxValue) throws InvalidNumPassengerExceptions {
+    public static void checkNumPassengers(Integer numPassengers, Integer minValue, Integer maxValue) throws InvalidNumPassengerExceptions {
         if (numPassengers < minValue || numPassengers > maxValue) {
             throw new InvalidNumPassengerExceptions(minValue, maxValue);
-        } this.numPassengers = numPassengers;
+        }
     }
 
     @Override

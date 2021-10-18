@@ -17,11 +17,23 @@ public class Truck extends Vehicle {
      * @throws InvalidMaxCargoWeightExceptions passing an invalid maxCargoWeight to the constructor
      */
     public Truck(String brand, String model, int maxCargoWeight) throws InvalidMaxCargoWeightExceptions, InvalidModelExceptions, InvalidBrandExceptions {
-        setBrand(brand);
-        setModel(model);
-        setMaxCargoWeight(maxCargoWeight, 0, 100000);
+        check(brand, model, maxCargoWeight);
+
+        this.brand = brand;
+        this.model = model;
+        this.maxCargoWeight = maxCargoWeight;
         this.numPassengers = 2;
         this.thresholdSpeed = 110;
         name = Name.TRUCK.name();
+    }
+
+    @Override
+    public void checkMaxCargoWeight(int maxCargoWeight) throws InvalidMaxCargoWeightExceptions {
+        checkMaxCargoWeight(maxCargoWeight, 0, 100000);
+    }
+
+    @Override
+    public void checkNumPassengers(int numPassengers) throws InvalidNumPassengerExceptions {
+        throw new InvalidNumPassengerExceptions(2, 3);
     }
 }

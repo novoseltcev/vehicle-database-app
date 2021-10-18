@@ -7,7 +7,7 @@ import model.vehicle.exception.*;
  * @author <a href="https://github.com/st-a-novoseltcev">Novoseltcev Stanislav</a>
  * @version 1.0
  */
-public class Motorcycle extends Vehicle {
+public class Motorcycle extends Vehicle{
 
     /**
      * @param brand motorcycle brand, as example "Honda"
@@ -20,11 +20,23 @@ public class Motorcycle extends Vehicle {
      * @throws InvalidNumPassengerExceptions passing an invalid numPassengers to the constructor
      */
     public Motorcycle(String brand, String model, int maxCargoWeight, int numPassengers) throws InvalidNumPassengerExceptions, InvalidMaxCargoWeightExceptions, InvalidModelExceptions, InvalidBrandExceptions {
-        setBrand(brand);
-        setModel(model);
-        setMaxCargoWeight(maxCargoWeight, 0, 100);
-        setNumPassengers(numPassengers, 0, 2);
+        check(brand, model, maxCargoWeight, numPassengers);
+        this.brand = brand;
+        this.model = model;
+        this.maxCargoWeight = maxCargoWeight;
+        this.numPassengers = numPassengers;
         this.thresholdSpeed = 110;
-        name = Name.MOTORCYCLE.name();
+        this.name = Name.MOTORCYCLE.name();
+    }
+
+
+    @Override
+    public void checkMaxCargoWeight(int maxCargoWeight) throws InvalidMaxCargoWeightExceptions {
+        checkMaxCargoWeight(maxCargoWeight, 0, 100);
+    }
+
+    @Override
+    public void checkNumPassengers(int numPassengers) throws InvalidNumPassengerExceptions {
+        checkNumPassengers(numPassengers, 0, 2);
     }
 }

@@ -19,11 +19,19 @@ public class Trailer extends Vehicle {
      *
      */
     public Trailer(String brand, String model, Integer maxCargoWeight) throws InvalidMaxCargoWeightExceptions, InvalidModelExceptions, InvalidBrandExceptions {
-        setBrand(brand);
-        setModel(model);
-        setMaxCargoWeight(maxCargoWeight, 0, 100000);
+        check(brand, model, maxCargoWeight);
         this.numPassengers = 0;
         name = Name.TRAILER.name();
+    }
+
+    @Override
+    public void checkMaxCargoWeight(int maxCargoWeight) throws InvalidMaxCargoWeightExceptions {
+        checkMaxCargoWeight(maxCargoWeight, 0, 100000);
+    }
+
+    @Override
+    public void checkNumPassengers(int numPassengers) throws InvalidNumPassengerExceptions {
+        throw new InvalidNumPassengerExceptions(0, 0);
     }
 
     /**
