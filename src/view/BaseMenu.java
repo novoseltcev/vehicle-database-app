@@ -1,14 +1,10 @@
 package view;
 
-import java.util.Arrays;
 import java.util.Properties;
 
-public class BaseMenu {
+public class BaseMenu{
     protected static Properties langData;
-    protected String title;
-    BaseMenu() {
-        title = this.getClass().getName().split("\\.")[1].split("Menu")[0] + " Menu";
-    }
+    protected String title = this.getClass().getName().split("\\.")[1].split("Menu")[0] + " Menu";
 
     protected void display(String msg) {
         System.out.print(msg);
@@ -27,23 +23,32 @@ public class BaseMenu {
         error(msg);
     }
 
-    protected void clearStack() { // TODO
-        try{
-            String operatingSystem = System.getProperty("os.name"); //Check the current operating system
-
-            if(operatingSystem.contains("Windows")){
-                ProcessBuilder pb = new ProcessBuilder("cmd", "/c", "cls");
-                Process startProcess = pb.inheritIO().start();
-                startProcess.waitFor();
-            } else {
-                ProcessBuilder pb = new ProcessBuilder("clear");
-                Process startProcess = pb.inheritIO().start();
-
-                startProcess.waitFor();
-            }
-        }catch(Exception e){
-            System.out.println(e);
-        }
+    public void showTitle() {
+        display_ln("");
+        display_ln("|---------------------------");
+        display_ln("|\t\t" + title);
+//        display_ln("|---------------------------");
+//        display_ln("|\tPress ESC to back or exit");
+        display_ln("|---------------------------");
     }
+
+//    protected void clearStack() { // TODO
+//        try{
+//            String operatingSystem = System.getProperty("os.name"); //Check the current operating system
+//
+//            if(operatingSystem.contains("Windows")){
+//                ProcessBuilder pb = new ProcessBuilder("cmd", "/c", "cls");
+//                Process startProcess = pb.inheritIO().start();
+//                startProcess.waitFor();
+//            } else {
+//                ProcessBuilder pb = new ProcessBuilder("clear");
+//                Process startProcess = pb.inheritIO().start();
+//
+//                startProcess.waitFor();
+//            }
+//        }catch(Exception e){
+//            System.out.println(e);
+//        }
+//    }
 
 }

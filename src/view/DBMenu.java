@@ -6,7 +6,7 @@ import java.util.List;
 
 public class DBMenu extends BaseMenu{
     public void show() {
-//        clearStack();
+        showTitle();
         String[] msgList =new String[] {
                 langData.getProperty("BACK_CMD"),
                 langData.getProperty("SHOW_DB_CMD"),
@@ -15,9 +15,7 @@ public class DBMenu extends BaseMenu{
                 langData.getProperty("REMOVE_DB_CMD"),
                 langData.getProperty("SAVE_DB_CMD"),
         };
-        display_ln("\n---------------------------");
-        display_ln("\t\t" + title);
-        display_ln("---------------------------");
+
         for (int i = 0; i <msgList.length; ++i)
             display_ln(String.format(msgList[i], i));
 

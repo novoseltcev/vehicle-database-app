@@ -1,9 +1,7 @@
 package view;
 
 import model.User;
-import model.vehicle.Vehicle;
 
-import java.util.List;
 import java.util.Properties;
 
 public class MainMenu extends BaseMenu {
@@ -32,17 +30,14 @@ public class MainMenu extends BaseMenu {
     }
 
     public void show(boolean isSudo) {
+        showTitle();
         String[] msgList =new String[] {
             langData.getProperty("EXIT_CMD"),
             langData.getProperty("DB_CMD"),
             langData.getProperty("TESTS_CMD"),
         };
-        display_ln("\n---------------------------");
-        display_ln("\t\t" + title);
-        display_ln("---------------------------");
         for (int i = 0; i <msgList.length; ++i) {
-            if (i > 1 && !isSudo)
-                break;
+            if (i > 1 && !isSudo) { break; }
             display_ln(String.format(msgList[i], i));
         }
         display(langData.getProperty("ENTER_CMD"));
