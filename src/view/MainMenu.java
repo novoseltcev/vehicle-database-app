@@ -34,15 +34,14 @@ public class MainMenu extends BaseMenu {
     public void show(boolean isSudo) {
         String[] msgList =new String[] {
             langData.getProperty("EXIT_CMD"),
-            langData.getProperty("LOAD_CMD"),
-            langData.getProperty("NEW_CMD"),
+            langData.getProperty("DB_CMD"),
             langData.getProperty("TESTS_CMD"),
         };
         display_ln("\n---------------------------");
         display_ln("\t\t" + title);
         display_ln("---------------------------");
         for (int i = 0; i <msgList.length; ++i) {
-            if (i > 2 && !isSudo)
+            if (i > 1 && !isSudo)
                 break;
             display_ln(String.format(msgList[i], i));
         }

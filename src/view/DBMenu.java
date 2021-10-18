@@ -9,11 +9,11 @@ public class DBMenu extends BaseMenu{
 //        clearStack();
         String[] msgList =new String[] {
                 langData.getProperty("BACK_CMD"),
-                langData.getProperty("SHOW_CMD"),
-                langData.getProperty("ADD_CMD"),
-                langData.getProperty("EDIT_CMD"),
-                langData.getProperty("REMOVE_CMD"),
-                langData.getProperty("SAVE_CMD"),
+                langData.getProperty("SHOW_DB_CMD"),
+                langData.getProperty("ADD_DB_CMD"),
+                langData.getProperty("EDIT_DB_CMD"),
+                langData.getProperty("REMOVE_DB_CMD"),
+                langData.getProperty("SAVE_DB_CMD"),
         };
         display_ln("\n---------------------------");
         display_ln("\t\t" + title);
@@ -28,11 +28,17 @@ public class DBMenu extends BaseMenu{
         display_ln(langData.getProperty("VEHICLES_TITLE"));
         if (vehicles.size() < 1) {
             display_ln(langData.getProperty("NO_DATA"));
-            return;
-        }
-        for (Vehicle vehicle: vehicles) {
-            display_ln(vehicle.toString());
+        } else {
+            for (Vehicle vehicle: vehicles)
+                display_ln(vehicle.toString());
         }
     }
 
+    public void save() {
+        display_ln(langData.getProperty("SUCCESSFUL_SAVE"));
+    }
+
+    public void load() {
+        display_ln(langData.getProperty("SUCCESSFUL_LOAD"));
+    }
 }
