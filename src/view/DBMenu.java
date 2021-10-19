@@ -1,9 +1,6 @@
 package view;
 
-import model.vehicle.Vehicle;
 import view.vehicle.VehicleMenu;
-
-import java.util.List;
 
 public class DBMenu extends VehicleMenu {
     public void show() {
@@ -17,7 +14,7 @@ public class DBMenu extends VehicleMenu {
                 langData.getProperty("REMOVE_DB_CMD"),
         };
 
-        for (int i = 0; i <msgList.length; ++i)
+        for (int i = 0; i < msgList.length; ++i)
             display_ln(String.format(msgList[i], i));
 
         display(langData.getProperty("ENTER_CMD"));
