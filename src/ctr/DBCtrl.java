@@ -3,7 +3,6 @@ package ctr;
 import ctr.vehicle.*;
 import model.vehicle.Vehicle;
 import utils.Command;
-import view.BaseMenu;
 import view.CrashNotifier;
 import view.DBMenu;
 import view.vehicle.*;
@@ -11,6 +10,7 @@ import view.vehicle.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
 public class DBCtrl extends VehicleCtrl{
     private static final String SAVE_PATH = "vehicles.db";
@@ -54,6 +54,7 @@ public class DBCtrl extends VehicleCtrl{
                 break;
 
             default:
+            	logger.log(Level.WARNING, "Invalid command");
                 menu.errorCommand(String.valueOf(cmd));
         }
     }
@@ -61,9 +62,12 @@ public class DBCtrl extends VehicleCtrl{
 
     private void load() {
         try {
+        	logger.log(Level.INFO, "Reading DataBase from: " + SAVE_PATH );
             loadVehicle(SAVE_PATH);
             ((DBMenu) menu).load();
+            logger.log(Level.INFO, "Succesful readed DataBase from: " + SAVE_PATH );
         } catch (Exception e) {
+        	logger.log(Level.SEVERE, "Error reading DataBase from: " + SAVE_PATH );
             vehicles = new ArrayList<>();
             CrashNotifier crasher = new CrashNotifier();
             crasher.handler(e);
@@ -71,14 +75,17 @@ public class DBCtrl extends VehicleCtrl{
     }
 
     private void loadVehicle(String path) throws IOException {
+    	ObjectInputStream objectInputStream = null;
         try {
             FileInputStream inputStream = new FileInputStream(path);
-            ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+            objectInputStream = new ObjectInputStream(inputStream);
             vehicles = (List<Vehicle>) objectInputStream.readObject();
         } catch (FileNotFoundException e) {
             throw new IOException(path);
         } catch (ClassNotFoundException e) {
             throw new IOException("invalid data in " + path);
+        } finally {
+        	objectInputStream.close();
         }
     }
 
@@ -117,9 +124,12 @@ public class DBCtrl extends VehicleCtrl{
     }
     private void save() {
         try {
+        	logger.log(Level.INFO, "Writing data to DataBase: " + SAVE_PATH );
             saveVehicle(SAVE_PATH);
             ((DBMenu) menu).save();
+            logger.log(Level.INFO, "Succesful writed data to DataBase: " + SAVE_PATH );
         } catch (IOException e) {
+        	logger.log(Level.SEVERE, "Error writing data to DataBase: " + SAVE_PATH );
             CrashNotifier crashNotifier = new CrashNotifier();
             crashNotifier.handler(e);
         }

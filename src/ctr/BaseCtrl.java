@@ -4,10 +4,12 @@ import utils.Command;
 import view.BaseMenu;
 
 import java.util.Scanner;
+import java.util.logging.Logger;
 
 public class BaseCtrl {
-    protected Scanner scanner;
-    protected String enteredPassword;
+	public static Logger logger;
+    protected static Scanner scanner;
+    protected static String enteredPassword;
     protected BaseMenu menu;
 
     public BaseCtrl(BaseMenu menu) {

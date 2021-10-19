@@ -1,6 +1,5 @@
 package ctr.vehicle;
 
-import ctr.BaseCtrl;
 import model.vehicle.*;
 import model.vehicle.exception.*;
 import utils.Command;

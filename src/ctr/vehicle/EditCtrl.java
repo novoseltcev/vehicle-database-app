@@ -1,6 +1,5 @@
 package ctr.vehicle;
 
-import ctr.BaseCtrl;
 import utils.Command;
 import view.vehicle.EditMenu;
 import view.vehicle.VehicleMenu;

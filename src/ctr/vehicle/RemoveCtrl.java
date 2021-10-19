@@ -20,7 +20,7 @@ public class RemoveCtrl extends VehicleCtrl {
     protected void chooseCMD(Command command) throws InterruptedException {
         super.chooseCMD(command);
         int index = command.getValue();
-        ((RemoveMenu)menu).showVehicle(index, vehicles.get(index));
+        ((RemoveMenu)menu).showVehicle(index, vehicles.get(index - 1));
         vehicles.remove(index - 1);
     }
 }
