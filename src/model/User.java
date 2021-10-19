@@ -82,7 +82,7 @@ public class User {
             return false;
         }
         _debug = value;
-        _properties.setProperty("USER_PASSWORD", String.valueOf(_debug));
+        _properties.setProperty("DEBUG", String.valueOf(_debug));
         dumpProprieties();
         return true;
     }
@@ -92,7 +92,7 @@ public class User {
             return false;
         }
         _tests = value;
-        _properties.setProperty("USER_PASSWORD", String.valueOf(_tests));
+        _properties.setProperty("TESTS", String.valueOf(_tests));
         dumpProprieties();
         return true;
     }

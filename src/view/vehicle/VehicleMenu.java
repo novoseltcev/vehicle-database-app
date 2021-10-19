@@ -43,7 +43,7 @@ public abstract class VehicleMenu extends BaseMenu {
             display_ln("|-------------------------------------------------------------------------------------------------");
             int counter = 1;
             for (Vehicle vehicle: vehicles) {
-                display("|\t\t") ;
+                display("|\t") ;
                 showVehicle(counter++, vehicle);
                 display_ln("|-----------|-------------------------------------------------------------------------------------");
             }

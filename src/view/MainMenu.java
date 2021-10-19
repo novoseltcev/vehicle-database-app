@@ -34,6 +34,7 @@ public class MainMenu extends BaseMenu {
         String[] msgList =new String[] {
             langData.getProperty("EXIT_CMD"),
             langData.getProperty("DB_CMD"),
+            langData.getProperty("DEBUG_CMD"),
             langData.getProperty("TESTS_CMD"),
         };
         for (int i = 0; i <msgList.length; ++i) {
@@ -41,5 +42,10 @@ public class MainMenu extends BaseMenu {
             display_ln(String.format(msgList[i], i));
         }
         display(langData.getProperty("ENTER_CMD"));
+    }
+    
+    public void showDebugStatus(boolean value) {
+    	String msg = String.format(langData.getProperty("DEBUG_STATUS"), String.valueOf(value));
+    	display_ln(msg);
     }
 }
