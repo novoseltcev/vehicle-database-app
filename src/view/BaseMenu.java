@@ -4,7 +4,7 @@ import java.util.Properties;
 
 public class BaseMenu{
     protected static Properties langData;
-    protected String title = this.getClass().getName().split("\\.")[1].split("Menu")[0] + " Menu";
+    protected String title = this.getClass().getName().split("\\.")[this.getClass().getName().split("\\.").length - 1].split("Menu")[0] + " Menu";
 
     protected void display(String msg) {
         System.out.print(msg);

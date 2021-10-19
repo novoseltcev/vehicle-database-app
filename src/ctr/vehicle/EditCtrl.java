@@ -2,12 +2,12 @@ package ctr.vehicle;
 
 import ctr.BaseCtrl;
 import utils.Command;
-import view.BaseMenu;
 import view.vehicle.EditMenu;
+import view.vehicle.VehicleMenu;
 
 //  TODO  - edit vehicle controller
-public class EditCtrl extends BaseCtrl {
-    public EditCtrl(BaseMenu menu) {
+public class EditCtrl extends VehicleCtrl {
+    public EditCtrl(VehicleMenu menu) {
         super(menu);
     }
 
@@ -20,12 +20,9 @@ public class EditCtrl extends BaseCtrl {
     @Override
     protected void chooseCMD(Command command) throws InterruptedException {
         super.chooseCMD(command);
-        int cmd = command.getValue();
+        int index = command.getValue();
 
-//        switch (cmd) {
-//
-//            default:
-//                menu.errorCommand(String.valueOf(cmd));
-//        }
+
+
     }
 }

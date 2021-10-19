@@ -2,20 +2,32 @@ package ctr.vehicle;
 
 import ctr.BaseCtrl;
 import model.vehicle.Vehicle;
-import view.BaseMenu;
+import utils.Command;
 import view.vehicle.VehicleMenu;
 
 import java.util.List;
 
-public class VehicleCtrl extends BaseCtrl {
+public abstract class VehicleCtrl extends BaseCtrl {
     protected static List<Vehicle> vehicles;
     protected String currentVehicleName;
-    public VehicleCtrl(BaseMenu menu) {
+
+    public VehicleCtrl(VehicleMenu menu) {
         super(menu);
     }
+
+    @Override
+    protected void chooseCMD(Command cmd) throws InterruptedException {
+        super.chooseCMD(cmd);
+        int command = cmd.getValue();
+        if (command < 1 || vehicles.size() < command) {
+            ((VehicleMenu)menu).invalidInt(String.valueOf(command), 1, vehicles.size());
+        }
+    }
+
     public void setCurrentVehicleName(String name) {
         currentVehicleName = name;
     }
+
     private String getString() {
         while (true) {
             String buffer = scanner.nextLine().toLowerCase();

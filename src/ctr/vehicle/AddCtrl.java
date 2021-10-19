@@ -1,14 +1,15 @@
 package ctr.vehicle;
 
+import ctr.BaseCtrl;
 import model.vehicle.*;
 import model.vehicle.exception.*;
 import utils.Command;
-import view.BaseMenu;
 import view.CrashNotifier;
 import view.vehicle.AddMenu;
+import view.vehicle.VehicleMenu;
 
 public class AddCtrl extends VehicleCtrl {
-    public AddCtrl(BaseMenu menu) {
+    public AddCtrl(VehicleMenu menu) {
         super(menu);
     }
 
@@ -20,9 +21,10 @@ public class AddCtrl extends VehicleCtrl {
 
     @Override
     protected void chooseCMD(Command command) throws InterruptedException {
-        super.chooseCMD(command);
+        if (command.getValue() == 0) {
+            throw new InterruptedException("0");
+        }
         int cmd = command.getValue();
-
         if (cmd < 1 || 5 < cmd) {
             menu.errorCommand(String.valueOf(cmd));
             return;

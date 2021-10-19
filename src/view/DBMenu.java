@@ -1,19 +1,20 @@
 package view;
 
 import model.vehicle.Vehicle;
+import view.vehicle.VehicleMenu;
 
 import java.util.List;
 
-public class DBMenu extends BaseMenu{
+public class DBMenu extends VehicleMenu {
     public void show() {
         showTitle();
         String[] msgList =new String[] {
                 langData.getProperty("BACK_CMD"),
+                langData.getProperty("SAVE_DB_CMD") + "\n",
                 langData.getProperty("SHOW_DB_CMD"),
                 langData.getProperty("ADD_DB_CMD"),
                 langData.getProperty("EDIT_DB_CMD"),
                 langData.getProperty("REMOVE_DB_CMD"),
-                langData.getProperty("SAVE_DB_CMD"),
         };
 
         for (int i = 0; i <msgList.length; ++i)
@@ -22,15 +23,7 @@ public class DBMenu extends BaseMenu{
         display(langData.getProperty("ENTER_CMD"));
     }
 
-    public void showVehicles(List<Vehicle> vehicles) {
-        display_ln(langData.getProperty("VEHICLES_TITLE"));
-        if (vehicles.size() < 1) {
-            display_ln(langData.getProperty("NO_DATA"));
-        } else {
-            for (Vehicle vehicle: vehicles)
-                display_ln(vehicle.toString());
-        }
-    }
+
 
     public void save() {
         display_ln(langData.getProperty("SUCCESSFUL_SAVE"));

@@ -14,7 +14,7 @@ import java.util.List;
 
 public class DBCtrl extends VehicleCtrl{
     private static final String SAVE_PATH = "vehicles.db";
-    DBCtrl(BaseMenu menu) {
+    DBCtrl(VehicleMenu menu) {
         super(menu);
         load();
     }
@@ -27,30 +27,30 @@ public class DBCtrl extends VehicleCtrl{
 
     @Override
     protected void chooseCMD(Command command) throws InterruptedException {
-        super.chooseCMD(command);
+        new BaseCtrl(menu).chooseCMD(command);
         int cmd = command.getValue();
 
         switch (cmd) {
             case (1):
-                show();
+                save();
                 break;
 
             case (2):
-                add();
+                show();
                 break;
 
             case (3):
-                show();
-                edit();
+                add();
                 break;
 
             case (4):
                 show();
-                remove();
+                edit();
                 break;
 
             case (5):
-                save();
+                show();
+                remove();
                 break;
 
             default:
@@ -97,21 +97,21 @@ public class DBCtrl extends VehicleCtrl{
     }
 
     private void edit() {
-        EditMenu vehicleMenu = new EditMenu();
-        EditCtrl vehicleCtrl = new EditCtrl(vehicleMenu);
+        EditMenu editVehicleMenu = new EditMenu();
+        EditCtrl editVehicleCtrl = new EditCtrl(editVehicleMenu);
         try {
             while (true) {
-                vehicleCtrl.run();
+                editVehicleCtrl.run();
             }
         } catch (InterruptedException ignored) {}
     }
 
     private void remove() {
-        RemoveMenu vehicleMenu = new RemoveMenu();
-        RemoveCtrl vehicleCtrl = new RemoveCtrl(vehicleMenu);
+        RemoveMenu removeVehicleMenu = new RemoveMenu();
+        RemoveCtrl removeVehicleCtrl = new RemoveCtrl(removeVehicleMenu);
         try {
             while (true) {
-                vehicleCtrl.run();
+                removeVehicleCtrl.run();
             }
         } catch (InterruptedException ignored) {}
     }

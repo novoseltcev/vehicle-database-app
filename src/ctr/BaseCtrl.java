@@ -10,7 +10,7 @@ public class BaseCtrl {
     protected String enteredPassword;
     protected BaseMenu menu;
 
-    protected BaseCtrl(BaseMenu menu) {
+    public BaseCtrl(BaseMenu menu) {
         scanner = new Scanner(System.in);
         this.menu = menu;
     }

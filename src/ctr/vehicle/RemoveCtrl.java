@@ -1,12 +1,12 @@
 package ctr.vehicle;
 
 import utils.Command;
-import view.BaseMenu;
 import view.vehicle.RemoveMenu;
+import view.vehicle.VehicleMenu;
 
 //  TODO  - remove vehicle controller
 public class RemoveCtrl extends VehicleCtrl {
-    public RemoveCtrl(BaseMenu menu) {
+    public RemoveCtrl(VehicleMenu menu) {
         super(menu);
     }
 
@@ -19,12 +19,8 @@ public class RemoveCtrl extends VehicleCtrl {
     @Override
     protected void chooseCMD(Command command) throws InterruptedException {
         super.chooseCMD(command);
-        int cmd = command.getValue();
-
-//        switch (cmd) {
-//
-//            default:
-//                menu.errorCommand(String.valueOf(cmd));
-//        }
+        int index = command.getValue();
+        ((RemoveMenu)menu).showVehicle(index, vehicles.get(index));
+        vehicles.remove(index - 1);
     }
 }
