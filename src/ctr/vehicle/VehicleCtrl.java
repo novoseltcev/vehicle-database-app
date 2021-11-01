@@ -11,6 +11,7 @@ import java.util.List;
 public abstract class VehicleCtrl extends BaseCtrl {
     protected static List<Vehicle> vehicles;
     protected Name currentVehicle;
+    protected VehicleMenu menu;
 
     public VehicleCtrl(VehicleMenu menu) {
         super(menu);
@@ -24,7 +25,7 @@ public abstract class VehicleCtrl extends BaseCtrl {
             }
             return cmd;
         }
-        ((VehicleMenu)menu).invalidInt(String.valueOf(command), 1, vehicles.size());
+        menu.invalidInt(String.valueOf(command), 1, vehicles.size());
         return -1;
     }
 
@@ -43,7 +44,7 @@ public abstract class VehicleCtrl extends BaseCtrl {
             String buffer = scanner.nextLine().toLowerCase();
             if (!buffer.isEmpty()) {
                 return buffer;
-            } ((VehicleMenu)menu).invalidName(buffer);
+            } menu.invalidName(buffer);
         }
     }
 
@@ -54,30 +55,31 @@ public abstract class VehicleCtrl extends BaseCtrl {
                 int result = Integer.parseInt(buffer);
                 if (downBoundary <= result && result <= upBoundary) {
                     return result;
-                } ((VehicleMenu)menu).invalidInt(buffer, downBoundary, upBoundary);
+                }
+                menu.invalidInt(buffer, downBoundary, upBoundary);
             } catch (NumberFormatException e) {
-                ((VehicleMenu)menu).invalidInt(buffer, downBoundary, upBoundary);
+                menu.invalidInt(buffer, downBoundary, upBoundary);
             }
         }
     }
 
     protected String getBrand() {
-        ((VehicleMenu)menu).enterBrand(currentVehicle.name());
+        menu.enterBrand(currentVehicle.name());
         return getString();
     }
 
     protected String getModel() {
-        ((VehicleMenu)menu).enterModel(currentVehicle.name());
+        menu.enterModel(currentVehicle.name());
         return getString();
     }
 
     protected int getMaxCargoWeight(int upBoundary) {
-        ((VehicleMenu)menu).enterMaxCargoWeight(currentVehicle.name());
+        menu.enterMaxCargoWeight(currentVehicle.name());
         return getInt(0, upBoundary);
     }
 
     protected int getNumPassengers(int downBoundary, int upBoundary) {
-        ((VehicleMenu)menu).enterNumPassengers(currentVehicle.name());
+        menu.enterNumPassengers(currentVehicle.name());
         return getInt(downBoundary, upBoundary);
     }
 

@@ -23,12 +23,6 @@ public class MainCtrl extends BaseCtrl {
         setLogger();
         this.welcome();
     }
-
-	@Override
-    public void run() throws InterruptedException {
-        menu.show();
-        super.run();
-    }
     
     protected void chooseCMD(Command command) throws InterruptedException {
         int cmd = super.chooseCMD(command, 100); // TODO
