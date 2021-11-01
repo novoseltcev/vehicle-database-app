@@ -5,8 +5,10 @@ import model.User;
 import java.util.Properties;
 
 public class MainMenu extends BaseMenu {
-    public MainMenu(Properties langConfig) {
+    final boolean sudoPrivileges;
+    public MainMenu(Properties langConfig, boolean isSudo) {
         langData = langConfig;
+        sudoPrivileges = isSudo;
     }
 
     public void welcome(String username) {
@@ -29,7 +31,7 @@ public class MainMenu extends BaseMenu {
         display_ln(langData.getProperty("VALID_PASS"));
     }
 
-    public void show(boolean isSudo) {
+    public void show() {
         showTitle();
         String[] msgList =new String[] {
             langData.getProperty("EXIT_CMD"),
@@ -38,14 +40,14 @@ public class MainMenu extends BaseMenu {
             langData.getProperty("TESTS_CMD"),
         };
         for (int i = 0; i <msgList.length; ++i) {
-            if (i > 1 && !isSudo) { break; }
+            if (i > 1 && !sudoPrivileges) { break; }
             display_ln(String.format(msgList[i], i));
         }
         display(langData.getProperty("ENTER_CMD"));
     }
     
     public void showDebugStatus(boolean value) {
-    	String msg = String.format(langData.getProperty("DEBUG_STATUS"), String.valueOf(value));
+    	String msg = String.format(langData.getProperty("DEBUG_STATUS"), value);
     	display_ln(msg);
     }
 }
