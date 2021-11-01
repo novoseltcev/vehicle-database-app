@@ -9,60 +9,60 @@ import java.util.Properties;
 
 public class User {
     private static final String BASE_CONFIG = "config.ini";
-    private String _name;
-    private String _password;
-    private String _language;
-    private final String _mode;
-    private boolean _debug;
-    private boolean _tests;
-    private final Properties _properties;
+    private String name;
+    private String password;
+    private String language;
+    private final String mode;
+    private boolean debug;
+    private boolean tests;
+    private final Properties properties;
 
     public User() throws IOException {
-        _properties = PropertyStreamer.read(BASE_CONFIG);
-        _name = _properties.getProperty("USER_NAME");
-        _password = _properties.getProperty("USER_PASSWORD");
-        _language = _properties.getProperty("LANG");
-        _mode = _properties.getProperty("MODE");
-        _debug = Boolean.parseBoolean(_properties.getProperty("DEBUG"));
-        _tests = Boolean.parseBoolean(_properties.getProperty("TESTS"));
+        properties = PropertyStreamer.read(BASE_CONFIG);
+        name = properties.getProperty("USER_NAME");
+        password = properties.getProperty("USER_PASSWORD");
+        language = properties.getProperty("LANG");
+        mode = properties.getProperty("MODE");
+        debug = Boolean.parseBoolean(properties.getProperty("DEBUG"));
+        tests = Boolean.parseBoolean(properties.getProperty("TESTS"));
         if (!isSudoMode())
-            _debug = _tests = false;
+            debug = tests = false;
     }
 
     private void dumpProprieties() throws IOException {
-        PropertyStreamer.write(BASE_CONFIG, _properties);
+        PropertyStreamer.write(BASE_CONFIG, properties);
     }
 
     public String getName() {
-        return _name;
+        return name;
     }
 
     public boolean checkPassword(String value) {
-        return _password.equals(value);
+        return password.equals(value);
     }
 
     public String getLanguage() {
-        return _language;
+        return language;
     }
 
     public boolean isSudoMode() {
-        return _mode.equalsIgnoreCase("root");
+        return mode.equalsIgnoreCase("root");
     }
 
     public boolean isDebug() {
-        return _debug;
+        return debug;
     }
 
     public boolean isTests() {
-        return _tests;
+        return tests;
     }
 
     public boolean setName(String currentPassword, String newName) throws IOException {
         if (!checkPassword(currentPassword)) {
             return false;
         }
-        _name = newName;
-        _properties.setProperty("USER_NAME", _name);
+        name = newName;
+        properties.setProperty("USER_NAME", name);
         dumpProprieties();
         return true;
     }
@@ -71,8 +71,8 @@ public class User {
         if (!checkPassword(currentPassword)) {
             return false;
         }
-        _password = newPassword;
-        _properties.setProperty("USER_PASSWORD", _password);
+        password = newPassword;
+        properties.setProperty("USER_PASSWORD", password);
         dumpProprieties();
         return true;
     }
@@ -81,8 +81,8 @@ public class User {
         if (!checkPassword(currentPassword)) {
             return false;
         }
-        _debug = value;
-        _properties.setProperty("DEBUG", String.valueOf(_debug));
+        debug = value;
+        properties.setProperty("DEBUG", String.valueOf(debug));
         dumpProprieties();
         return true;
     }
@@ -91,8 +91,8 @@ public class User {
         if (!checkPassword(currentPassword)) {
             return false;
         }
-        _tests = value;
-        _properties.setProperty("TESTS", String.valueOf(_tests));
+        tests = value;
+        properties.setProperty("TESTS", String.valueOf(tests));
         dumpProprieties();
         return true;
     }
@@ -102,14 +102,14 @@ public class User {
         if (!new File(langConfig.toString()).exists()) {
             return false;
         }
-        _language = language;
-        _properties.setProperty("LANG", _language);
+        this.language = language;
+        properties.setProperty("LANG", this.language);
         dumpProprieties();
         return true;
     }
 
     public Properties getLangData() throws IOException{
-        Path langConfig = Path.of("lang", _language + ".ini");
+        Path langConfig = Path.of("lang", language + ".ini");
         return PropertyStreamer.read(langConfig.toString());
     }
 
