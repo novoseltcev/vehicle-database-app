@@ -21,41 +21,42 @@ public class AddCtrl extends VehicleCtrl {
     }
 
     private Vehicle getVehicle(int number) {
-        String brand;
-        String model;
-        int maxCargoWeight;
-        int numPassengers;setCurrentVehicleName(number);
-        brand = getBrand();
-        model = getModel();
+        setCurrentVehicleName(number);
+        String brand = getBrand();
+        String model = getModel();
+        int maxCargoWeight = getMaxCargoWeight();
+        int numPassengers = -1;
+        if (currentVehicle.equals(Name.TRUCK) || currentVehicle.equals(Name.TRAILER)) {
+            numPassengers = getNumPassengers();
+        }
+        Vehicle vehicle = null;
         try {
-            switch (currentVehicle) {
-                case MOTORCYCLE -> {
-                    maxCargoWeight = getMaxCargoWeight(100);
-                    numPassengers = getNumPassengers(0, 2);
-                    return new Motorcycle(brand, model, maxCargoWeight, numPassengers);
-                }
-                case CAR -> {
-                    maxCargoWeight = getMaxCargoWeight(1000);
-                    numPassengers = getNumPassengers(1, 8);
-                    return new Car(brand, model, maxCargoWeight, numPassengers);
-                }
-                case TRUCK -> {
-                    maxCargoWeight = getMaxCargoWeight(10000);
-                    return new Truck(brand, model, maxCargoWeight);
-                }
-                case BUS -> {
-                    maxCargoWeight = getMaxCargoWeight(10000);
-                    numPassengers = getNumPassengers(8, 150);
-                    return new Bus(brand, model, maxCargoWeight, numPassengers);
-                }
-                case TRAILER -> {
-                    maxCargoWeight = getMaxCargoWeight(100000);
-                    return new Trailer(brand, model, maxCargoWeight);
-                }
-            }
-        } catch (InvalidNumPassengerExceptions | InvalidMaxCargoWeightExceptions | InvalidModelExceptions | InvalidBrandExceptions e) {
+            vehicle = VehicleFactory.create(currentVehicle, brand, model, maxCargoWeight, numPassengers);
+        }
+        catch (InvalidNumPassengerExceptions | InvalidMaxCargoWeightExceptions | InvalidModelExceptions | InvalidBrandExceptions e) {
             new CrashNotifier(e);
         }
-        return null;
+        return vehicle;
+    }
+
+    private int getMaxCargoWeight() {
+        int result = -1;
+        switch (currentVehicle) {
+            case MOTORCYCLE -> result = getMaxCargoWeight(100);
+            case CAR        -> result = getMaxCargoWeight(1000);
+            case TRUCK, BUS -> result = getMaxCargoWeight(10000);
+            case TRAILER    -> result = getMaxCargoWeight(100000);
+        }
+        return result;
+    }
+
+    private int getNumPassengers() {
+        int result = -1;
+        switch (currentVehicle) {
+            case MOTORCYCLE -> result = getNumPassengers(0, 2);
+            case CAR        -> result = getNumPassengers(1, 8);
+            case BUS        -> result = getNumPassengers(8, 150);
+        }
+        return result;
     }
 }
