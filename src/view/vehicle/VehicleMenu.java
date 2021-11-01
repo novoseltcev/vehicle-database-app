@@ -36,6 +36,7 @@ public abstract class VehicleMenu extends BaseMenu {
     }
 
     public void showVehicles(List<Vehicle> vehicles) {
+
         display_ln("\n" + langData.getProperty("VEHICLES_TITLE"));
         if (vehicles.size() < 1) {
             display_ln(langData.getProperty("NO_DATA"));

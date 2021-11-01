@@ -15,6 +15,7 @@ public abstract class VehicleCtrl extends BaseCtrl {
 
     public VehicleCtrl(VehicleMenu menu) {
         super(menu);
+        this.menu = menu;
     }
 
     protected int chooseVehicle(Command command) throws InterruptedException {

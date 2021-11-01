@@ -27,6 +27,7 @@ public class MainCtrl extends BaseCtrl {
     protected void chooseCMD(Command command) throws InterruptedException {
         int cmd = super.chooseCMD(command, 100); // TODO
         if (cmd == 1) {
+
             runDB();
         } else {
             if (user.isSudoMode()) {

@@ -14,29 +14,32 @@ public class AddCtrl extends VehicleCtrl {
     @Override
     protected void chooseCMD(Command command) throws InterruptedException {
         int cmd = super.chooseCMD(command, 5);
-        Vehicle vehicle = getVehicle(cmd);
-        if (vehicle != null) {
+        try {
+            Vehicle vehicle = getVehicle(cmd);
             vehicles.add(vehicle);
+        } catch (Exception e) {
+            throw new InterruptedException();
         }
     }
 
     private Vehicle getVehicle(int number) {
         setCurrentVehicleName(number);
-        String brand = getBrand();
-        String model = getModel();
-        int maxCargoWeight = getMaxCargoWeight();
-        int numPassengers = -1;
-        if (currentVehicle.equals(Name.TRUCK) || currentVehicle.equals(Name.TRAILER)) {
-            numPassengers = getNumPassengers();
-        }
-        Vehicle vehicle = null;
         try {
-            vehicle = VehicleFactory.create(currentVehicle, brand, model, maxCargoWeight, numPassengers);
+            String brand = getBrand();
+            String model = getModel();
+            int maxCargoWeight = getMaxCargoWeight();
+            int numPassengers = -1;
+            if (
+                currentVehicle.equals(Name.MOTORCYCLE)
+                || currentVehicle.equals(Name.CAR)
+                || currentVehicle.equals(Name.BUS)
+            ) { numPassengers = getNumPassengers(); }
+            return VehicleFactory.create(currentVehicle, brand, model, maxCargoWeight, numPassengers);
         }
         catch (InvalidNumPassengerExceptions | InvalidMaxCargoWeightExceptions | InvalidModelExceptions | InvalidBrandExceptions e) {
             new CrashNotifier(e);
+            return null;
         }
-        return vehicle;
     }
 
     private int getMaxCargoWeight() {

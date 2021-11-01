@@ -10,7 +10,6 @@ import view.vehicle.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.logging.Level;
 
 public class DBCtrl extends VehicleCtrl {
@@ -23,7 +22,6 @@ public class DBCtrl extends VehicleCtrl {
     @Override
     protected void chooseCMD(Command command) throws InterruptedException {
         int cmd = super.chooseCMD(command, 5);
-
         switch (cmd) {
             case (1) -> save();
             case (2) -> show();
@@ -50,7 +48,7 @@ public class DBCtrl extends VehicleCtrl {
             loadVehicle(SAVE_PATH);
             ((DBMenu) menu).load();
             logger.log(Level.INFO, "Successful read DataBase from: " + SAVE_PATH );
-        } catch (Exception e) {
+        } catch (IOException e) {
         	logger.log(Level.SEVERE, "Error reading DataBase from: " + SAVE_PATH );
             vehicles = new ArrayList<>();
             new CrashNotifier(e);
@@ -68,12 +66,14 @@ public class DBCtrl extends VehicleCtrl {
         } catch (ClassNotFoundException e) {
             throw new IOException("invalid data in " + path);
         } finally {
-        	Objects.requireNonNull(objectInputStream).close();
+            if (objectInputStream != null) {
+                objectInputStream.close();
+            }
         }
     }
 
     private void show() {
-        ((DBMenu)menu).showVehicles(vehicles);
+        menu.showVehicles(vehicles);
     }
 
     private void add() {

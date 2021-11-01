@@ -12,7 +12,9 @@ public class RemoveCtrl extends VehicleCtrl {
     @Override
     protected void chooseCMD(Command command) throws InterruptedException {
         int index = super.chooseVehicle(command);
-        menu.showVehicle(index, vehicles.get(index - 1));
-        vehicles.remove(index - 1);
+        if (index > 0) {
+            menu.showVehicle(index, vehicles.get(index - 1));
+            vehicles.remove(index - 1);
+        }
     }
 }
