@@ -11,3 +11,4 @@
 *.iml
 out/
 tmp/
+*log*
