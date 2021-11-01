@@ -3,13 +3,23 @@ package view;
 import java.io.IOException;
 
 public class CrashNotifier extends BaseMenu {
-    public void handler(Exception e){
-        if (e instanceof IOException) {
-            display("File integrity is broken: " + e.getMessage());
-        } else if(e instanceof InterruptedException) {
-            display("Program close with code " + e.getMessage());
+    final Class<?> errorType;
+    final String msg;
+    public CrashNotifier(Exception e) {
+        errorType = e.getClass();
+        msg = e.getMessage();
+        show();
+    }
+
+    @Override
+    public void show() {
+        showTitle();
+        if (errorType.equals(IOException.class)) {
+            display("File integrity is broken: " + msg);
+        } else if (errorType.equals(InterruptedException.class)) {
+            display("Program close with code " + msg);
         } else {
-            display("Handling unexpected error: " + e.toString());
+            display("Handling unexpected error: " + errorType);
         }
     }
 }

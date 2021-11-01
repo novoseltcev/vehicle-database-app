@@ -2,7 +2,7 @@ package view;
 
 import java.util.Properties;
 
-public class BaseMenu{
+public abstract class BaseMenu{
     protected static Properties langData;
     protected String title = this.getClass().getName().split("\\.")[this.getClass().getName().split("\\.").length - 1].split("Menu")[0] + " Menu";
 
@@ -22,6 +22,8 @@ public class BaseMenu{
         String msg = String.format(langData.getProperty("INVALID_CMD"), command);
         error(msg);
     }
+
+    public abstract void show();
 
     public void showTitle() {
         display_ln("");

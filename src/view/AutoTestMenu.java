@@ -5,10 +5,14 @@ import model.AutoTest;
 import java.util.List;
 
 public class AutoTestMenu extends BaseMenu {
-    public void show(List<AutoTest> autoTests) {
+    private List<AutoTest> data;
+    public void loadData(List<AutoTest> autoTests) {
+        data = autoTests;
+    }
+    public void show() {
         showTitle();
-        for (AutoTest autoTest: autoTests) {
-            display_ln('\n' + autoTest.toString());
+        for (AutoTest test: data) {
+            display_ln('\n' + test.toString());
         }
     }
 }

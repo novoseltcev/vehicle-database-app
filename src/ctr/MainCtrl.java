@@ -26,45 +26,38 @@ public class MainCtrl extends BaseCtrl {
 
 	@Override
     public void run() throws InterruptedException {
-        ((MainMenu)menu).show(user.isSudoMode());
+        menu.show();
         super.run();
     }
-
-    @Override
+    
     protected void chooseCMD(Command command) throws InterruptedException {
-        super.chooseCMD(command);
-        int cmd = command.getValue();
-        switch(cmd) {
-        case 1:
-        	runDB();
-        	break;
-        	
-        default:
-        	if (user.isSudoMode()){
-        		chooseSudoCMD(cmd);
-        	} else {
-        		logger.log(Level.WARNING, "Invalid command");
-        		menu.errorCommand(String.valueOf(cmd));
-        	}
+        int cmd = super.chooseCMD(command, 100); // TODO
+        if (cmd == 1) {
+            runDB();
+        } else {
+            if (user.isSudoMode()) {
+                chooseSudoCMD(cmd);
+            } else {
+                logger.log(Level.WARNING, "Invalid command");
+                menu.errorCommand(String.valueOf(cmd));
+            }
         }
     }
     
     private void chooseSudoCMD(int cmd) {
     	switch(cmd) {
-    	case 2:
-    		try {
-    			switchDebug();
-    			((MainMenu)menu).showDebugStatus(user.isDebug());
-    		} catch (IOException ignored) {}
-    		break;
-    		
-    	case 3:
-    		runAutoTest();
-    		break;
-    		
-    	default:
-        	menu.errorCommand(String.valueOf(cmd));
-        	logger.log(Level.WARNING, "Invalid command");
+            case (2) -> {
+                try {
+                    switchDebug();
+                    ((MainMenu) menu).showDebugStatus(user.isDebug());
+                } catch (IOException ignored) {}
+            }
+
+            case (3) -> runAutoTest();
+            default -> {
+                menu.errorCommand(String.valueOf(cmd));
+                logger.log(Level.WARNING, "Invalid command");
+            }
     	}
     }
     
@@ -119,7 +112,7 @@ public class MainCtrl extends BaseCtrl {
     private void switchDebug() throws IOException{
     	if (!user.setDebug(enteredPassword, !user.isDebug())) {
     		throw new IOException("");
-    	};
+    	}
     }
 
     private void runAutoTest() {

@@ -10,9 +10,10 @@ import view.vehicle.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Level;
 
-public class DBCtrl extends VehicleCtrl{
+public class DBCtrl extends VehicleCtrl {
     private static final String SAVE_PATH = "vehicles.db";
     DBCtrl(VehicleMenu menu) {
         super(menu);
@@ -20,42 +21,25 @@ public class DBCtrl extends VehicleCtrl{
     }
 
     @Override
-    public void run() throws InterruptedException {
-        ((DBMenu)menu).show();
-        super.run();
-    }
-
-    @Override
     protected void chooseCMD(Command command) throws InterruptedException {
-        new BaseCtrl(menu).chooseCMD(command);
-        int cmd = command.getValue();
+        int cmd = super.chooseCMD(command, 5);
 
         switch (cmd) {
-            case (1):
-                save();
-                break;
-
-            case (2):
-                show();
-                break;
-
-            case (3):
-                add();
-                break;
-
-            case (4):
+            case (1) -> save();
+            case (2) -> show();
+            case (3) -> add();
+            case (4) -> {
                 show();
                 edit();
-                break;
-
-            case (5):
+            }
+            case (5) -> {
                 show();
                 remove();
-                break;
-
-            default:
-            	logger.log(Level.WARNING, "Invalid command");
+            }
+            default -> {
+                logger.log(Level.WARNING, "Invalid command");
                 menu.errorCommand(String.valueOf(cmd));
+            }
         }
     }
 
@@ -65,12 +49,11 @@ public class DBCtrl extends VehicleCtrl{
         	logger.log(Level.INFO, "Reading DataBase from: " + SAVE_PATH );
             loadVehicle(SAVE_PATH);
             ((DBMenu) menu).load();
-            logger.log(Level.INFO, "Succesful readed DataBase from: " + SAVE_PATH );
+            logger.log(Level.INFO, "Successful read DataBase from: " + SAVE_PATH );
         } catch (Exception e) {
         	logger.log(Level.SEVERE, "Error reading DataBase from: " + SAVE_PATH );
             vehicles = new ArrayList<>();
-            CrashNotifier crasher = new CrashNotifier();
-            crasher.handler(e);
+            new CrashNotifier(e);
         }
     }
 
@@ -85,7 +68,7 @@ public class DBCtrl extends VehicleCtrl{
         } catch (ClassNotFoundException e) {
             throw new IOException("invalid data in " + path);
         } finally {
-        	objectInputStream.close();
+        	Objects.requireNonNull(objectInputStream).close();
         }
     }
 
@@ -127,11 +110,10 @@ public class DBCtrl extends VehicleCtrl{
         	logger.log(Level.INFO, "Writing data to DataBase: " + SAVE_PATH );
             saveVehicle(SAVE_PATH);
             ((DBMenu) menu).save();
-            logger.log(Level.INFO, "Succesful writed data to DataBase: " + SAVE_PATH );
+            logger.log(Level.INFO, "Successful wrote data to DataBase: " + SAVE_PATH );
         } catch (IOException e) {
         	logger.log(Level.SEVERE, "Error writing data to DataBase: " + SAVE_PATH );
-            CrashNotifier crashNotifier = new CrashNotifier();
-            crashNotifier.handler(e);
+            new CrashNotifier(e);
         }
     }
 
