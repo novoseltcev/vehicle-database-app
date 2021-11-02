@@ -14,5 +14,20 @@ public class AutoTestMenu extends BaseMenu {
         for (AutoTest test: data) {
             display_ln('\n' + test.toString());
         }
+
+
+        String[] msgList =new String[] {
+                langData.getProperty("BACK_CMD"),
+                langData.getProperty("RESTART_CMD")
+        };
+
+        for (int i = 0; i < msgList.length; ++i)
+            display_ln(String.format(msgList[i], i));
+
+        display(langData.getProperty("ENTER_CMD"));
+    }
+
+    public void Wait() {
+        display_ln(langData.getProperty("WAIT"));
     }
 }

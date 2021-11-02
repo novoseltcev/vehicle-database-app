@@ -6,6 +6,7 @@ import view.AutoTestMenu;
 import view.BaseMenu;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class AutoTestCtrl extends BaseCtrl{
@@ -14,22 +15,25 @@ public class AutoTestCtrl extends BaseCtrl{
     }
 
     @Override
-    public void run() {
-        List<AutoTest> result = calculate();
-        ((AutoTestMenu)menu).loadData(result);
-        menu.show();
+    public void run() throws InterruptedException {
+        ((AutoTestMenu)menu).Wait();
+        List<AutoTest> testsForArrayLists  = generateTests(ArrayList.class.arrayType());
+        List<AutoTest> testsForLinkedLists = generateTests(LinkedList.class.arrayType());
+        ((AutoTestMenu)menu).loadData(testsForArrayLists);
+        super.run();
     }
 
     @Override
     protected void chooseCMD(Command command) throws InterruptedException {
         chooseCMD(command, 1);
-        // TODO { 0: EXIT, 1: RESTART }
     }
 
-    private List<AutoTest> calculate() {
-        List<AutoTest> autoTests = new ArrayList<>();
-        for (int i = 100; i < 1000000; i *= 10){
-            autoTests.add(new AutoTest(i));
-        } return autoTests;
+    private List<AutoTest> generateTests(Class<?> listClass) {
+        List<AutoTest> result = new LinkedList<>();
+        for (int i = 0; i < 5; i++) {
+            result.add(new AutoTest(listClass, (int) Math.pow(10, i + 1)));
+        }
+        return result;
     }
+
 }
