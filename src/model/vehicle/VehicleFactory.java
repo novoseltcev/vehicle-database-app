@@ -38,4 +38,13 @@ public class VehicleFactory {
     static Trailer createTrailer(String brand, String model, int maxCargoWeight) throws InvalidBrandExceptions, InvalidMaxCargoWeightExceptions, InvalidModelExceptions {
         return new Trailer(brand, model, maxCargoWeight);
     }
+
+    public static Vehicle random() {
+        Name[] values = Name.values();
+        Name value = values[(int) (Math.random() * 4)];
+        try {
+            return create(value, String.valueOf(Math.random() * 1000000), String.valueOf(Math.random() * 10000), (int) (Math.random() * 100), (int) (Math.random() * 2));
+        } catch (InvalidNumPassengerExceptions |InvalidBrandExceptions | InvalidMaxCargoWeightExceptions | InvalidModelExceptions ignored) {}
+        return null;
+    }
 }

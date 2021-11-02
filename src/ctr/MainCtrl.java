@@ -60,11 +60,9 @@ public class MainCtrl extends BaseCtrl {
     	logger = Logger.getLogger(this.getClass().getName());
     	logger.setUseParentHandlers(false);
     	logger.setLevel(
-    		user.isDebug() ? Level.INFO : Level.ALL
+    		user.isDebug() ? Level.ALL : Level.INFO
     	);
-    	File handlerPath = new File("log");
-		handlerPath.createNewFile();
-		Handler handler = new FileHandler("log");
+		Handler handler = new FileHandler("log", true);
 	    logger.addHandler(handler);
     	
 	}
@@ -110,9 +108,13 @@ public class MainCtrl extends BaseCtrl {
     	}
     }
 
-    private void runAutoTest() {
+    private void runAutoTest(){
         AutoTestMenu autoTestMenu = new AutoTestMenu();
         AutoTestCtrl autoTestCtrl = new AutoTestCtrl(autoTestMenu);
-        autoTestCtrl.run();
+        try {
+            while (true) {
+                autoTestCtrl.run();
+            }
+        } catch (InterruptedException ignored) {}
     }
 }
