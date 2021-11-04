@@ -1,13 +1,13 @@
 package model.vehicle;
 
 import model.vehicle.exception.InvalidBrandExceptions;
-import model.vehicle.exception.InvalidMaxCargoWeightExceptions;
+import model.vehicle.exception.InvalidCargoWeightExceptions;
 import model.vehicle.exception.InvalidModelExceptions;
 import model.vehicle.exception.InvalidNumPassengerExceptions;
 
 
 public class VehicleFactory {
-    public static Vehicle create(Name vehicleClass, String brand, String model, int maxCargoWeight, int numPassengers) throws InvalidNumPassengerExceptions, InvalidBrandExceptions, InvalidMaxCargoWeightExceptions, InvalidModelExceptions {
+    public static Vehicle create(Name vehicleClass, String brand, String model, int maxCargoWeight, int numPassengers) throws InvalidNumPassengerExceptions, InvalidBrandExceptions, InvalidCargoWeightExceptions, InvalidModelExceptions {
         Vehicle vehicle = null;
         switch (vehicleClass) {
             case MOTORCYCLE -> vehicle = createMotorcycle(brand, model, maxCargoWeight, numPassengers);
@@ -19,23 +19,23 @@ public class VehicleFactory {
         return vehicle;
     }
 
-    static Motorcycle createMotorcycle(String brand, String model, int maxCargoWeight, int numPassengers) throws InvalidNumPassengerExceptions, InvalidBrandExceptions, InvalidMaxCargoWeightExceptions, InvalidModelExceptions {
+    static Motorcycle createMotorcycle(String brand, String model, int maxCargoWeight, int numPassengers) throws InvalidNumPassengerExceptions, InvalidBrandExceptions, InvalidCargoWeightExceptions, InvalidModelExceptions {
         return new Motorcycle(brand, model, maxCargoWeight, numPassengers);
     }
 
-    static Car createCar(String brand, String model, int maxCargoWeight, int numPassengers) throws InvalidNumPassengerExceptions, InvalidBrandExceptions, InvalidMaxCargoWeightExceptions, InvalidModelExceptions {
+    static Car createCar(String brand, String model, int maxCargoWeight, int numPassengers) throws InvalidNumPassengerExceptions, InvalidBrandExceptions, InvalidCargoWeightExceptions, InvalidModelExceptions {
         return new Car(brand, model, maxCargoWeight, numPassengers);
     }
 
-    static Truck createTruck(String brand, String model, int maxCargoWeight) throws InvalidBrandExceptions, InvalidMaxCargoWeightExceptions, InvalidModelExceptions {
+    static Truck createTruck(String brand, String model, int maxCargoWeight) throws InvalidBrandExceptions, InvalidCargoWeightExceptions, InvalidModelExceptions, InvalidNumPassengerExceptions {
         return new Truck(brand, model, maxCargoWeight);
     }
 
-    static Bus createBus(String brand, String model, int maxCargoWeight, int numPassengers) throws InvalidNumPassengerExceptions, InvalidBrandExceptions, InvalidMaxCargoWeightExceptions, InvalidModelExceptions {
+    static Bus createBus(String brand, String model, int maxCargoWeight, int numPassengers) throws InvalidNumPassengerExceptions, InvalidBrandExceptions, InvalidCargoWeightExceptions, InvalidModelExceptions {
         return new Bus(brand, model, maxCargoWeight, numPassengers);
     }
 
-    static Trailer createTrailer(String brand, String model, int maxCargoWeight) throws InvalidBrandExceptions, InvalidMaxCargoWeightExceptions, InvalidModelExceptions {
+    static Trailer createTrailer(String brand, String model, int maxCargoWeight) throws InvalidBrandExceptions, InvalidCargoWeightExceptions, InvalidModelExceptions, InvalidNumPassengerExceptions {
         return new Trailer(brand, model, maxCargoWeight);
     }
 
@@ -44,7 +44,7 @@ public class VehicleFactory {
         Name value = values[(int) (Math.random() * 4)];
         try {
             return create(value, String.valueOf(Math.random() * 1000000), String.valueOf(Math.random() * 10000), (int) (Math.random() * 100), (int) (Math.random() * 2));
-        } catch (InvalidNumPassengerExceptions |InvalidBrandExceptions | InvalidMaxCargoWeightExceptions | InvalidModelExceptions ignored) {}
+        } catch (InvalidNumPassengerExceptions |InvalidBrandExceptions | InvalidCargoWeightExceptions | InvalidModelExceptions ignored) {}
         return null;
     }
 }

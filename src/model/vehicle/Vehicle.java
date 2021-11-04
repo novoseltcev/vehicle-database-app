@@ -5,70 +5,61 @@ import model.vehicle.exception.*;
 import java.io.Serializable;
 import java.util.Objects;
 
-/**
- * Represents a Vehicle abstract class
- * @author <a href="https://github.com/st-a-novoseltcev">Novoseltcev Stanislav</a>
- * @version 1.0
- */
+
 public abstract class Vehicle implements Serializable {
-    protected String name = Name.VEHICLE.name();
+    protected Name name = Name.VEHICLE;
     protected String brand;
     protected String model;
-    protected Integer maxCargoWeight;
-    protected Integer numPassengers;
-    protected Integer thresholdSpeed;
+    protected int cargoWeight;
+    protected int numPassengers;
+
+    protected int thresholdSpeed;
+    protected int thresholdCargoWeight;
+    protected int thresholdMinNumPassengers;
+    protected int thresholdMaxNumPassengers;
+
 
     public String  getBrand() { return brand; }
     public String  getModel() { return model; }
-    public Integer getMaxCargoWeight() { return maxCargoWeight; }
+    public Integer getCargoWeight() { return cargoWeight; }
     public Integer getNumPassengers() { return numPassengers; }
+
     public Integer getThresholdSpeed() throws NonSelfWalkableVehicleException { return thresholdSpeed; }
+    public Integer getThresholdCargoWeight() { return thresholdCargoWeight; }
+    public Integer getThresholdMinNumPassengers() { return thresholdMinNumPassengers; }
+    public Integer getThresholdMaxNumPassengers() { return thresholdMaxNumPassengers; }
 
-    public void check(String brand, String model, int maxCargoWeight, int numPassengers) throws InvalidBrandExceptions, InvalidModelExceptions, InvalidMaxCargoWeightExceptions, InvalidNumPassengerExceptions {
-        checkBrand(brand);
-        checkModel(model);
-        checkMaxCargoWeight(maxCargoWeight);
-        checkNumPassengers(numPassengers);
+    public void check() throws InvalidBrandExceptions, InvalidModelExceptions, InvalidCargoWeightExceptions, InvalidNumPassengerExceptions {
+        checkBrand();
+        checkModel();
+        checkCargoWeight();
+        checkNumPassengers();
     }
 
-    public void check(String brand, String model, int maxCargoWeight) throws InvalidBrandExceptions, InvalidModelExceptions, InvalidMaxCargoWeightExceptions {
-        checkBrand(brand);
-        checkModel(model);
-        checkMaxCargoWeight(maxCargoWeight);
+    public void checkCargoWeight() throws InvalidCargoWeightExceptions {
+        if (cargoWeight < 0 || cargoWeight > thresholdCargoWeight) {
+            throw new InvalidCargoWeightExceptions(thresholdCargoWeight);
+        }
     }
 
-    public abstract void checkMaxCargoWeight(int maxCargoWeight) throws InvalidMaxCargoWeightExceptions;
-    public abstract void checkNumPassengers(int numPassengers) throws InvalidNumPassengerExceptions;
+    public void checkNumPassengers() throws InvalidNumPassengerExceptions {
+        if (numPassengers < thresholdMinNumPassengers || numPassengers > thresholdMaxNumPassengers) {
+            throw new InvalidNumPassengerExceptions(thresholdMinNumPassengers, thresholdMaxNumPassengers);
+        }
+    }
 
-    public static void checkBrand(String brand) throws InvalidBrandExceptions {
+    public void checkBrand() throws InvalidBrandExceptions {
         if (brand.isEmpty()) {
             throw new InvalidBrandExceptions();
         }
     }
 
-    public static void checkModel(String model) throws InvalidModelExceptions {
+    public void checkModel() throws InvalidModelExceptions {
         if (model.isEmpty()) {
             throw new InvalidModelExceptions();
         }
     }
 
-    public static  void checkMaxCargoWeight(Integer maxCargoWeight, Integer minValue, Integer maxValue) throws InvalidMaxCargoWeightExceptions {
-        if (maxCargoWeight < minValue || maxCargoWeight > maxValue) {
-            throw new InvalidMaxCargoWeightExceptions(minValue, maxValue);
-        }
-    }
-
-    public static void checkNumPassengers(Integer numPassengers, Integer minValue) throws InvalidNumPassengerExceptions {
-        if (numPassengers < minValue) {
-            throw new InvalidNumPassengerExceptions(minValue);
-        }
-    }
-
-    public static void checkNumPassengers(Integer numPassengers, Integer minValue, Integer maxValue) throws InvalidNumPassengerExceptions {
-        if (numPassengers < minValue || numPassengers > maxValue) {
-            throw new InvalidNumPassengerExceptions(minValue, maxValue);
-        }
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -77,7 +68,7 @@ public abstract class Vehicle implements Serializable {
         Vehicle vehicle = (Vehicle) o;
         return brand.equals(vehicle.brand)
                 && model.equals(vehicle.model)
-                && Objects.equals(maxCargoWeight, vehicle.maxCargoWeight)
+                && Objects.equals(cargoWeight, vehicle.cargoWeight)
                 && Objects.equals(numPassengers, vehicle.numPassengers)
                 && Objects.equals(thresholdSpeed, vehicle.thresholdSpeed);
     }
@@ -89,12 +80,14 @@ public abstract class Vehicle implements Serializable {
 
     @Override
     public String toString() {
-        return  name + "{" +
-                "brand='" + brand + '\'' +
-                ", model='" + model + '\'' +
-                ", maxCargoWeight=" + maxCargoWeight +
-                ", numPassengers=" + numPassengers +
-                ", thresholdSpeed=" + thresholdSpeed +
-                '}';
+        String result =  name.name() + "{" +
+                "brand='" + getBrand() + '\'' +
+                ", model='" + getModel() + '\'' +
+                ", maxCargoWeight=" + getCargoWeight() +
+                ", numPassengers=" + getNumPassengers();
+        try {
+            result += (", thresholdSpeed=" + getThresholdSpeed());
+        } catch (NonSelfWalkableVehicleException ignored) {}
+        return result + "}";
     }
 }
