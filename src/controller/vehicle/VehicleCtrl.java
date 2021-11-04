@@ -1,12 +1,10 @@
-package ctr.vehicle;
+package controller.vehicle;
 
-import ctr.BaseCtrl;
+import controller.BaseCtrl;
 import model.vehicle.Name;
 import model.vehicle.Vehicle;
-import utils.Command;
 import view.vehicle.VehicleMenu;
 
-import java.util.InputMismatchException;
 import java.util.List;
 
 public abstract class VehicleCtrl extends BaseCtrl {

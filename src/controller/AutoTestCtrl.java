@@ -1,4 +1,4 @@
-package ctr;
+package controller;
 
 import model.AutoTest;
 import utils.Command;
@@ -16,17 +16,17 @@ public class AutoTestCtrl extends BaseCtrl{
     }
 
     @Override
-    public void run() {  // TODO
+    public void loop() {  // TODO
         ((AutoTestMenu)menu).Wait();
         List<AutoTest> testsForArrayLists  = generateTests(ArrayList.class.arrayType());
         List<AutoTest> testsForLinkedLists = generateTests(LinkedList.class.arrayType());
         ((AutoTestMenu)menu).loadData(testsForArrayLists);
-        super.run();
+        super.loop();
     }
 
     @Override
-    protected void chooseCMD(Command command) throws InputMismatchException, InterruptedException {
-        chooseCMD(command, 1);
+    protected void call(Command command) throws InputMismatchException, InterruptedException {
+        call(command, 1);
     }
 
     private List<AutoTest> generateTests(Class<?> listClass) {

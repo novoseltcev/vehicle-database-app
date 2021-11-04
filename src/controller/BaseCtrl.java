@@ -1,4 +1,4 @@
-package ctr;
+package controller;
 
 import utils.Command;
 import view.BaseMenu;
@@ -18,7 +18,7 @@ public abstract class BaseCtrl {
         this.menu = menu;
     }
 
-    public void run() {
+    public void loop() {
         boolean isRunning = true;
         boolean isError   = false;
         Command command = new Command((scanner));
@@ -31,7 +31,7 @@ public abstract class BaseCtrl {
             isError = false;
             try {
                 command.getInt();
-                chooseCMD(command);
+                call(command);
             } catch (InputMismatchException e) {
                 isError = true;
                 menu.errorCommand(String.valueOf(command.getValue()));
@@ -44,7 +44,7 @@ public abstract class BaseCtrl {
         }
     }
 
-    protected void chooseCMD(Command command, int lastCMD) throws InputMismatchException, InterruptedException {
+    protected void call(Command command, int lastCMD) throws InputMismatchException, InterruptedException {
         int cmd = command.getValue();
         if  (cmd == 0) {
             throw new InterruptedException();
@@ -55,5 +55,5 @@ public abstract class BaseCtrl {
         }
     }
     
-    protected abstract void chooseCMD(Command command) throws InputMismatchException, InterruptedException;
+    protected abstract void call(Command command) throws InputMismatchException, InterruptedException;
 }

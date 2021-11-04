@@ -1,4 +1,4 @@
-package ctr.vehicle;
+package controller.vehicle;
 
 import utils.Command;
 import view.vehicle.EditMenu;
@@ -12,8 +12,8 @@ public class EditCtrl extends VehicleCtrl {
     }
 
     @Override
-    protected void chooseCMD(Command command) throws InterruptedException, InputMismatchException {
-        super.chooseCMD(command, vehicles.size());
+    protected void call(Command command) throws InterruptedException, InputMismatchException {
+        super.call(command, vehicles.size());
         int index = command.getValue();
         // TODO
     }

@@ -1,7 +1,6 @@
-package ctr;
+package controller;
 
 import java.io.IOException;
-import java.io.InterruptedIOException;
 import java.util.InputMismatchException;
 import java.util.logging.FileHandler;
 import java.util.logging.Handler;
@@ -27,8 +26,8 @@ public class MainCtrl extends BaseCtrl {
     }
 
     @Override
-    protected void chooseCMD(Command command) throws InputMismatchException, InterruptedException {
-        super.chooseCMD(command, user.isSudoMode() ? 3 : 1); // TODO
+    protected void call(Command command) throws InputMismatchException, InterruptedException {
+        super.call(command, user.isSudoMode() ? 3 : 1); // TODO
         int cmd = command.getValue();
         switch (cmd) {
             case 1 -> runDB();
@@ -81,7 +80,7 @@ public class MainCtrl extends BaseCtrl {
     private void runDB() {
         DBMenu dbMenu = new DBMenu();
         DBCtrl dbCtrl = new DBCtrl(dbMenu);
-        dbCtrl.run();
+        dbCtrl.loop();
     }
     
     private void switchDebug() throws InterruptedException {  // TODO
@@ -93,6 +92,6 @@ public class MainCtrl extends BaseCtrl {
     private void runAutoTest(){
         AutoTestMenu autoTestMenu = new AutoTestMenu();
         AutoTestCtrl autoTestCtrl = new AutoTestCtrl(autoTestMenu);
-        autoTestCtrl.run();
+        autoTestCtrl.loop();
     }
 }

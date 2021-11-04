@@ -1,9 +1,8 @@
-package ctr.vehicle;
+package controller.vehicle;
 
 import model.vehicle.*;
 import model.vehicle.exception.*;
 import utils.Command;
-import view.CrashNotifier;
 import view.vehicle.AddMenu;
 
 import java.util.InputMismatchException;
@@ -14,8 +13,8 @@ public class AddCtrl extends VehicleCtrl {
     }
 
     @Override
-    protected void chooseCMD(Command command) throws InputMismatchException, InterruptedException {
-        super.chooseCMD(command, 5);
+    protected void call(Command command) throws InputMismatchException, InterruptedException {
+        super.call(command, 5);
         int cmd = command.getValue();
         Vehicle vehicle = getVehicle(cmd);
         vehicles.add(vehicle);

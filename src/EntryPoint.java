@@ -1,4 +1,4 @@
-import ctr.MainCtrl;
+import controller.MainCtrl;
 import model.User;
 import view.CrashNotifier;
 import view.MainMenu;
@@ -9,7 +9,7 @@ public class EntryPoint {
             User user = new User();
             MainMenu view = new MainMenu(user.getLangData(), user.isSudoMode());
             MainCtrl controller = new MainCtrl(view, user);
-            controller.run();
+            controller.loop();
 //            	} catch (InterruptedException e) {
 //            		MainCtrl.logger.log(Level.INFO, "Close program with code: " + e.getMessage());
 //            		throw e;

@@ -1,6 +1,6 @@
-package ctr;
+package controller;
 
-import ctr.vehicle.*;
+import controller.vehicle.*;
 import model.vehicle.Vehicle;
 import utils.Command;
 import view.CrashNotifier;
@@ -21,8 +21,8 @@ public class DBCtrl extends VehicleCtrl {
     }
 
     @Override
-    protected void chooseCMD(Command command) throws InputMismatchException, InterruptedException {
-        super.chooseCMD(command, 5);
+    protected void call(Command command) throws InputMismatchException, InterruptedException {
+        super.call(command, 5);
         int cmd = command.getValue();
         switch (cmd) {
             case (1) -> save();
@@ -83,19 +83,19 @@ public class DBCtrl extends VehicleCtrl {
     private void add() {
         AddMenu vehicleMenu = new AddMenu();
         AddCtrl vehicleCtrl = new AddCtrl(vehicleMenu);
-        vehicleCtrl.run();
+        vehicleCtrl.loop();
     }
 
     private void edit() {
         EditMenu editVehicleMenu = new EditMenu();
         EditCtrl editVehicleCtrl = new EditCtrl(editVehicleMenu);
-        editVehicleCtrl.run();
+        editVehicleCtrl.loop();
     }
 
     private void remove() {
         RemoveMenu removeVehicleMenu = new RemoveMenu();
         RemoveCtrl removeVehicleCtrl = new RemoveCtrl(removeVehicleMenu);
-        removeVehicleCtrl.run();
+        removeVehicleCtrl.loop();
     }
     private void save() {
         try {
