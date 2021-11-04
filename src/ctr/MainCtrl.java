@@ -1,7 +1,8 @@
 package ctr;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.InterruptedIOException;
+import java.util.InputMismatchException;
 import java.util.logging.FileHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
@@ -21,40 +22,25 @@ public class MainCtrl extends BaseCtrl {
         super(menu);
         this.user = user;
         setLogger();
+
         this.welcome();
     }
-    
-    protected void chooseCMD(Command command) throws InterruptedException {
-        int cmd = super.chooseCMD(command, 100); // TODO
-        if (cmd == 1) {
 
-            runDB();
-        } else {
-            if (user.isSudoMode()) {
-                chooseSudoCMD(cmd);
-            } else {
-                logger.log(Level.WARNING, "Invalid command");
-                menu.errorCommand(String.valueOf(cmd));
-            }
+    @Override
+    protected void chooseCMD(Command command) throws InputMismatchException, InterruptedException {
+        super.chooseCMD(command, user.isSudoMode() ? 3 : 1); // TODO
+        int cmd = command.getValue();
+        switch (cmd) {
+            case 1 -> runDB();
+            case 2 -> switchDebug();
+//                           ((MainMenu) menu).showDebugStatus(user.isDebug());
+            case 3 -> runAutoTest();
         }
     }
-    
-    private void chooseSudoCMD(int cmd) {
-    	switch(cmd) {
-            case (2) -> {
-                try {
-                    switchDebug();
-                    ((MainMenu) menu).showDebugStatus(user.isDebug());
-                } catch (IOException ignored) {}
-            }
-
-            case (3) -> runAutoTest();
-            default -> {
-                menu.errorCommand(String.valueOf(cmd));
-                logger.log(Level.WARNING, "Invalid command");
-            }
-    	}
-    }
+//            else {
+//                logger.log(Level.WARNING, "Invalid command");
+//                menu.errorCommand(String.valueOf(cmd));
+//            }
     
     private void setLogger() throws IOException {
     	logger = Logger.getLogger(this.getClass().getName());
@@ -89,32 +75,24 @@ public class MainCtrl extends BaseCtrl {
             ((MainMenu)menu).invalidPassword(attempts);
         }
         if (attempts <= 0)
-            throw new InterruptedException("-1");
+            throw new InterruptedException();
     }
 
     private void runDB() {
-        try {
-            DBMenu dbMenu = new DBMenu();
-            DBCtrl dbCtrl = new DBCtrl(dbMenu);
-            while (true) {
-                dbCtrl.run();
-            }
-        } catch (InterruptedException ignored) {}
+        DBMenu dbMenu = new DBMenu();
+        DBCtrl dbCtrl = new DBCtrl(dbMenu);
+        dbCtrl.run();
     }
     
-    private void switchDebug() throws IOException{
+    private void switchDebug() throws InterruptedException {  // TODO
     	if (!user.setDebug(enteredPassword, !user.isDebug())) {
-    		throw new IOException("");
+    		throw new InterruptedException();
     	}
     }
 
     private void runAutoTest(){
         AutoTestMenu autoTestMenu = new AutoTestMenu();
         AutoTestCtrl autoTestCtrl = new AutoTestCtrl(autoTestMenu);
-        try {
-            while (true) {
-                autoTestCtrl.run();
-            }
-        } catch (InterruptedException ignored) {}
+        autoTestCtrl.run();
     }
 }

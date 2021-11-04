@@ -9,6 +9,7 @@ import view.vehicle.*;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -20,8 +21,9 @@ public class DBCtrl extends VehicleCtrl {
     }
 
     @Override
-    protected void chooseCMD(Command command) throws InterruptedException {
-        int cmd = super.chooseCMD(command, 5);
+    protected void chooseCMD(Command command) throws InputMismatchException, InterruptedException {
+        super.chooseCMD(command, 5);
+        int cmd = command.getValue();
         switch (cmd) {
             case (1) -> save();
             case (2) -> show();
@@ -34,12 +36,14 @@ public class DBCtrl extends VehicleCtrl {
                 show();
                 remove();
             }
-            default -> {
-                logger.log(Level.WARNING, "Invalid command");
-                menu.errorCommand(String.valueOf(cmd));
-            }
+//            default -> {
+//                logger.log(Level.WARNING, "Invalid command");
+//                menu.errorCommand(String.valueOf(cmd));
+//            }
         }
     }
+
+
 
 
     private void load() {
@@ -79,31 +83,19 @@ public class DBCtrl extends VehicleCtrl {
     private void add() {
         AddMenu vehicleMenu = new AddMenu();
         AddCtrl vehicleCtrl = new AddCtrl(vehicleMenu);
-        try {
-            while (true) {
-                vehicleCtrl.run();
-            }
-        } catch (InterruptedException ignored) {}
+        vehicleCtrl.run();
     }
 
     private void edit() {
         EditMenu editVehicleMenu = new EditMenu();
         EditCtrl editVehicleCtrl = new EditCtrl(editVehicleMenu);
-        try {
-            while (true) {
-                editVehicleCtrl.run();
-            }
-        } catch (InterruptedException ignored) {}
+        editVehicleCtrl.run();
     }
 
     private void remove() {
         RemoveMenu removeVehicleMenu = new RemoveMenu();
         RemoveCtrl removeVehicleCtrl = new RemoveCtrl(removeVehicleMenu);
-        try {
-            while (true) {
-                removeVehicleCtrl.run();
-            }
-        } catch (InterruptedException ignored) {}
+        removeVehicleCtrl.run();
     }
     private void save() {
         try {

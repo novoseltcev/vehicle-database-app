@@ -6,6 +6,7 @@ import view.AutoTestMenu;
 import view.BaseMenu;
 
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -15,7 +16,7 @@ public class AutoTestCtrl extends BaseCtrl{
     }
 
     @Override
-    public void run() throws InterruptedException {
+    public void run() {  // TODO
         ((AutoTestMenu)menu).Wait();
         List<AutoTest> testsForArrayLists  = generateTests(ArrayList.class.arrayType());
         List<AutoTest> testsForLinkedLists = generateTests(LinkedList.class.arrayType());
@@ -24,7 +25,7 @@ public class AutoTestCtrl extends BaseCtrl{
     }
 
     @Override
-    protected void chooseCMD(Command command) throws InterruptedException {
+    protected void chooseCMD(Command command) throws InputMismatchException, InterruptedException {
         chooseCMD(command, 1);
     }
 

@@ -6,23 +6,22 @@ import utils.Command;
 import view.CrashNotifier;
 import view.vehicle.AddMenu;
 
+import java.util.InputMismatchException;
+
 public class AddCtrl extends VehicleCtrl {
     public AddCtrl(AddMenu menu) {
         super(menu);
     }
 
     @Override
-    protected void chooseCMD(Command command) throws InterruptedException {
-        int cmd = super.chooseCMD(command, 5);
-        try {
-            Vehicle vehicle = getVehicle(cmd);
-            vehicles.add(vehicle);
-        } catch (Exception e) {
-            throw new InterruptedException();
-        }
+    protected void chooseCMD(Command command) throws InputMismatchException, InterruptedException {
+        super.chooseCMD(command, 5);
+        int cmd = command.getValue();
+        Vehicle vehicle = getVehicle(cmd);
+        vehicles.add(vehicle);
     }
 
-    private Vehicle getVehicle(int number) {
+    private Vehicle getVehicle(int number) throws InputMismatchException {
         setCurrentVehicleName(number);
         try {
             String brand = getBrand();
@@ -36,9 +35,8 @@ public class AddCtrl extends VehicleCtrl {
             ) { numPassengers = getNumPassengers(); }
             return VehicleFactory.create(currentVehicle, brand, model, maxCargoWeight, numPassengers);
         }
-        catch (InvalidNumPassengerExceptions | InvalidMaxCargoWeightExceptions | InvalidModelExceptions | InvalidBrandExceptions e) {
-            new CrashNotifier(e);
-            return null;
+        catch (InvalidNumPassengerExceptions | InvalidCargoWeightExceptions | InvalidModelExceptions | InvalidBrandExceptions e) {
+            throw new InputMismatchException(e.getClass() + e.getMessage());
         }
     }
 

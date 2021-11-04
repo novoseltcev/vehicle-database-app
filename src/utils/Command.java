@@ -1,31 +1,34 @@
 package utils;
 
-import view.BaseMenu;
-
 import java.util.Scanner;
 
 public class Command{
     private final Scanner sc;
-    private final BaseMenu baseMenu;
-    private final int value;
-    public Command(BaseMenu menu, Scanner scanner) {
-        baseMenu = menu;
+    private int value;
+    private String errorBuffer = "";
+
+    public Command(Scanner scanner) {
         sc = scanner;
-        value = getInt();
     }
 
     public int getValue() {
         return value;
     }
 
-    protected int getInt() {
-        while (true) {
-            String buffer = sc.nextLine().toLowerCase();
-            try {
-                return Integer.parseInt(buffer);
-            } catch (NumberFormatException e) {
-                baseMenu.errorCommand(buffer);
-            }
+    public int getInt() throws NumberFormatException {
+        String buffer = sc.nextLine().toLowerCase();
+        try {
+            value = Integer.parseInt(buffer);
+            return value;
+        } catch (NumberFormatException error) {
+            errorBuffer = buffer;
+            throw error;
         }
+    }
+
+    public String getError() {
+        if (!errorBuffer.isEmpty()) {
+            return errorBuffer;
+        }   return null;
     }
 }
