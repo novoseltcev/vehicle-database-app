@@ -1,41 +1,38 @@
 package controller;
 
-import controller.vehicle.*;
-import model.vehicle.Vehicle;
+import controller.vehicle.AddCtrl;
+import controller.vehicle.EditCtrl;
+import controller.vehicle.RemoveCtrl;
+import controller.vehicle.VehicleCtrl;
+import repository.VehicleRepository;
+import service.VehicleService;
 import utils.Command;
-import view.CrashNotifier;
-import view.DBMenu;
-import view.vehicle.*;
-
-import java.io.*;
-import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.List;
-import java.util.logging.Level;
+import view.BaseMenu;
+import view.vehicle.AddMenu;
+import view.vehicle.EditMenu;
+import view.vehicle.RemoveMenu;
+import view.vehicle.VehicleMenu;
 
 public class DBCtrl extends VehicleCtrl {
     private static final String SAVE_PATH = "vehicles.db";
-    DBCtrl(VehicleMenu menu) {
-        super(menu);
-        load();
+
+    public DBCtrl(BaseMenu menu) {
+        super((VehicleMenu) menu);
+        repository = new VehicleRepository(SAVE_PATH);
     }
 
     @Override
-    protected void call(Command command) throws InputMismatchException, InterruptedException {
+    protected void call(Command command) throws Exception {
         super.call(command, 5);
         int cmd = command.getValue();
         switch (cmd) {
-            case (1) -> save();
-            case (2) -> show();
-            case (3) -> add();
-            case (4) -> {
-                show();
-                edit();
-            }
-            case (5) -> {
-                show();
-                remove();
-            }
+            case (2), (4), (5) -> show();
+        }
+        switch (cmd) {
+            case (1) -> VehicleService.save(SAVE_PATH, repository.readAll());
+            case (3) -> runSubController(AddCtrl.class, AddMenu.class);
+            case (4) -> runSubController(EditCtrl.class, EditMenu.class);
+            case (5) -> runSubController(RemoveCtrl.class, RemoveMenu.class);
 //            default -> {
 //                logger.log(Level.WARNING, "Invalid command");
 //                menu.errorCommand(String.valueOf(cmd));
@@ -43,85 +40,7 @@ public class DBCtrl extends VehicleCtrl {
         }
     }
 
-
-
-
-    private void load() {
-        try {
-        	logger.log(Level.INFO, "Reading DataBase from: " + SAVE_PATH );
-            loadVehicle(SAVE_PATH);
-            ((DBMenu) menu).load();
-            logger.log(Level.INFO, "Successful read DataBase from: " + SAVE_PATH );
-        } catch (IOException e) {
-        	logger.log(Level.SEVERE, "Error reading DataBase from: " + SAVE_PATH );
-            vehicles = new ArrayList<>();
-            new CrashNotifier(e);
-        }
-    }
-
-    private void loadVehicle(String path) throws IOException {
-    	ObjectInputStream objectInputStream = null;
-        try {
-            FileInputStream inputStream = new FileInputStream(path);
-            objectInputStream = new ObjectInputStream(inputStream);
-            vehicles = (List<Vehicle>) objectInputStream.readObject();
-        } catch (FileNotFoundException e) {
-            throw new IOException(path);
-        } catch (ClassNotFoundException e) {
-            throw new IOException("invalid data in " + path);
-        } finally {
-            if (objectInputStream != null) {
-                objectInputStream.close();
-            }
-        }
-    }
-
     private void show() {
-        menu.showVehicles(vehicles);
+        menu.showVehicles(repository.readAll());
     }
-
-    private void add() {
-        AddMenu vehicleMenu = new AddMenu();
-        AddCtrl vehicleCtrl = new AddCtrl(vehicleMenu);
-        vehicleCtrl.loop();
-    }
-
-    private void edit() {
-        EditMenu editVehicleMenu = new EditMenu();
-        EditCtrl editVehicleCtrl = new EditCtrl(editVehicleMenu);
-        editVehicleCtrl.loop();
-    }
-
-    private void remove() {
-        RemoveMenu removeVehicleMenu = new RemoveMenu();
-        RemoveCtrl removeVehicleCtrl = new RemoveCtrl(removeVehicleMenu);
-        removeVehicleCtrl.loop();
-    }
-    private void save() {
-        try {
-        	logger.log(Level.INFO, "Writing data to DataBase: " + SAVE_PATH );
-            saveVehicle(SAVE_PATH);
-            ((DBMenu) menu).save();
-            logger.log(Level.INFO, "Successful wrote data to DataBase: " + SAVE_PATH );
-        } catch (IOException e) {
-        	logger.log(Level.SEVERE, "Error writing data to DataBase: " + SAVE_PATH );
-            new CrashNotifier(e);
-        }
-    }
-
-    private void saveVehicle(String path) throws IOException {
-        File file = new File(path);
-        try {
-            //noinspection ResultOfMethodCallIgnored
-            file.createNewFile();
-            FileOutputStream outputStream = new FileOutputStream(path);
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
-            objectOutputStream.writeObject(vehicles);
-            objectOutputStream.close();
-        } catch (IOException e) {
-            throw new IOException("Failed saving file: " + path);
-        }
-    }
-
-
 }

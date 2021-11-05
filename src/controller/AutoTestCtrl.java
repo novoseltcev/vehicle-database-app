@@ -16,7 +16,7 @@ public class AutoTestCtrl extends BaseCtrl{
     }
 
     @Override
-    public void loop() {  // TODO
+    public void loop() throws Exception {  // TODO
         ((AutoTestMenu)menu).Wait();
         List<AutoTest> testsForArrayLists  = generateTests(ArrayList.class.arrayType());
         List<AutoTest> testsForLinkedLists = generateTests(LinkedList.class.arrayType());
@@ -29,6 +29,8 @@ public class AutoTestCtrl extends BaseCtrl{
         call(command, 1);
     }
 
+
+    @Deprecated
     private List<AutoTest> generateTests(Class<?> listClass) {
         List<AutoTest> result = new LinkedList<>();
         for (int i = 0; i < 5; i++) {

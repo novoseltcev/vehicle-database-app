@@ -23,6 +23,11 @@ public abstract class BaseMenu{
         error(msg);
     }
 
+    public void invalidInt(int integer) {
+        String msg = String.format(langData.getProperty("INVALID_INT"), integer);
+        error(msg);
+    }
+
     public abstract void show();
 
     public void showTitle() {

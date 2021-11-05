@@ -1,12 +1,5 @@
 package controller;
 
-import java.io.IOException;
-import java.util.InputMismatchException;
-import java.util.logging.FileHandler;
-import java.util.logging.Handler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import model.User;
 import utils.Command;
 import view.AutoTestMenu;
@@ -14,26 +7,30 @@ import view.BaseMenu;
 import view.DBMenu;
 import view.MainMenu;
 
+import java.io.IOException;
+import java.util.logging.FileHandler;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class MainCtrl extends BaseCtrl {
     private final User user;
 
-    public MainCtrl(BaseMenu menu, User user) throws InterruptedException, IOException {
+    public MainCtrl(BaseMenu menu, User user) throws Exception {
         super(menu);
         this.user = user;
         setLogger();
-
         this.welcome();
     }
 
     @Override
-    protected void call(Command command) throws InputMismatchException, InterruptedException {
+    protected void call(Command command) throws Exception {
         super.call(command, user.isSudoMode() ? 3 : 1); // TODO
         int cmd = command.getValue();
         switch (cmd) {
-            case 1 -> runDB();
+            case 1 -> runSubController(DBCtrl.class, DBMenu.class);
             case 2 -> switchDebug();
-//                           ((MainMenu) menu).showDebugStatus(user.isDebug());
-            case 3 -> runAutoTest();
+            case 3 -> runSubController(AutoTestCtrl.class, AutoTestMenu.class);
         }
     }
 //            else {
@@ -47,18 +44,18 @@ public class MainCtrl extends BaseCtrl {
     	logger.setLevel(
     		user.isDebug() ? Level.ALL : Level.INFO
     	);
-		Handler handler = new FileHandler("log", true);
+		Handler handler = new FileHandler("app.log", true);
 	    logger.addHandler(handler);
     	
 	}
 
-    private void welcome() throws InterruptedException {
+    private void welcome() throws Exception {
     	logger.log(Level.INFO, "User " + user.getName() + " start application");
         ((MainMenu)menu).welcome(user.getName());
         enterPassword();
         ((MainMenu)menu).userData(user);
         if (user.isTests()) {
-        	runAutoTest();
+            runSubController(AutoTestCtrl.class, AutoTestMenu.class);
         }
     }
 
@@ -77,21 +74,9 @@ public class MainCtrl extends BaseCtrl {
             throw new InterruptedException();
     }
 
-    private void runDB() {
-        DBMenu dbMenu = new DBMenu();
-        DBCtrl dbCtrl = new DBCtrl(dbMenu);
-        dbCtrl.loop();
-    }
-    
-    private void switchDebug() throws InterruptedException {  // TODO
-    	if (!user.setDebug(enteredPassword, !user.isDebug())) {
-    		throw new InterruptedException();
-    	}
-    }
-
-    private void runAutoTest(){
-        AutoTestMenu autoTestMenu = new AutoTestMenu();
-        AutoTestCtrl autoTestCtrl = new AutoTestCtrl(autoTestMenu);
-        autoTestCtrl.loop();
+    @Deprecated
+    private void switchDebug() throws IOException {  // TODO
+    	user.setDebug(enteredPassword, !user.isDebug());
+        ((MainMenu) menu).showDebugStatus(user.isDebug());
     }
 }

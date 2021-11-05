@@ -2,14 +2,12 @@ package controller.vehicle;
 
 import controller.BaseCtrl;
 import model.vehicle.Name;
-import model.vehicle.Vehicle;
+import repository.VehicleRepository;
 import view.vehicle.VehicleMenu;
 
-import java.util.List;
-
 public abstract class VehicleCtrl extends BaseCtrl {
-    protected static List<Vehicle> vehicles;
-    protected Name currentVehicle;
+    protected static VehicleRepository repository;
+    protected Name name;
     protected VehicleMenu menu;
 
     public VehicleCtrl(VehicleMenu menu) {
@@ -19,11 +17,11 @@ public abstract class VehicleCtrl extends BaseCtrl {
 
     public void setCurrentVehicleName(int number) {
         switch (number) {
-            case 1 -> currentVehicle = Name.MOTORCYCLE;
-            case 2 -> currentVehicle = Name.CAR;
-            case 3 -> currentVehicle = Name.TRUCK;
-            case 4 -> currentVehicle = Name.BUS;
-            case 5 -> currentVehicle = Name.TRAILER;
+            case 1 -> name = Name.MOTORCYCLE;
+            case 2 -> name = Name.CAR;
+            case 3 -> name = Name.TRUCK;
+            case 4 -> name = Name.BUS;
+            case 5 -> name = Name.TRAILER;
         }
     }
 
@@ -53,22 +51,22 @@ public abstract class VehicleCtrl extends BaseCtrl {
     }
 
     protected String getBrand() {  // TODO
-        menu.enterBrand(currentVehicle.name());
+        menu.enterBrand(name.name());
         return getString();
     }
 
     protected String getModel() {  // TODO
-        menu.enterModel(currentVehicle.name());
+        menu.enterModel(name.name());
         return getString();
     }
 
     protected int getMaxCargoWeight(int upBoundary) {  // TODO
-        menu.enterMaxCargoWeight(currentVehicle.name());
+        menu.enterMaxCargoWeight(name.name());
         return getInt(0, upBoundary);
     }
 
     protected int getNumPassengers(int downBoundary, int upBoundary) {
-        menu.enterNumPassengers(currentVehicle.name());
+        menu.enterNumPassengers(name.name());
         return getInt(downBoundary, upBoundary);
     }
 
