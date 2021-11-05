@@ -7,70 +7,28 @@ import java.util.Objects;
 
 
 public abstract class Vehicle implements Serializable {
-    protected Name name = Name.VEHICLE;
     protected String brand;
     protected String model;
     protected int cargoWeight;
     protected int numPassengers;
 
-    protected int thresholdSpeed;
-    protected int thresholdCargoWeight;
-    protected int thresholdMinNumPassengers;
-    protected int thresholdMaxNumPassengers;
-
+    protected Name name = Name.VEHICLE;
 
     public String  getBrand() { return brand; }
     public String  getModel() { return model; }
     public Integer getCargoWeight() { return cargoWeight; }
     public Integer getNumPassengers() { return numPassengers; }
 
-    public Integer getThresholdSpeed() throws NonSelfWalkableVehicleException { return thresholdSpeed; }
-    public Integer getThresholdCargoWeight() { return thresholdCargoWeight; }
-    public Integer getThresholdMinNumPassengers() { return thresholdMinNumPassengers; }
-    public Integer getThresholdMaxNumPassengers() { return thresholdMaxNumPassengers; }
-
-    public void check() throws InvalidBrandExceptions, InvalidModelExceptions, InvalidCargoWeightExceptions, InvalidNumPassengerExceptions {
-        checkBrand();
-        checkModel();
-        checkCargoWeight();
-        checkNumPassengers();
-    }
-
-    public void checkCargoWeight() throws InvalidCargoWeightExceptions {
-        if (cargoWeight < 0 || cargoWeight > thresholdCargoWeight) {
-            throw new InvalidCargoWeightExceptions(thresholdCargoWeight);
-        }
-    }
-
-    public void checkNumPassengers() throws InvalidNumPassengerExceptions {
-        if (numPassengers < thresholdMinNumPassengers || numPassengers > thresholdMaxNumPassengers) {
-            throw new InvalidNumPassengerExceptions(thresholdMinNumPassengers, thresholdMaxNumPassengers);
-        }
-    }
-
-    public void checkBrand() throws InvalidBrandExceptions {
-        if (brand.isEmpty()) {
-            throw new InvalidBrandExceptions();
-        }
-    }
-
-    public void checkModel() throws InvalidModelExceptions {
-        if (model.isEmpty()) {
-            throw new InvalidModelExceptions();
-        }
-    }
-
+    abstract int getThresholdSpeed() throws NonSelfWalkableVehicleException;
+    abstract int getThresholdCargoWeight();
+    abstract int[] getThresholdsNumPassengers();
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Vehicle vehicle = (Vehicle) o;
-        return brand.equals(vehicle.brand)
-                && model.equals(vehicle.model)
-                && Objects.equals(cargoWeight, vehicle.cargoWeight)
-                && Objects.equals(numPassengers, vehicle.numPassengers)
-                && Objects.equals(thresholdSpeed, vehicle.thresholdSpeed);
+        return cargoWeight == vehicle.cargoWeight && numPassengers == vehicle.numPassengers && brand.equals(vehicle.brand) && model.equals(vehicle.model);
     }
 
     @Override

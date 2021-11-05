@@ -4,22 +4,26 @@ import model.vehicle.exception.*;
 
 
 public class Trailer extends Vehicle {
+    protected Name name = Name.TRAILER;
 
-    public Trailer(String brand, String model, Integer cargoWeight) throws InvalidCargoWeightExceptions, InvalidModelExceptions, InvalidBrandExceptions, InvalidNumPassengerExceptions {
-        name = Name.TRAILER;
-        thresholdCargoWeight = 100000;
-        thresholdMinNumPassengers = thresholdMaxNumPassengers = 0;
-
+    public Trailer(String brand, String model, Integer cargoWeight) {
+//        name = Name.TRAILER;
         this.brand = brand;
         this.model = model;
         this.cargoWeight = cargoWeight;
+    }
 
-        check();
-
+    public int getThresholdSpeed() throws NonSelfWalkableVehicleException {
+        throw new NonSelfWalkableVehicleException();
     }
 
     @Override
-    public Integer getThresholdSpeed() throws NonSelfWalkableVehicleException {
-        throw new NonSelfWalkableVehicleException();
+    int getThresholdCargoWeight() {
+        return 100000;
+    }
+
+    @Override
+    int[] getThresholdsNumPassengers() {
+        return new int[] {0, 0};
     }
 }

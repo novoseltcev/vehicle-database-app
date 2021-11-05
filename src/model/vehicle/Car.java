@@ -1,22 +1,28 @@
 package model.vehicle;
 
-import model.vehicle.exception.*;
-
 
 public class Car extends Vehicle {
-    public Car(String brand, String model, int cargoWeight, int numPassengers) throws InvalidNumPassengerExceptions, InvalidCargoWeightExceptions, InvalidModelExceptions, InvalidBrandExceptions {
-        this.name = Name.CAR;
-        thresholdSpeed = 110;
+    protected Name name = Name.CAR;
 
-        thresholdCargoWeight = 1000;
-        thresholdMinNumPassengers = 1;
-        thresholdMaxNumPassengers = 8;
-
+    public Car(String brand, String model, int cargoWeight, int numPassengers) {
         this.brand = brand;
         this.model = model;
         this.cargoWeight = cargoWeight;
         this.numPassengers = numPassengers;
+    }
 
-        check();
+    @Override
+    int getThresholdSpeed() {
+        return 110;
+    }
+
+    @Override
+    int getThresholdCargoWeight() {
+        return 1000;
+    }
+
+    @Override
+    int[] getThresholdsNumPassengers() {
+        return new int[] {1, 8};
     }
 }
