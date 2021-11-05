@@ -12,9 +12,10 @@ public class MainMenu extends BaseMenu {
     }
 
     public void welcome(String username) {
+        clear();
         String msg = String.format(langData.getProperty("WELCOME"), username);
         display_ln(msg);
-        display( langData.getProperty("INPUT_PASS") );
+        row( langData.getProperty("INPUT_PASS") );
     }
 
     public void userData(User user) {
@@ -28,7 +29,7 @@ public class MainMenu extends BaseMenu {
     }
 
     public void validPassword() {
-        display_ln(langData.getProperty("VALID_PASS"));
+        success(langData.getProperty("VALID_PASS"));
     }
 
     public void show() {
@@ -43,11 +44,12 @@ public class MainMenu extends BaseMenu {
             if (i > 1 && !sudoPrivileges) { break; }
             display_ln(String.format(msgList[i], i));
         }
-        display(langData.getProperty("ENTER_CMD"));
+        showSeparator();
+        row(langData.getProperty("ENTER_CMD"));
     }
     
     public void showDebugStatus(boolean value) {
     	String msg = String.format(langData.getProperty("DEBUG_STATUS"), value);
-    	display_ln(msg);
+    	success(msg);
     }
 }

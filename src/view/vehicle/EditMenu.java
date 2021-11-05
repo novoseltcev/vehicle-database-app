@@ -2,19 +2,11 @@ package view.vehicle;
 
 //  TODO  - edit vehicle menu
 public class EditMenu extends VehicleMenu {
-    public EditMenu() {
-        title += "\n| ";
-        title += langData.getProperty("EDIT_VEHICLE_CMD");
-    }
-
-    public void show() {
+        public void show() {
         showTitle();
-        String[] msgList =new String[] {
-            langData.getProperty("BACK_CMD"),
-        };
-
-        for (int i = 0; i <msgList.length; ++i) {
-            display_ln(String.format(msgList[i], i));
-        }
+        display_ln(" ".repeat(3) + String.format(langData.getProperty("BACK_CMD"), 0));
+        display_ln(String.format(langData.getProperty("EDIT_VEHICLE_CMD"), ">= 1"));
+        showSeparator();
+        row(langData.getProperty("ENTER_CMD"));
     }
 }

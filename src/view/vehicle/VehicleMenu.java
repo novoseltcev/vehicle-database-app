@@ -13,26 +13,25 @@ public abstract class VehicleMenu extends BaseMenu {
 
     public void enterBrand(String name) {
         String msg = String.format(langData.getProperty("ENTER_BRAND"), name);
-        display(msg);
+        row(msg);
     }
 
     public void enterModel(String name) {
         String msg = String.format(langData.getProperty("ENTER_MODEL"), name);
-        display(msg);
+        row(msg);
     }
 
     public void enterMaxCargoWeight(String name) {
         String msg = String.format(langData.getProperty("ENTER_WEIGHT"), name);
-        display(msg);
+        row(msg);
     }
 
     public void enterNumPassengers(String name) {
         String msg = String.format(langData.getProperty("ENTER_PASSENGERS"), name);
-        display(msg);
+        row(msg);
     }
 
     public void showVehicles(List<Vehicle> vehicles) {
-
         display_ln("\n" + langData.getProperty("VEHICLES_TITLE"));
         if (vehicles.size() < 1) {
             display_ln(langData.getProperty("NO_DATA"));
@@ -40,7 +39,7 @@ public abstract class VehicleMenu extends BaseMenu {
             display_ln("|-------------------------------------------------------------------------------------------------");
             int counter = 1;
             for (Vehicle vehicle: vehicles) {
-                display("|\t") ;
+                row("|\t") ;
                 showVehicle(counter++, vehicle);
                 display_ln("|-----------|-------------------------------------------------------------------------------------");
             }

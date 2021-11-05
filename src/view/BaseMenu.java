@@ -1,21 +1,44 @@
 package view;
 
+import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.Properties;
 
 public abstract class BaseMenu{
     protected static Properties langData;
     protected String title = this.getClass().getName().split("\\.")[this.getClass().getName().split("\\.").length - 1].split("Menu")[0] + " Menu";
+    protected static PrintWriter writer = new PrintWriter(System.out, true);
+    protected static HashMap<Integer, String> digits = new HashMap<>() {{
+        put(0, "\uFF10");
+        put(1, "\uFF11");
+        put(2, "\uFF12");
+        put(3, "\uFF13");
+        put(4, "\uFF14");
+        put(5, "\uFF15");
+        put(6, "\uFF16");
+        put(7, "\uFF17");
+        put(8, "\uFF18");
+        put(9, "\uFF19");
+    }};
 
-    protected void display(String msg) {
+    protected void row(String msg) {
         System.out.print(msg);
     }
 
     protected void display_ln(String msg) {
-        display(msg + "\n");
+        writer.println(msg);
+    }
+
+    protected void success(String msg) {
+        display_ln("\u2705 " + msg);
     }
 
     protected void error(String msg) {
-        display_ln(msg);
+        display_ln("\u274C " + msg);
+    }
+
+    protected void critical(String msg) {
+        display_ln("\u2620 " + msg);
     }
 
     public void errorCommand(String command) {
@@ -30,32 +53,18 @@ public abstract class BaseMenu{
 
     public abstract void show();
 
-    public void showTitle() {
-        display_ln("");
-        display_ln("|---------------------------");
-        display_ln("|\t\t" + title);
-//        display_ln("|---------------------------");
-//        display_ln("|\tPress ESC to back or exit");
-        display_ln("|---------------------------");
+    public void showSeparator() {
+        display_ln("-".repeat(25));
     }
 
-//    protected void clearStack() { // TODO
-//        try{
-//            String operatingSystem = System.getProperty("os.name"); //Check the current operating system
-//
-//            if(operatingSystem.contains("Windows")){
-//                ProcessBuilder pb = new ProcessBuilder("cmd", "/c", "cls");
-//                Process startProcess = pb.inheritIO().start();
-//                startProcess.waitFor();
-//            } else {
-//                ProcessBuilder pb = new ProcessBuilder("clear");
-//                Process startProcess = pb.inheritIO().start();
-//
-//                startProcess.waitFor();
-//            }
-//        }catch(Exception e){
-//            System.out.println(e);
-//        }
-//    }
+    public void showTitle() {
+        showSeparator();
+        display_ln("\u27A4 " + title.strip());
+        showSeparator();
+    }
 
+    public void clear() {
+        writer.print("\033[H\033[2J");
+        writer.flush();
+    }
 }

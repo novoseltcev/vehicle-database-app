@@ -16,17 +16,21 @@ public class DBMenu extends VehicleMenu {
 
         for (int i = 0; i < msgList.length; ++i)
             display_ln(String.format(msgList[i], i));
-
-        display(langData.getProperty("ENTER_CMD"));
+        showSeparator();
+        row(langData.getProperty("ENTER_CMD"));
     }
 
 
 
     public void save() {
-        display_ln(langData.getProperty("SUCCESSFUL_SAVE"));
+        success(langData.getProperty("SUCCESSFUL_SAVE"));
     }
 
     public void load() {
-        display_ln(langData.getProperty("SUCCESSFUL_LOAD"));
+        success(langData.getProperty("SUCCESSFUL_LOAD"));
+    }
+
+    public void create() {
+        error(langData.getProperty("UNSUCCESSFUL_LOAD"));
     }
 }
