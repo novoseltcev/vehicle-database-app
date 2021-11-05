@@ -14,8 +14,7 @@ public abstract class BaseCtrl {
     protected static String enteredPassword;
     protected BaseMenu menu;
 
-    public BaseCtrl(BaseMenu menu) {
-//        scanner = new Scanner(System.in);
+    public BaseCtrl(BaseMenu menu) throws Exception{
         this.menu = menu;
     }
 
@@ -57,6 +56,7 @@ public abstract class BaseCtrl {
 
     protected void call(Command command, int lastCMD) throws InputMismatchException, InterruptedException {
         int cmd = command.getValue();
+        menu.clear();
         if  (cmd == 0) {
             throw new InterruptedException();
         }
@@ -64,7 +64,22 @@ public abstract class BaseCtrl {
         if (cmd < 1 || lastCMD < cmd) {
             throw new InputMismatchException();
         }
+
     }
     
     protected abstract void call(Command command) throws Exception;
+
+
+    private String getString() {
+        return scanner.nextLine().toLowerCase();
+    }
+
+    protected String getLowerString() {
+        return getString().toLowerCase();
+    }
+
+    protected int getInt() throws NumberFormatException {
+        String buffer = scanner.nextLine().toLowerCase();
+        return Integer.parseInt(buffer);
+    }
 }

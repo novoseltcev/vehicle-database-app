@@ -3,19 +3,20 @@ package controller.vehicle;
 import controller.BaseCtrl;
 import model.vehicle.Name;
 import repository.VehicleRepository;
+import view.BaseMenu;
 import view.vehicle.VehicleMenu;
 
 public abstract class VehicleCtrl extends BaseCtrl {
     protected static VehicleRepository repository;
-    protected Name name;
     protected VehicleMenu menu;
 
-    public VehicleCtrl(VehicleMenu menu) {
+    public VehicleCtrl(BaseMenu menu) throws Exception {
         super(menu);
-        this.menu = menu;
+        this.menu = (VehicleMenu)menu;
     }
 
-    public void setCurrentVehicleName(int number) {
+    public Name getCurrentVehicleName(int number) {
+        Name name = null;
         switch (number) {
             case 1 -> name = Name.MOTORCYCLE;
             case 2 -> name = Name.CAR;
@@ -23,52 +24,26 @@ public abstract class VehicleCtrl extends BaseCtrl {
             case 4 -> name = Name.BUS;
             case 5 -> name = Name.TRAILER;
         }
+        return name;
     }
 
-    private String getString() {  // TODO
-        while (true) {
-            String buffer = scanner.nextLine().toLowerCase();
-            if (!buffer.isEmpty()) {
-                return buffer;
-            }
-//            throw new InputMismatchException();
-        }
-    }
-
-    private int getInt(int downBoundary, int upBoundary) {  // TODO
-        while (true) {
-            String buffer = scanner.nextLine().toLowerCase();
-            try {
-                int result = Integer.parseInt(buffer);
-                if (downBoundary <= result && result <= upBoundary) {
-                    return result;
-                }
-//                menu.invalidInt(buffer, downBoundary, upBoundary);
-            } catch (NumberFormatException e) {
-//                menu.invalidInt(buffer, downBoundary, upBoundary);
-            }
-        }
-    }
-
-    protected String getBrand() {  // TODO
+    protected String getBrand(Name name) {
         menu.enterBrand(name.name());
-        return getString();
+        return getLowerString();
     }
 
-    protected String getModel() {  // TODO
+    protected String getModel(Name name) {
         menu.enterModel(name.name());
-        return getString();
+        return getLowerString();
     }
 
-    protected int getMaxCargoWeight(int upBoundary) {  // TODO
+    protected int getMaxCargoWeight(Name name) {
         menu.enterMaxCargoWeight(name.name());
-        return getInt(0, upBoundary);
+        return getInt();
     }
 
-    protected int getNumPassengers(int downBoundary, int upBoundary) {
+    protected int getNumPassengers(Name name) {
         menu.enterNumPassengers(name.name());
-        return getInt(downBoundary, upBoundary);
+        return getInt();
     }
-
-
 }

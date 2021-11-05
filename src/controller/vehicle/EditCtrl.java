@@ -3,31 +3,25 @@ package controller.vehicle;
 import model.vehicle.Vehicle;
 import utils.Command;
 import view.BaseMenu;
-import view.vehicle.EditMenu;
 
 import java.util.InputMismatchException;
-import java.util.Optional;
 
 
 public class EditCtrl extends VehicleCtrl {
-    public EditCtrl(BaseMenu menu) {
-        super((EditMenu)menu);
+    public EditCtrl(BaseMenu menu) throws Exception {
+        super(menu);
     }
 
     @Override
-    protected void call(Command command) throws InterruptedException, InputMismatchException {
+    protected void call(Command command) throws InterruptedException, IndexOutOfBoundsException, InputMismatchException {
         super.call(command, repository.size());
         int index = command.getValue() - 1;
-        Optional<Vehicle> optionalVehicle = repository.read(index);
-        if (optionalVehicle.isEmpty()) {
-            throw new InputMismatchException();
-        }
-        Vehicle vehicle = optionalVehicle.get();
+
+        Vehicle vehicle = repository.read(index);
+        menu.showVehicle(index, vehicle);
         edit(vehicle);
         menu.showVehicle(index, vehicle);
-        if (!repository.update(index, vehicle)) {
-            throw new InterruptedException();
-        }
+        repository.update(index, vehicle);
     }
 
     private void edit(Vehicle vehicle) {}  // TODO

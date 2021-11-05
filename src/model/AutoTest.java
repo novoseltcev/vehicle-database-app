@@ -3,12 +3,8 @@ package model;
 import model.vehicle.Vehicle;
 import model.vehicle.VehicleFactory;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.logging.FileHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
@@ -60,7 +56,6 @@ public class AutoTest {
 
     private void generateList() {
         logger.info("Add: Size - " + size);
-        addTotalNanos = 0;
         for (int i = 0; i < size; i++) {
             Vehicle vehicle = VehicleFactory.random();
             long startTime = System.nanoTime();
@@ -74,7 +69,6 @@ public class AutoTest {
 
     private void removeTest() {
         logger.info("Remove: Size - " + size);
-        rmTotalNanos = 0;
         int new_size = size / 10;
         for (int i = 0; i < new_size; i++) {
             int j = generateIndex(size - i);

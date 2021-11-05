@@ -11,17 +11,38 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class AutoTestCtrl extends BaseCtrl{
-    AutoTestCtrl(BaseMenu menu) {
+    public AutoTestCtrl(BaseMenu menu) throws Exception {
         super(menu);
     }
 
     @Override
-    public void loop() throws Exception {  // TODO
-        ((AutoTestMenu)menu).Wait();
-        List<AutoTest> testsForArrayLists  = generateTests(ArrayList.class.arrayType());
-        List<AutoTest> testsForLinkedLists = generateTests(LinkedList.class.arrayType());
-        ((AutoTestMenu)menu).loadData(testsForArrayLists);
-        super.loop();
+    public void loop() {  // TODO
+        boolean isRunning = true;
+        boolean isError   = false;
+        Command command = new Command(scanner);
+
+        while (isRunning) {
+            if (!isError) {
+                ((AutoTestMenu)menu).Wait();
+                ((AutoTestMenu)menu).showData(generateTests(ArrayList.class.arrayType()));
+                ((AutoTestMenu)menu).showData(generateTests(LinkedList.class.arrayType()));
+                menu.show();
+            }
+
+            isError = false;
+            try {
+                command.getInt();
+                call(command);
+            } catch (InputMismatchException e) {
+                isError = true;
+                menu.invalidInt(command.getValue());
+            } catch (NumberFormatException e) {
+                isError = true;
+                menu.errorCommand(String.valueOf(command.getValue()));
+            } catch (InterruptedException e) {
+                isRunning = false;
+            }
+        }
     }
 
     @Override

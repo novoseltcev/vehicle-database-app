@@ -8,18 +8,18 @@ import view.DBMenu;
 import view.MainMenu;
 
 import java.io.IOException;
-import java.util.logging.FileHandler;
-import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 
 public class MainCtrl extends BaseCtrl {
     private final User user;
 
-    public MainCtrl(BaseMenu menu, User user) throws Exception {
+    public MainCtrl(BaseMenu menu, User user, Logger logger) throws Exception {
         super(menu);
+        BaseCtrl.logger = logger;
+
         this.user = user;
-        setLogger();
         this.welcome();
     }
 
@@ -37,23 +37,12 @@ public class MainCtrl extends BaseCtrl {
 //                logger.log(Level.WARNING, "Invalid command");
 //                menu.errorCommand(String.valueOf(cmd));
 //            }
-    
-    private void setLogger() throws IOException {
-    	logger = Logger.getLogger(this.getClass().getName());
-    	logger.setUseParentHandlers(false);
-    	logger.setLevel(
-    		user.isDebug() ? Level.ALL : Level.INFO
-    	);
-		Handler handler = new FileHandler("app.log", true);
-	    logger.addHandler(handler);
-    	
-	}
 
     private void welcome() throws Exception {
     	logger.log(Level.INFO, "User " + user.getName() + " start application");
         ((MainMenu)menu).welcome(user.getName());
         enterPassword();
-        ((MainMenu)menu).userData(user);
+//        ((MainMenu)menu).userData(user);
         if (user.isTests()) {
             runSubController(AutoTestCtrl.class, AutoTestMenu.class);
         }
