@@ -1,16 +1,39 @@
 package repository;
 
 import model.vehicle.Vehicle;
-import service.VehicleService;
 
+import java.io.*;
+import java.nio.file.Path;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 
 public class VehicleRepository implements IRepository<Vehicle> {
-    private final List<Vehicle> container;
+    private List<Vehicle> container;
+    private File file;
+    private ObjectInputStream in;
+    private ObjectOutputStream out;
 
-    public VehicleRepository(String path) {
-        container = VehicleService.load(path);
+    public VehicleRepository(String filename) throws IOException {
+        setFile(filename);
+        load();
+    }
+
+    private void load() throws IOException {
+        try {
+            in = new ObjectInputStream(new FileInputStream(file));
+            container = (List<Vehicle>) in.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            in.close();
+            container = new LinkedList<>();
+            save();
+        }
+    }
+
+    private void setFile(String filename) throws IOException {
+        new File("data").mkdir();
+        Path path = Path.of("data", filename).normalize();
+        file = path.toFile();
+        file.createNewFile();
     }
 
     @Override
@@ -24,32 +47,32 @@ public class VehicleRepository implements IRepository<Vehicle> {
     }
 
     @Override
-    public Optional<Vehicle> read(int id) {
+    public Vehicle read(int id) throws IndexOutOfBoundsException{
         if (container.size() <= id) {
-            return Optional.empty();
+            throw new IndexOutOfBoundsException();
         }
-        return Optional.of(container.get(id));
+        return container.get(id);
     }
 
     @Override
-    public boolean delete(int id) {
+    public void delete(int id) throws IndexOutOfBoundsException {
         if (container.size() <= id) {
-            return false;
-        }
-        container.remove(id);
-        return true;
+            throw new IndexOutOfBoundsException();
+        } container.remove(id);
     }
 
     @Override
-    public boolean update(int id, Vehicle vehicle) {
+    public void update(int id, Vehicle vehicle) throws IndexOutOfBoundsException{
         if (container.size() <= id) {
-            return false;
-        }
-        container.set(id, vehicle);
-        return true;
+            throw new IndexOutOfBoundsException();
+        } container.set(id, vehicle);
     }
 
-
+    public void save() throws IOException {
+        out = new ObjectOutputStream(new FileOutputStream(file));
+        out.writeObject(container);
+        out.close();
+    }
 
     public int size() {
         return container.size();
