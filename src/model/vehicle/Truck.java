@@ -2,10 +2,8 @@ package model.vehicle;
 
 
 public class Truck extends Vehicle {
-    protected Name name = Name.TRUCK;
-
     public Truck(String brand, String model, int cargoWeight) {
-//        name = Name.TRUCK;
+        name = Name.TRUCK;
         numPassengers = 2;
 
         this.brand = brand;

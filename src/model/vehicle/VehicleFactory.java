@@ -1,33 +1,38 @@
 package model.vehicle;
 
-import model.vehicle.exception.InvalidBrandExceptions;
-import model.vehicle.exception.InvalidCargoWeightExceptions;
-import model.vehicle.exception.InvalidModelExceptions;
-import model.vehicle.exception.InvalidNumPassengerExceptions;
+import model.vehicle.exception.*;
 
-import java.util.Optional;
+import java.util.InputMismatchException;
 
 
 public class VehicleFactory {
-    public static Optional<Vehicle> create(Name vehicleClass, String brand, String model, int maxCargoWeight, int numPassengers) throws InvalidNumPassengerExceptions, InvalidBrandExceptions, InvalidCargoWeightExceptions, InvalidModelExceptions {
-        Vehicle vehicle = null;
-        switch (vehicleClass) {
+    public static Vehicle create(Name name, String brand, String model, int maxCargoWeight, int numPassengers) throws InvalidNumPassengerExceptions, InvalidBrandExceptions, InvalidCargoWeightExceptions, InvalidModelExceptions {
+        Vehicle vehicle;
+        switch (name) {
             case MOTORCYCLE -> vehicle = new Motorcycle(brand, model, maxCargoWeight, numPassengers);
             case CAR        -> vehicle = new Car(brand, model, maxCargoWeight, numPassengers);
             case TRUCK      -> vehicle = new Truck(brand, model, maxCargoWeight);
             case BUS        -> vehicle = new Bus(brand, model, maxCargoWeight, numPassengers);
             case TRAILER    -> vehicle = new Trailer(brand, model, maxCargoWeight);
+            default -> throw new InputMismatchException(name.name());
         }
         check(vehicle);
-        return Optional.ofNullable(vehicle);
+        return vehicle;
     }
 
-    public static Optional<Vehicle> random() {
+    public static Vehicle random() {
         Name value = Name.values()[(int) (Math.random() * 4)];
         try {
-            return create(value, String.valueOf(Math.random() * 1000000), String.valueOf(Math.random() * 10000), (int) (Math.random() * 100), (int) (Math.random() * 2));
-        } catch (InvalidNumPassengerExceptions |InvalidBrandExceptions | InvalidCargoWeightExceptions | InvalidModelExceptions ignored) {}
-        return Optional.empty();
+            return create(
+                    value,
+                    String.valueOf(Math.random() * 1000000),
+                    String.valueOf(Math.random() * 10000),
+                    (int) (Math.random() * 100),
+                    (int) ( (value.equals(Name.BUS)) ? ((Math.random() + 8) * 10) : (Math.random() + 1) )
+            );
+        } catch (InvalidNumPassengerExceptions |InvalidBrandExceptions | InvalidCargoWeightExceptions | InvalidModelExceptions ignored) {
+            throw new AssertionError();
+        }
     }
 
 

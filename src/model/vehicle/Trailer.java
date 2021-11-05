@@ -4,10 +4,8 @@ import model.vehicle.exception.*;
 
 
 public class Trailer extends Vehicle {
-    protected Name name = Name.TRAILER;
-
     public Trailer(String brand, String model, Integer cargoWeight) {
-//        name = Name.TRAILER;
+        name = Name.TRAILER;
         this.brand = brand;
         this.model = model;
         this.cargoWeight = cargoWeight;
