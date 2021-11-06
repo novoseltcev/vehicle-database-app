@@ -12,23 +12,17 @@ public class CrashNotifier extends BaseMenu {
         errorType = error.getClass();
         msg = error.getMessage();
         show();
-//        throw error;
-    }
-
-    void exception(String msg) {
-        showTitle();
-        display("|\t" + msg);
     }
 
     @Override
     public void show() {
+        showTitle();
         if (errorType.equals(IOException.class)) {
-            exception("File integrity is broken: " + msg);
+            critical("File integrity is broken: " + msg);
         } else if (errorType.equals(InterruptedException.class)) {
-            display("Program close with code " + msg);
+            critical("Program close with code " + msg);
         } else {
-            exception("Handling unexpected error: " + errorType + "\n");
-            display_ln(Arrays.toString(error.getStackTrace()));
+            critical("Handling unexpected error: " + errorType + "\n" + Arrays.toString(error.getStackTrace()));
         }
     }
 }
