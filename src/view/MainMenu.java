@@ -1,35 +1,9 @@
 package view;
 
-import model.User;
-
-import java.util.Properties;
-
 public class MainMenu extends BaseMenu {
     final boolean sudoPrivileges;
-    public MainMenu(Properties langConfig, boolean isSudo) {
-        langData = langConfig;
+    public MainMenu(boolean isSudo) {
         sudoPrivileges = isSudo;
-    }
-
-    public void welcome(String username) {
-        clear();
-        String msg = String.format(langData.getProperty("WELCOME"), username);
-        display_ln(msg);
-        row( langData.getProperty("INPUT_PASS") );
-    }
-
-    public void userData(User user) {
-        display_ln( user.toString() );
-    }
-
-    public void invalidPassword(int attempts) {
-        String dopMsg = (attempts > 0) ? String.format(langData.getProperty("LOST_ATTEMPTS"), attempts) : "";
-        String msg = langData.getProperty("INVALID_PASS") + dopMsg;
-        error(msg);
-    }
-
-    public void validPassword() {
-        success(langData.getProperty("VALID_PASS"));
     }
 
     public void show() {

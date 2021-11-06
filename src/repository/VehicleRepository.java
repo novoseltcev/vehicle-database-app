@@ -15,18 +15,6 @@ public class VehicleRepository implements IRepository<Vehicle> {
 
     public VehicleRepository(String filename) throws IOException {
         setFile(filename);
-        load();
-    }
-
-    private void load() throws IOException {
-        try {
-            in = new ObjectInputStream(new FileInputStream(file));
-            container = (List<Vehicle>) in.readObject();
-        } catch (IOException | ClassNotFoundException e) {
-            in.close();
-            container = new LinkedList<>();
-            save();
-        }
     }
 
     private void setFile(String filename) throws IOException {
@@ -36,8 +24,33 @@ public class VehicleRepository implements IRepository<Vehicle> {
         file.createNewFile();
     }
 
+    public void load() throws IOException, ClassNotFoundException {
+        try {
+            in = new ObjectInputStream(new FileInputStream(file));
+            container = (List<Vehicle>) in.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            in.close();
+            throw e;
+        }
+    }
+
+    public void recreate() {
+        container = new LinkedList<>();
+    }
+
+    public void save() throws IOException {
+        out = new ObjectOutputStream(new FileOutputStream(file));
+        out.writeObject(container);
+        out.close();
+    }
+
+    public int size() {
+        return container.size();
+    }
+
+
     @Override
-    public void create(Vehicle vehicle) {
+    public void add(Vehicle vehicle) {
         container.add(vehicle);
     }
 
@@ -66,15 +79,5 @@ public class VehicleRepository implements IRepository<Vehicle> {
         if (container.size() <= id) {
             throw new IndexOutOfBoundsException();
         } container.set(id, vehicle);
-    }
-
-    public void save() throws IOException {
-        out = new ObjectOutputStream(new FileOutputStream(file));
-        out.writeObject(container);
-        out.close();
-    }
-
-    public int size() {
-        return container.size();
     }
 }

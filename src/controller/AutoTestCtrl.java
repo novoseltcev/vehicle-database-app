@@ -3,7 +3,6 @@ package controller;
 import model.AutoTest;
 import utils.Command;
 import view.AutoTestMenu;
-import view.BaseMenu;
 
 import java.util.ArrayList;
 import java.util.InputMismatchException;
@@ -11,11 +10,12 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class AutoTestCtrl extends BaseCtrl{
-    public AutoTestCtrl(BaseMenu menu) throws Exception {
+
+    public AutoTestCtrl(AutoTestMenu menu) {
         super(menu);
     }
 
-    @Override
+
     public void loop() {  // TODO
         boolean isRunning = true;
         boolean isError   = false;
@@ -24,8 +24,10 @@ public class AutoTestCtrl extends BaseCtrl{
         while (isRunning) {
             if (!isError) {
                 ((AutoTestMenu)menu).Wait();
-                ((AutoTestMenu)menu).showData(generateTests(ArrayList.class.arrayType()));
-                ((AutoTestMenu)menu).showData(generateTests(LinkedList.class.arrayType()));
+                List<AutoTest> arrayListTests = generateTests(ArrayList.class.arrayType());
+                List<AutoTest> linkedListTests = generateTests(LinkedList.class.arrayType());
+                ((AutoTestMenu)menu).showData(arrayListTests);
+                ((AutoTestMenu)menu).showData(linkedListTests);
                 menu.show();
             }
 
@@ -54,8 +56,8 @@ public class AutoTestCtrl extends BaseCtrl{
     @Deprecated
     private List<AutoTest> generateTests(Class<?> listClass) {
         List<AutoTest> result = new LinkedList<>();
-        for (int i = 0; i < 5; i++) {
-            result.add(new AutoTest(listClass, (int) Math.pow(10, i + 1)));
+        for (int i = 1; i <= 5; i++) {
+            result.add(new AutoTest(listClass, (int) Math.pow(10, i)));
         }
         return result;
     }

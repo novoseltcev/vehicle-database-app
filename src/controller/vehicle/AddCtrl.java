@@ -20,7 +20,7 @@ public class AddCtrl extends VehicleCtrl {
         super.call(command, 5);
         Vehicle vehicle = getVehicle(command.getValue());
         System.out.println(vehicle);
-        repository.create(vehicle);
+        repository.add(vehicle);
     }
 
     @Deprecated

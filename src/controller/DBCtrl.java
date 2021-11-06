@@ -12,13 +12,22 @@ import view.vehicle.AddMenu;
 import view.vehicle.EditMenu;
 import view.vehicle.RemoveMenu;
 
+import java.io.IOException;
+
 public class DBCtrl extends VehicleCtrl {
     public DBCtrl(BaseMenu menu) throws Exception {
         super(menu);
+        logger.finer("Create new VehicleRepository instance from \"vehicles.db\"");
         repository = new VehicleRepository("vehicles.db");
-        if (repository.size() > 0) {
+        try {
+            logger.info("Loading data...");
+            repository.load();
+            logger.fine("Successfully loaded data");
             ((DBMenu)menu).load();
-        } else {
+        } catch (IOException | ClassNotFoundException e) {
+            logger.warning("Load corrupt. Creating new data.");
+            repository.recreate();
+            logger.info("Successfully create new data");
             ((DBMenu)menu).create();
         }
     }
