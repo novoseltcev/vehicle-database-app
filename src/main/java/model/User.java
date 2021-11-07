@@ -1,6 +1,6 @@
 package model;
 
-import utils.PropertyStreamer;
+import util.PropertyStreamer;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,7 +8,7 @@ import java.nio.file.Path;
 import java.util.Properties;
 
 public class User {
-    private static final String BASE_CONFIG = "config.ini";
+    private final Path path;
     private String name;
     private String password;
     private String language;
@@ -17,10 +17,11 @@ public class User {
     private boolean tests;
     private final Properties properties;
 
-    public User() throws IOException {
-        properties = PropertyStreamer.read(BASE_CONFIG);
-        name = properties.getProperty("USER_NAME");
-        password = properties.getProperty("USER_PASSWORD");
+    public User(Path path) throws IOException {
+        this.path = path;
+        properties = PropertyStreamer.read(path);
+        name = properties.getProperty("NAME");
+        password = properties.getProperty("PASSWORD");
         language = properties.getProperty("LANG");
         mode = properties.getProperty("MODE");
         debug = Boolean.parseBoolean(properties.getProperty("DEBUG"));
@@ -30,7 +31,7 @@ public class User {
     }
 
     private void dumpProprieties() throws IOException {
-        PropertyStreamer.write(BASE_CONFIG, properties);
+        PropertyStreamer.write(path, properties);
     }
 
     public String getName() {
@@ -62,7 +63,7 @@ public class User {
             return false;
         }
         name = newName;
-        properties.setProperty("USER_NAME", name);
+        properties.setProperty("NAME", name);
         dumpProprieties();
         return true;
     }
@@ -72,7 +73,7 @@ public class User {
             return false;
         }
         password = newPassword;
-        properties.setProperty("USER_PASSWORD", password);
+        properties.setProperty("PASSWORD", password);
         dumpProprieties();
         return true;
     }
@@ -98,7 +99,8 @@ public class User {
     }
 
     public boolean setLanguage(String language) throws IOException {
-        Path langConfig = Path.of("lang", language + ".ini");
+        Path langConfig = Path.of("" +
+                "lang", language + ".ini");
         if (!new File(langConfig.toString()).exists()) {
             return false;
         }
@@ -110,7 +112,7 @@ public class User {
 
     public Properties getLangData() throws IOException{
         Path langConfig = Path.of("lang", language + ".ini");
-        return PropertyStreamer.read(langConfig.toString());
+        return PropertyStreamer.read(langConfig);
     }
 
     @Override

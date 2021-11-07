@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controller.Main">
+    <top>
+       <MenuBar BorderPane.alignment="CENTER">
+           <Menu mnemonicParsing="false" text="File">
+               <MenuItem fx:id="newFileMenu" mnemonicParsing="false" text="New" />
+               <SeparatorMenuItem mnemonicParsing="false" />
+               <MenuItem fx:id="openFileMenu" mnemonicParsing="false" text="Open" />
+               <SeparatorMenuItem mnemonicParsing="false" />
+               <MenuItem fx:id="saveFileMenu" mnemonicParsing="false" text="Save" />
+               <SeparatorMenuItem mnemonicParsing="false" />
+               <MenuItem fx:id="saveAsFileMenu" mnemonicParsing="false" text="Save as" />
+           </Menu>
+           <Menu mnemonicParsing="false" text="Settings">
+               <MenuItem fx:id="nameSettingsMenu" mnemonicParsing="false" text="Change name" />
+               <SeparatorMenuItem mnemonicParsing="false" />
+               <MenuItem fx:id="passwordSettingsMenu" mnemonicParsing="false" text="Change password" />
+               <SeparatorMenuItem mnemonicParsing="false" />
+               <Menu fx:id="languageSettingsMenu" mnemonicParsing="false" text="Language">
+                   <RadioMenuItem fx:id="english" text="English" onAction="#chooseLanguage"/>
+                   <SeparatorMenuItem mnemonicParsing="false" />
+                   <RadioMenuItem fx:id="russian" text="Russian" onAction="#chooseLanguage"/>
+               </Menu>
+               <SeparatorMenuItem mnemonicParsing="false" />
+               <RadioMenuItem fx:id="debugSettingsMenu" text="Debug" visible="false"/>
+               <SeparatorMenuItem mnemonicParsing="false" />
+               <RadioMenuItem fx:id="autotestSettingsMenu" text="Autotests" visible="false"/>
+           </Menu>
+           <Menu fx:id="autotestRunMenu" mnemonicParsing="false" text="Autotests" visible="false"/>
+           <Menu mnemonicParsing="false" text="Help">
+               <MenuItem fx:id="aboutHelpMenu" mnemonicParsing="false" text="About" />
+           </Menu>
+       </MenuBar>
+   </top>
+    <center>
+
+    </center>
+</BorderPane>
