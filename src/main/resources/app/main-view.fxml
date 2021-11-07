@@ -3,9 +3,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controller.Main">
+<BorderPane maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controller.Main">
     <top>
-       <MenuBar BorderPane.alignment="CENTER">
+       <MenuBar minHeight="-Infinity" minWidth="-Infinity" BorderPane.alignment="CENTER">
            <Menu mnemonicParsing="false" text="File">
                <MenuItem fx:id="newFileMenu" mnemonicParsing="false" text="New" />
                <SeparatorMenuItem mnemonicParsing="false" />
@@ -21,22 +21,47 @@
                <MenuItem fx:id="passwordSettingsMenu" mnemonicParsing="false" text="Change password" />
                <SeparatorMenuItem mnemonicParsing="false" />
                <Menu fx:id="languageSettingsMenu" mnemonicParsing="false" text="Language">
-                   <RadioMenuItem fx:id="english" text="English" onAction="#chooseLanguage"/>
+                   <RadioMenuItem fx:id="english" onAction="#chooseLanguage" text="English" />
                    <SeparatorMenuItem mnemonicParsing="false" />
-                   <RadioMenuItem fx:id="russian" text="Russian" onAction="#chooseLanguage"/>
+                   <RadioMenuItem fx:id="russian" onAction="#chooseLanguage" text="Russian" />
                </Menu>
                <SeparatorMenuItem mnemonicParsing="false" />
-               <RadioMenuItem fx:id="debugSettingsMenu" text="Debug" visible="false"/>
+               <RadioMenuItem fx:id="debugSettingsMenu" text="Debug" visible="false" />
                <SeparatorMenuItem mnemonicParsing="false" />
-               <RadioMenuItem fx:id="autotestSettingsMenu" text="Autotests" visible="false"/>
+               <RadioMenuItem fx:id="autotestSettingsMenu" text="Autotests" visible="false" />
            </Menu>
-           <Menu fx:id="autotestRunMenu" mnemonicParsing="false" text="Autotests" visible="false"/>
+           <Menu fx:id="autotestRunMenu" mnemonicParsing="false" text="Autotests" visible="false" />
            <Menu mnemonicParsing="false" text="Help">
                <MenuItem fx:id="aboutHelpMenu" mnemonicParsing="false" text="About" />
            </Menu>
        </MenuBar>
    </top>
-    <center>
 
+    <center>
+        <VBox>
+            <TableView id="vehiclesTable" editable="true" prefHeight="361.0" prefWidth="601.0" tableMenuButtonVisible="true" VBox.vgrow="ALWAYS">
+            <columns>
+               <TableColumn fx:id="idColumn" prefWidth="0.06" text="id" />
+               <TableColumn fx:id="typeColumn" prefWidth="150.0" text="type" />
+               <TableColumn fx:id="speedColumn" prefWidth="126.0" text="thresholdSpeed" />
+               <TableColumn fx:id="brandColumn" minWidth="5.0" prefWidth="151.0" text="brand" />
+               <TableColumn fx:id="modelColumn" prefWidth="146.0" text="model" />
+               <TableColumn fx:id="cargoColumn" prefWidth="100.0" text="cargoWeight" />
+               <TableColumn fx:id="passengersColumn" prefWidth="125.0" text="numPassengers" />
+            </columns>
+            <columnResizePolicy>
+               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+            </columnResizePolicy>
+            </TableView>
+        </VBox>
     </center>
+    <left>
+        <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="10" />
+    </left>
+    <right>
+        <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="10" />
+    </right>
+    <bottom>
+        <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="10" />
+    </bottom>
 </BorderPane>

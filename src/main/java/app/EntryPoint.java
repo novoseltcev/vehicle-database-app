@@ -24,6 +24,10 @@ public class EntryPoint extends Application {
         stage.setTitle("Login");
         FXMLLoader fxmlLoader = new FXMLLoader(EntryPoint.class.getResource("login-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
+        stage.setMinWidth(320);
+        stage.setMaxWidth(320);
+        stage.setMinHeight(140);
+        stage.setMaxHeight(140);
         stage.setScene(scene);
         stage.show();
     }

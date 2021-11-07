@@ -4,9 +4,7 @@ import app.EntryPoint;
 import javafx.event.ActionEvent;
 import javafx.event.EventTarget;
 import javafx.fxml.FXML;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.RadioMenuItem;
+import javafx.scene.control.*;
 import model.User;
 
 import java.io.IOException;
@@ -17,6 +15,7 @@ import java.util.Objects;
 public class Main {
     public RadioMenuItem english;
     public RadioMenuItem russian;
+
     @FXML
     private MenuItem newFileMenu;
 
@@ -50,11 +49,67 @@ public class Main {
     @FXML
     private MenuItem aboutHelpMenu;
 
+    @FXML
+    private TableView vehiclesTable;
+
+    @FXML
+    private TableColumn idColumn;
+
+    @FXML
+    private TableColumn typeColumn;
+
+    @FXML
+    private TableColumn brandColumn;
+
+    @FXML
+    private TableColumn speedColumn;
+
+    @FXML
+    private TableColumn cargoColumn;
+
+    @FXML
+    private TableColumn modelColumn;
+
+    @FXML
+    private TableColumn passengersColumn;
+
+
     private User user = EntryPoint.user;
     private final List<RadioMenuItem> languages = new LinkedList<>();
 
     @FXML
     private void initialize() {
+        initMenu();
+        setLangData();
+        initTable();
+    }
+
+    private void setLangData() {
+        newFileMenu.setText("");
+        openFileMenu.setText("");
+        saveFileMenu.setText("");
+        saveAsFileMenu.setText("");
+        nameSettingsMenu.setText("");
+        passwordSettingsMenu.setText("");
+        languageSettingsMenu.setText("");
+        debugSettingsMenu.setText("");
+        autotestSettingsMenu.setText("");
+        autotestRunMenu.setText("");
+        aboutHelpMenu.setText("");
+        idColumn.setText("");
+        typeColumn.setText("");
+        brandColumn.setText("");
+        speedColumn.setText("");
+        cargoColumn.setText("");
+        modelColumn.setText("");
+        passengersColumn.setText("");
+    }
+
+    private void initTable() {
+        
+    }
+
+    private void initMenu() {
         if (user.isSudoMode()) {
             debugSettingsMenu.setVisible(true);
             autotestSettingsMenu.setVisible(true);
@@ -82,9 +137,7 @@ public class Main {
                 if (!user.setLanguage(targetId)) {
                     throw new AssertionError();
                 }
-                System.out.println(user.getLanguage());
             }
         }
-        System.out.println();
     }
 }

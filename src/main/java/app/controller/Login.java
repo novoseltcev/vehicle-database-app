@@ -49,8 +49,12 @@ public class Login {
         FXMLLoader fxmlLoader = new FXMLLoader(EntryPoint.class.getResource("main-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setScene(scene);
-        stage.setX((1920 - 1280) >> 1);
-        stage.setY((1080 - 720) >> 1);
+        stage.setMinWidth(900);
+        stage.setMinHeight(400);
+        stage.setMaxWidth(1920);
+        stage.setMaxHeight(1080);
+        stage.setX((1920 - 900) >> 1);
+        stage.setY((1080 - 400) >> 1);
         stage.setTitle("Main");
         stage.show();
     }
