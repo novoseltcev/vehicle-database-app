@@ -15,9 +15,9 @@
         <VBox alignment="TOP_CENTER" prefHeight="59.0" prefWidth="179.0">
             <PasswordField fx:id="passwordInput" onAction="#passwordEnterKeyHandler" prefHeight="11.0" prefWidth="149.0" />
             <StackPane prefHeight="10.0" prefWidth="179.0" />
-            <Label fx:id="errorText" text="Invalid password" textFill="#db5856" visible="false" />
+            <Label fx:id="errorText" textFill="#db5856" visible="false"/>
         </VBox>
         <StackPane prefHeight="72.0" prefWidth="32.0" />
-        <Button onAction="#buttonClickHandler" text="Enter" />
+        <Button fx:id="enterButton" onAction="#buttonClickHandler"/>
     </HBox>
 </VBox>
