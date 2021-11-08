@@ -1,5 +1,6 @@
 package model.vehicle;
 
+import javafx.beans.property.*;
 import model.vehicle.exception.*;
 
 import java.io.Serializable;
@@ -7,21 +8,40 @@ import java.util.Objects;
 
 
 public abstract class Vehicle implements Serializable {
-    protected String brand;
-    protected String model;
-    protected int cargoWeight;
-    protected int numPassengers;
+    protected static int counter = 0;
+    protected IntegerProperty id;
+    protected StringProperty brand;
+    protected StringProperty model;
+    protected IntegerProperty cargoWeight;
+    protected IntegerProperty numPassengers;
 
-    protected Name name = Name.VEHICLE;
+    protected ObjectProperty<Name> type = new SimpleObjectProperty<>(Name.VEHICLE);
 
-    public String  getBrand() { return brand; }
-    public String  getModel() { return model; }
-    public Integer getCargoWeight() { return cargoWeight; }
-    public Integer getNumPassengers() { return numPassengers; }
+    public int getId() { return id.get(); }
+    public String  getType() { return type.get().name(); }
+    public String  getBrand() { return brand.get(); }
+    public String  getModel() { return model.get(); }
+    public int getCargoWeight() { return cargoWeight.get(); }
+    public int getNumPassengers() { return numPassengers.get(); }
+
+    public IntegerProperty idProperty() { return id; }
+    public ObjectProperty<Name>  typeProperty() { return type; }
+    public StringProperty  brandProperty() { return brand; }
+    public StringProperty  modelProperty() { return model; }
+    public IntegerProperty cargoWeightProperty() { return cargoWeight; }
+    public IntegerProperty numPassengersProperty() { return numPassengers; }
 
     abstract int getThresholdSpeed() throws NonSelfWalkableVehicleException;
     abstract int getThresholdCargoWeight();
     abstract int[] getThresholdsNumPassengers();
+
+    Vehicle(String brand, String model, int cargoWeight, int numPassengers) {
+        this.id = new SimpleIntegerProperty(++counter);
+        this.brand = new SimpleStringProperty(brand);
+        this.model = new SimpleStringProperty(model);
+        this.cargoWeight = new SimpleIntegerProperty(cargoWeight);
+        this.numPassengers = new SimpleIntegerProperty(numPassengers);
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -38,7 +58,7 @@ public abstract class Vehicle implements Serializable {
 
     @Override
     public String toString() {
-        String result =  name.name() + "{" +
+        String result =  type.get().name() + "{" +
                 "brand='" + getBrand() + '\'' +
                 ", model='" + getModel() + '\'' +
                 ", maxCargoWeight=" + getCargoWeight() +

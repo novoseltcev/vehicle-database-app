@@ -5,7 +5,7 @@ public class TruckWithTrailer extends Truck implements IWithTrailer {
     protected Trailer trailer;
 
     public TruckWithTrailer(Truck truck, Trailer trailer) {
-        super(truck.brand, truck.model, truck.cargoWeight + trailer.cargoWeight);
+        super(truck.getBrand(), truck.getModel(), truck.getCargoWeight() + trailer.getCargoWeight());
 //        thresholdSpeed -= 20;
         this.trailer = trailer;
     }
@@ -16,18 +16,18 @@ public class TruckWithTrailer extends Truck implements IWithTrailer {
     }
 
     @Override
-    public Integer getCargoWeight() {
+    public int getCargoWeight() {
         return super.getCargoWeight() + trailer.getCargoWeight();
     }
 
     @Override
     public String getTrailerBrand() {
-        return trailer.brand;
+        return trailer.getBrand();
     }
 
     @Override
     public String getTrailerModel() {
-        return trailer.model;
+        return trailer.getModel();
     }
 
     @Override
