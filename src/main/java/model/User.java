@@ -5,6 +5,8 @@ import util.PropertyStreamer;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 public class User {
@@ -16,6 +18,7 @@ public class User {
     private boolean debug;
     private boolean tests;
     private final Properties properties;
+    private HashMap<String, String> languageData = new HashMap<>();
 
     public User(Path path) throws IOException {
         this.path = path;
@@ -23,11 +26,11 @@ public class User {
         name = properties.getProperty("NAME");
         password = properties.getProperty("PASSWORD");
         language = properties.getProperty("LANG");
+        loadLanguageData();
+
         mode = properties.getProperty("MODE");
         debug = Boolean.parseBoolean(properties.getProperty("DEBUG"));
         tests = Boolean.parseBoolean(properties.getProperty("TESTS"));
-        if (!isSudoMode())
-            debug = tests = false;
     }
 
     private void dumpProprieties() throws IOException {
@@ -44,6 +47,10 @@ public class User {
 
     public String getLanguage() {
         return language;
+    }
+
+    public HashMap<String, String> getLanguageData() {
+        return languageData;
     }
 
     public boolean isSudoMode() {
@@ -107,12 +114,17 @@ public class User {
         this.language = language;
         properties.setProperty("LANG", this.language);
         dumpProprieties();
+        loadLanguageData();
         return true;
     }
 
-    public Properties getLangData() throws IOException{
+    public void loadLanguageData() throws IOException {
         Path langConfig = Path.of("lang", language + ".ini");
-        return PropertyStreamer.read(langConfig);
+        Properties langData = PropertyStreamer.read(langConfig);
+        languageData.clear();
+        for (Map.Entry<Object, Object> property : langData.entrySet()) {
+            languageData.put( (String) property.getKey(), (String) property.getValue() );
+        }
     }
 
     @Override

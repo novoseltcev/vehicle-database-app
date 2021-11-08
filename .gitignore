@@ -1,6 +1,7 @@
 # IDEA files
 .idea/
 *.iml
+.attach_pid*
 
 # Build results
 *.class
@@ -8,3 +9,4 @@
 # Local data sources
 *.log
 *.db
+*.log.lck

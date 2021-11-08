@@ -1,20 +1,22 @@
 package app.controller;
 
 import app.EntryPoint;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventTarget;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import model.User;
+import model.vehicle.Motorcycle;
+import model.vehicle.Name;
+import model.vehicle.Vehicle;
 
 import java.io.IOException;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
-public class Main {
-    public RadioMenuItem english;
-    public RadioMenuItem russian;
+public class Main extends Base {
+
+    public Menu fileMenu;
 
     @FXML
     private MenuItem newFileMenu;
@@ -28,6 +30,9 @@ public class Main {
     @FXML
     private MenuItem saveAsFileMenu;
 
+
+    public Menu settingsMenu;
+
     @FXML
     private MenuItem nameSettingsMenu;
 
@@ -38,92 +43,132 @@ public class Main {
     private Menu languageSettingsMenu;
 
     @FXML
-    private MenuItem debugSettingsMenu;
+    private SeparatorMenuItem preDebugSeparator;
 
     @FXML
-    private MenuItem autotestSettingsMenu;
+    private RadioMenuItem debugSettingsMenu;
 
     @FXML
-    private Menu autotestRunMenu;
+    private SeparatorMenuItem preAutotestsSeparator;
+
+    @FXML
+    private RadioMenuItem autotestSettingsMenu;
+
+
+    public Menu autotestRunMenu;
+
+    public Menu helpMenu;
 
     @FXML
     private MenuItem aboutHelpMenu;
 
-    @FXML
-    private TableView vehiclesTable;
 
     @FXML
-    private TableColumn idColumn;
+    private TableView<Vehicle> vehiclesTable;
 
     @FXML
-    private TableColumn typeColumn;
+    private TableColumn<Vehicle, Integer> idColumn;
 
     @FXML
-    private TableColumn brandColumn;
+    private TableColumn<Vehicle, Name> typeColumn;
 
     @FXML
-    private TableColumn speedColumn;
+    private TableColumn<Vehicle, String> brandColumn;
 
     @FXML
-    private TableColumn cargoColumn;
+    private TableColumn<Vehicle, String> modelColumn;
 
     @FXML
-    private TableColumn modelColumn;
+    private TableColumn<Vehicle, Integer> cargoColumn;
 
     @FXML
-    private TableColumn passengersColumn;
+    private TableColumn<Vehicle, Integer> passengersColumn;
 
 
-    private User user = EntryPoint.user;
-    private final List<RadioMenuItem> languages = new LinkedList<>();
+    private List<RadioMenuItem> languages;
+    private ObservableList<Vehicle> vehicleData = FXCollections.observableArrayList();
 
     @FXML
     private void initialize() {
         initMenu();
-        setLangData();
         initTable();
-    }
-
-    private void setLangData() {
-        newFileMenu.setText("");
-        openFileMenu.setText("");
-        saveFileMenu.setText("");
-        saveAsFileMenu.setText("");
-        nameSettingsMenu.setText("");
-        passwordSettingsMenu.setText("");
-        languageSettingsMenu.setText("");
-        debugSettingsMenu.setText("");
-        autotestSettingsMenu.setText("");
-        autotestRunMenu.setText("");
-        aboutHelpMenu.setText("");
-        idColumn.setText("");
-        typeColumn.setText("");
-        brandColumn.setText("");
-        speedColumn.setText("");
-        cargoColumn.setText("");
-        modelColumn.setText("");
-        passengersColumn.setText("");
+        EntryPoint.logger.info("Application has been started");
     }
 
     private void initTable() {
-        
+        idColumn.setCellValueFactory(cellData -> cellData.getValue().idProperty().asObject());
+        typeColumn.setCellValueFactory(cellData -> cellData.getValue().typeProperty());
+        brandColumn.setCellValueFactory(cellData -> cellData.getValue().brandProperty());
+        modelColumn.setCellValueFactory(cellData -> cellData.getValue().modelProperty());
+        cargoColumn.setCellValueFactory(cellData -> cellData.getValue().cargoWeightProperty().asObject());
+        passengersColumn.setCellValueFactory(cellData -> cellData.getValue().numPassengersProperty().asObject());
+
+        vehicleData.add(new Motorcycle("ssds", "fdfdfd", 10, 0));
+        vehicleData.add(new Motorcycle("ssds", "fdfdfd", 10, 1));
+        vehiclesTable.setItems(vehicleData);
     }
 
     private void initMenu() {
         if (user.isSudoMode()) {
+            preDebugSeparator.setVisible(true);
             debugSettingsMenu.setVisible(true);
+            debugSettingsMenu.setSelected(user.isDebug());
+
+            preAutotestsSeparator.setVisible(true);
             autotestSettingsMenu.setVisible(true);
+            autotestSettingsMenu.setSelected(user.isTests());
+
             autotestRunMenu.setVisible(true);
         }
 
-        for (MenuItem item: languageSettingsMenu.getItems()) {
-            if (item.isMnemonicParsing()) {
-                RadioMenuItem lang = (RadioMenuItem) item;
-                lang.setSelected(false);
-                if (Objects.equals(lang.getId(), user.getLanguage())) {
-                    lang.setSelected(true);
-                } languages.add(lang);
+
+
+        languages = languageSettingsMenu.getItems()
+                        .filtered(MenuItem::isMnemonicParsing)
+                            .stream().map(item -> (RadioMenuItem) item)
+                                .toList();
+
+        for (RadioMenuItem lang: languages) {
+            lang.setSelected(false);
+            if (Objects.equals(lang.getId(), user.getLanguage())) {
+                lang.setSelected(true);
             }
+        }
+    }
+
+    @Override
+    protected void setLang() {
+        List<MenuItem> menuItems = new ArrayList<>() {{
+            add(fileMenu);
+            add(newFileMenu);
+            add(openFileMenu);
+            add(saveFileMenu);
+            add(saveAsFileMenu);
+
+            add(settingsMenu);
+            add(nameSettingsMenu);
+            add(passwordSettingsMenu);
+            add(languageSettingsMenu);
+            add(debugSettingsMenu);
+            add(autotestSettingsMenu);
+
+            add(autotestRunMenu);
+
+            add(helpMenu);
+            add(aboutHelpMenu);
+        }};
+
+        for (MenuItem menuItem : menuItems) {
+            menuItem.setText(
+                    langData.get(menuItem.getId())
+            );
+        }
+
+        for (Object obj : vehiclesTable.getColumns()) {
+            TableColumn tableColumn = (TableColumn) obj;
+            tableColumn.setText(
+                    langData.get(tableColumn.getId())
+            );
         }
     }
 
@@ -139,5 +184,24 @@ public class Main {
                 }
             }
         }
+        setLang();
+    }
+
+    public void switchDebug(ActionEvent event) throws IOException {
+        RadioMenuItem target = (RadioMenuItem) event.getTarget();
+        if (!user.setDebug(app.enteredPassword, target.isSelected())) {
+            throw new AssertionError();
+        } EntryPoint.changeLoggerLevel(user.isDebug());
+    }
+
+    public void switchAutotests(ActionEvent event) throws IOException {
+        RadioMenuItem target = (RadioMenuItem) event.getTarget();
+        if (!user.setTests(app.enteredPassword, target.isSelected())) {
+            throw new AssertionError();
+        }
+    }
+
+    public void startAutotests(ActionEvent actionEvent) {
+        // TODO
     }
 }

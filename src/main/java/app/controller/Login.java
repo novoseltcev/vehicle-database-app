@@ -6,34 +6,60 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 
-public class Login {
-
+public class Login extends Base {
     @FXML
     private Label usernameText;
+
     @FXML
     public Label errorText;
+
     @FXML
     private PasswordField passwordInput;
 
     @FXML
-    private void initialize() {
-        System.out.println(EntryPoint.user.getName());
-        usernameText.setText(EntryPoint.user.getName());
+    private Button enterButton;
+
+    @Override
+    protected void setLang() {
+        usernameText.setText(user.getName());
+
+        System.out.println(EntryPoint.langData);
+        System.out.println(langData);
+        List<Labeled> items = new ArrayList<>() {{
+            add(errorText);
+            add(enterButton);
+        }};
+
+        for (Labeled item : items) {
+            item.setText(
+                    langData.get(item.getId())
+            );
+        }
     }
 
     @FXML
     void buttonClickHandler(ActionEvent event) throws IOException {
-        String enteredPassword = passwordInput.getText();
-        if (EntryPoint.user.checkPassword(enteredPassword)) {
-            Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            gotoMainScene(currentStage);
+        app.enteredPassword = passwordInput.getText();
+        if (EntryPoint.user.checkPassword(app.enteredPassword)) {
+            app.changeScene(Path.of("main-view.fxml"));
+            app.stage.setMinWidth(900);
+            app.stage.setMinHeight(400);
+            app.stage.setMaxWidth(1920);
+            app.stage.setMaxHeight(1080);
+            app.stage.setX((1920 - 900) >> 1);
+            app.stage.setY((1080 - 400) >> 1);
+            app.stage.setTitle("Main");
+            EntryPoint.logger.fine(String.format("User %s successfully authorized", user.getName()));
         } else {
             passwordInput.clear();
             errorText.setVisible(true);
@@ -44,19 +70,4 @@ public class Login {
     void passwordEnterKeyHandler(ActionEvent event) throws IOException {
         buttonClickHandler(event);
     }
-
-    private void gotoMainScene(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(EntryPoint.class.getResource("main-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-        stage.setScene(scene);
-        stage.setMinWidth(900);
-        stage.setMinHeight(400);
-        stage.setMaxWidth(1920);
-        stage.setMaxHeight(1080);
-        stage.setX((1920 - 900) >> 1);
-        stage.setY((1080 - 400) >> 1);
-        stage.setTitle("Main");
-        stage.show();
-    }
-
 }
