@@ -1,11 +1,11 @@
 package repository;
 
-import java.io.IOException;
-import java.util.List;
+import javafx.collections.ObservableList;
 
-public interface IRepository<T> {
+
+public interface CRUD<T> {
     void add(T object);
-    List<T> readAll() throws IOException;
+    ObservableList<T> readAll();
     T read(int id);
     void delete(int id);
     void update(int id, T object);
