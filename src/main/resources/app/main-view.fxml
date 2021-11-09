@@ -7,13 +7,13 @@
     <top>
        <MenuBar minHeight="-Infinity" minWidth="-Infinity" BorderPane.alignment="CENTER">
            <Menu fx:id="fileMenu" mnemonicParsing="false">
-               <MenuItem fx:id="newFileMenu" mnemonicParsing="false"/>
+               <MenuItem fx:id="newFileMenu" mnemonicParsing="false" onAction="#newFile"/>
                <SeparatorMenuItem mnemonicParsing="false" />
-               <MenuItem fx:id="openFileMenu" mnemonicParsing="false"/>
+               <MenuItem fx:id="openFileMenu" mnemonicParsing="false" onAction="#openFile"/>
                <SeparatorMenuItem mnemonicParsing="false" />
-               <MenuItem fx:id="saveFileMenu" mnemonicParsing="false"/>
+               <MenuItem fx:id="saveFileMenu" mnemonicParsing="false" onAction="#saveFile"/>
                <SeparatorMenuItem mnemonicParsing="false"/>
-               <MenuItem fx:id="saveAsFileMenu" mnemonicParsing="false"/>
+               <MenuItem fx:id="saveAsFileMenu" mnemonicParsing="false" onAction="#saveFileAs"/>
            </Menu>
            <Menu fx:id="settingsMenu" mnemonicParsing="false" >
                <MenuItem fx:id="nameSettingsMenu" mnemonicParsing="false"/>
@@ -38,7 +38,7 @@
    </top>
 
     <center>
-        <TableView fx:id="vehiclesTable" editable="true" prefHeight="361.0" prefWidth="601.0" tableMenuButtonVisible="true">
+        <TableView fx:id="vehiclesTable" visible="false" editable="true" prefHeight="361.0" prefWidth="601.0" tableMenuButtonVisible="true">
             <columns>
                 <TableColumn fx:id="idColumn"         prefWidth="0.06"/>
                 <TableColumn fx:id="typeColumn"       prefWidth="0.06"/>
