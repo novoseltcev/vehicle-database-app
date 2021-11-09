@@ -1,16 +1,19 @@
 package app.controller;
 
-import app.EntryPoint;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventTarget;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import model.vehicle.Motorcycle;
 import model.vehicle.Name;
 import model.vehicle.Vehicle;
+import repository.Repository;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
@@ -86,13 +89,13 @@ public class Main extends Base {
 
 
     private List<RadioMenuItem> languages;
-    private ObservableList<Vehicle> vehicleData = FXCollections.observableArrayList();
+    private Repository<Vehicle> repository = new Repository<>();
 
-    @FXML
-    private void initialize() {
+    @Override
+    protected void initialize() {
         initMenu();
         initTable();
-        EntryPoint.logger.info("Application has been started");
+        logger.info("Application has been started");
     }
 
     private void initTable() {
@@ -102,10 +105,11 @@ public class Main extends Base {
         modelColumn.setCellValueFactory(cellData -> cellData.getValue().modelProperty());
         cargoColumn.setCellValueFactory(cellData -> cellData.getValue().cargoWeightProperty().asObject());
         passengersColumn.setCellValueFactory(cellData -> cellData.getValue().numPassengersProperty().asObject());
+        setTableData();
+    }
 
-        vehicleData.add(new Motorcycle("ssds", "fdfdfd", 10, 0));
-        vehicleData.add(new Motorcycle("ssds", "fdfdfd", 10, 1));
-        vehiclesTable.setItems(vehicleData);
+    private void setTableData() {
+        vehiclesTable.setItems(repository.readAll());
     }
 
     private void initMenu() {
@@ -120,8 +124,6 @@ public class Main extends Base {
 
             autotestRunMenu.setVisible(true);
         }
-
-
 
         languages = languageSettingsMenu.getItems()
                         .filtered(MenuItem::isMnemonicParsing)
@@ -138,6 +140,13 @@ public class Main extends Base {
 
     @Override
     protected void setLang() {
+        List<? extends TableColumn<Vehicle, ?>> columns = vehiclesTable.getColumns().stream().map(item -> (TableColumn<Vehicle, ?>) item).toList();
+        for (TableColumn<Vehicle, ?> column : columns) {
+            column.setText(
+                    app.langData.get(column.getId())
+            );
+        }
+
         List<MenuItem> menuItems = new ArrayList<>() {{
             add(fileMenu);
             add(newFileMenu);
@@ -157,51 +166,140 @@ public class Main extends Base {
             add(helpMenu);
             add(aboutHelpMenu);
         }};
-
         for (MenuItem menuItem : menuItems) {
             menuItem.setText(
-                    langData.get(menuItem.getId())
-            );
-        }
-
-        for (Object obj : vehiclesTable.getColumns()) {
-            TableColumn tableColumn = (TableColumn) obj;
-            tableColumn.setText(
-                    langData.get(tableColumn.getId())
+                    app.langData.get(menuItem.getId())
             );
         }
     }
 
-    public void chooseLanguage(ActionEvent event) throws IOException {
+    @FXML
+    protected void chooseLanguage(ActionEvent event) throws IOException {
         EventTarget target = event.getTarget();
-        String targetId = ((RadioMenuItem) target).getId();
+        String languageName = ((RadioMenuItem) target).getId();
         for (RadioMenuItem lang: languages) {
             lang.setSelected(false);
-            if (Objects.equals(lang.getId(), targetId)) {
-                lang.setSelected(true);
-                if (!user.setLanguage(targetId)) {
-                    throw new AssertionError();
-                }
-            }
+        }
+
+        RadioMenuItem currentLanguage = languages.stream().filter(item -> item.getId().equals(languageName)).toList().get(0);
+        currentLanguage.setSelected(true);
+        if (!user.setLanguage(languageName)) {
+            throw new AssertionError();
         }
         setLang();
     }
 
-    public void switchDebug(ActionEvent event) throws IOException {
+    @FXML
+    protected void switchDebug(ActionEvent event) throws IOException {
         RadioMenuItem target = (RadioMenuItem) event.getTarget();
         if (!user.setDebug(app.enteredPassword, target.isSelected())) {
             throw new AssertionError();
-        } EntryPoint.changeLoggerLevel(user.isDebug());
+        } app.changeLoggerLevel(user.isDebug());
     }
 
-    public void switchAutotests(ActionEvent event) throws IOException {
+    @FXML
+    protected void switchAutotests(ActionEvent event) throws IOException {
         RadioMenuItem target = (RadioMenuItem) event.getTarget();
         if (!user.setTests(app.enteredPassword, target.isSelected())) {
             throw new AssertionError();
         }
     }
 
-    public void startAutotests(ActionEvent actionEvent) {
+    @FXML
+    protected void startAutotests() {
         // TODO
+    }
+
+    @FXML
+    protected void newFile() {
+        repository = new Repository<>();
+        repository.add(new Motorcycle("dd", "dfd", 12, 1));
+
+        vehiclesTable.setVisible(true);
+    }
+
+    @FXML
+    protected void openFile() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open Database");
+
+        ObservableList<ExtensionFilter> filters = fileChooser.getExtensionFilters();
+
+        ExtensionFilter databaseFilter = new ExtensionFilter("Database files (*.db)", "*.db");
+        filters.add(databaseFilter);
+
+        ExtensionFilter otherFilter = new ExtensionFilter("Other", "*");
+        filters.add(otherFilter);
+
+        fileChooser.setInitialDirectory(new File("data"));
+
+        File selectedFile = fileChooser.showOpenDialog(app.stage);
+        if (selectedFile != null) {
+            System.out.println(selectedFile);
+            try {
+                repository.load(selectedFile);
+                vehiclesTable.setVisible(true);
+                setTableData();
+            } catch (IOException | ClassNotFoundException exception) {
+                logger.warning(Arrays.toString(exception.getStackTrace()));
+                Crasher crasher = new Crasher();  // TODO
+                crasher.handle(exception);
+                crasher.showAndWait();
+            }
+        }
+    }
+
+    @FXML
+    protected void saveFile() {
+        if (repository.getFile() == null) {
+            saveFileAs();
+        } else {
+            try {
+                repository.save();
+            } catch (IOException exception) {
+                logger.warning(exception.getMessage());
+                Crasher crasher = new Crasher();  // TODO
+                crasher.handle(exception);
+                crasher.showAndWait();
+            }
+        }
+    }
+
+    @FXML
+    protected void saveFileAs() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save Database");
+
+        ObservableList<ExtensionFilter> filters = fileChooser.getExtensionFilters();
+
+        ExtensionFilter databaseFilter = new ExtensionFilter("Database files (*.db)", "*.db");
+        filters.add(databaseFilter);
+
+        ExtensionFilter otherFilter = new ExtensionFilter("Other", "*");
+        filters.add(otherFilter);
+
+        fileChooser.setInitialDirectory(new File("data"));
+
+        File savingFile = fileChooser.showSaveDialog(app.stage);
+        if (savingFile != null) {
+            System.out.println(savingFile);
+            try {
+                savingFile.createNewFile();
+                repository.saveTo(savingFile);
+            } catch (IOException exception) {
+                logger.warning(exception.getMessage());
+                Crasher crasher = new Crasher();  // TODO
+                crasher.handle(exception);
+                crasher.showAndWait();
+            }
+        }
+    }
+
+    public void runName() {
+        DialogPane dialog = new DialogPane();
+    }
+
+    public void runPassword() {
+        DialogPane dialog = new DialogPane();
     }
 }
