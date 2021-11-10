@@ -2,10 +2,12 @@ package repository;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import model.vehicle.Vehicle;
 import repository.exception.InvalidIDError;
 
 import java.io.*;
 import java.nio.file.NoSuchFileException;
+import java.util.List;
 
 
 public class Repository<T> implements CRUD<T> {
@@ -38,7 +40,8 @@ public class Repository<T> implements CRUD<T> {
         try {
             fin = new FileInputStream(file);
             in = new ObjectInputStream(fin);
-            container = (ObservableList<T>) in.readObject();
+            List<T> list = (List<T>) in.readObject();
+            container = FXCollections.observableArrayList(list);
         } finally {
             fin.close();
             if (in != null) {

@@ -7,9 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import model.User;
-import model.vehicle.Motorcycle;
 import model.vehicle.Vehicle;
-import repository.Repository;
 
 import java.io.File;
 import java.io.IOException;
@@ -57,7 +55,7 @@ public class EntryPoint extends Application {
     }
 
     public void changeScene(Path scenePath) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(EntryPoint.class.getResource(scenePath.toString()));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(scenePath.toString()));
         Scene scene = new Scene(fxmlLoader.load());
         Base controller = fxmlLoader.getController();
         System.out.println(controller);

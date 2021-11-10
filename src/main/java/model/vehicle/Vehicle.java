@@ -8,14 +8,14 @@ import java.util.Objects;
 
 
 public abstract class Vehicle implements Serializable {
-    protected static int counter = 0;
-    protected IntegerProperty id;
-    protected StringProperty brand;
-    protected StringProperty model;
-    protected IntegerProperty cargoWeight;
-    protected IntegerProperty numPassengers;
+    protected transient static int counter = 0;
+    protected transient IntegerProperty id;
+    protected transient StringProperty brand;
+    protected transient StringProperty model;
+    protected transient IntegerProperty cargoWeight;
+    protected transient IntegerProperty numPassengers;
 
-    protected ObjectProperty<Name> type = new SimpleObjectProperty<>(Name.VEHICLE);
+    protected transient ObjectProperty<Name> type = new SimpleObjectProperty<>(Name.VEHICLE);
 
     public int getId() { return id.get(); }
     public String  getType() { return type.get().name(); }

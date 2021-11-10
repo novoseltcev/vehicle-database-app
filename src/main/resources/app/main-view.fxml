@@ -16,14 +16,14 @@
                <MenuItem fx:id="saveAsFileMenu" mnemonicParsing="false" onAction="#saveFileAs"/>
            </Menu>
            <Menu fx:id="settingsMenu" mnemonicParsing="false" >
-               <MenuItem fx:id="nameSettingsMenu" mnemonicParsing="false"/>
+               <MenuItem fx:id="nameSettingsMenu" mnemonicParsing="false" onAction="#changeName"/>
                <SeparatorMenuItem mnemonicParsing="false"/>
-               <MenuItem fx:id="passwordSettingsMenu" mnemonicParsing="false"/>
+               <MenuItem fx:id="passwordSettingsMenu" mnemonicParsing="false" onAction="#changePassword"/>
                <SeparatorMenuItem mnemonicParsing="false"/>
                <Menu fx:id="languageSettingsMenu" mnemonicParsing="false">
                    <RadioMenuItem fx:id="english" onAction="#chooseLanguage" text="English" />
                    <SeparatorMenuItem mnemonicParsing="false"/>
-                   <RadioMenuItem fx:id="russian" onAction="#chooseLanguage" text="Russian" />
+                   <RadioMenuItem fx:id="russian" onAction="#chooseLanguage" text="Русский" />
                </Menu>
                <SeparatorMenuItem fx:id="preDebugSeparator" mnemonicParsing="false"  visible="false"/>
                <RadioMenuItem fx:id="debugSettingsMenu"    visible="false" onAction="#switchDebug"/>
@@ -32,7 +32,7 @@
            </Menu>
            <Menu fx:id="autotestRunMenu" mnemonicParsing="false" visible="false" onAction="#startAutotests"/>
            <Menu fx:id="helpMenu" mnemonicParsing="false">
-               <MenuItem fx:id="aboutHelpMenu" mnemonicParsing="false"/>
+               <MenuItem fx:id="aboutHelpMenu" mnemonicParsing="false" onAction="#showAboutMe"/>
            </Menu>
        </MenuBar>
    </top>

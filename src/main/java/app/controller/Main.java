@@ -1,9 +1,8 @@
 package app.controller;
 
-import javafx.collections.FXCollections;
+import app.AboutDialog;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventTarget;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.FileChooser;
@@ -20,76 +19,55 @@ import java.util.*;
 public class Main extends Base {
 
     public Menu fileMenu;
-
     @FXML
     private MenuItem newFileMenu;
-
     @FXML
     private MenuItem openFileMenu;
-
     @FXML
     private MenuItem saveFileMenu;
-
     @FXML
     private MenuItem saveAsFileMenu;
 
-
     public Menu settingsMenu;
-
     @FXML
     private MenuItem nameSettingsMenu;
-
     @FXML
     private MenuItem passwordSettingsMenu;
-
     @FXML
     private Menu languageSettingsMenu;
-
     @FXML
     private SeparatorMenuItem preDebugSeparator;
-
     @FXML
     private RadioMenuItem debugSettingsMenu;
-
     @FXML
     private SeparatorMenuItem preAutotestsSeparator;
-
     @FXML
     private RadioMenuItem autotestSettingsMenu;
-
 
     public Menu autotestRunMenu;
 
     public Menu helpMenu;
-
     @FXML
     private MenuItem aboutHelpMenu;
 
-
     @FXML
     private TableView<Vehicle> vehiclesTable;
-
     @FXML
     private TableColumn<Vehicle, Integer> idColumn;
-
     @FXML
     private TableColumn<Vehicle, Name> typeColumn;
-
     @FXML
     private TableColumn<Vehicle, String> brandColumn;
-
     @FXML
     private TableColumn<Vehicle, String> modelColumn;
-
     @FXML
     private TableColumn<Vehicle, Integer> cargoColumn;
-
     @FXML
     private TableColumn<Vehicle, Integer> passengersColumn;
 
 
     private List<RadioMenuItem> languages;
-    private Repository<Vehicle> repository = new Repository<>();
+    private Repository<Vehicle> repository;
 
     @Override
     protected void initialize() {
@@ -105,7 +83,6 @@ public class Main extends Base {
         modelColumn.setCellValueFactory(cellData -> cellData.getValue().modelProperty());
         cargoColumn.setCellValueFactory(cellData -> cellData.getValue().cargoWeightProperty().asObject());
         passengersColumn.setCellValueFactory(cellData -> cellData.getValue().numPassengersProperty().asObject());
-        setTableData();
     }
 
     private void setTableData() {
@@ -113,17 +90,7 @@ public class Main extends Base {
     }
 
     private void initMenu() {
-        if (user.isSudoMode()) {
-            preDebugSeparator.setVisible(true);
-            debugSettingsMenu.setVisible(true);
-            debugSettingsMenu.setSelected(user.isDebug());
-
-            preAutotestsSeparator.setVisible(true);
-            autotestSettingsMenu.setVisible(true);
-            autotestSettingsMenu.setSelected(user.isTests());
-
-            autotestRunMenu.setVisible(true);
-        }
+        setRoot();
 
         languages = languageSettingsMenu.getItems()
                         .filtered(MenuItem::isMnemonicParsing)
@@ -135,6 +102,20 @@ public class Main extends Base {
             if (Objects.equals(lang.getId(), user.getLanguage())) {
                 lang.setSelected(true);
             }
+        }
+    }
+
+    private void setRoot() {
+        if (user.isSudoMode()) {
+            preDebugSeparator.setVisible(true);
+            debugSettingsMenu.setVisible(true);
+            debugSettingsMenu.setSelected(user.isDebug());
+
+            preAutotestsSeparator.setVisible(true);
+            autotestSettingsMenu.setVisible(true);
+            autotestSettingsMenu.setSelected(user.isTests());
+
+            autotestRunMenu.setVisible(true);
         }
     }
 
@@ -175,8 +156,13 @@ public class Main extends Base {
 
     @FXML
     protected void chooseLanguage(ActionEvent event) throws IOException {
-        EventTarget target = event.getTarget();
-        String languageName = ((RadioMenuItem) target).getId();
+        RadioMenuItem langMenuItem = (RadioMenuItem) event.getTarget();
+        if (!langMenuItem.isSelected()) {
+            langMenuItem.setSelected(true);
+            return;
+        }
+
+        String languageName = langMenuItem.getId();
         for (RadioMenuItem lang: languages) {
             lang.setSelected(false);
         }
@@ -213,93 +199,110 @@ public class Main extends Base {
     @FXML
     protected void newFile() {
         repository = new Repository<>();
+
         repository.add(new Motorcycle("dd", "dfd", 12, 1));
+        setTableData();
 
         vehiclesTable.setVisible(true);
     }
 
     @FXML
     protected void openFile() {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Open Database");
+        try {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Open Database");
 
-        ObservableList<ExtensionFilter> filters = fileChooser.getExtensionFilters();
+            ObservableList<ExtensionFilter> filters = fileChooser.getExtensionFilters();
 
-        ExtensionFilter databaseFilter = new ExtensionFilter("Database files (*.db)", "*.db");
-        filters.add(databaseFilter);
+            ExtensionFilter databaseFilter = new ExtensionFilter("Database files (*.db)", "*.db");
+            filters.add(databaseFilter);
 
-        ExtensionFilter otherFilter = new ExtensionFilter("Other", "*");
-        filters.add(otherFilter);
+            ExtensionFilter otherFilter = new ExtensionFilter("Other", "*");
+            filters.add(otherFilter);
 
-        fileChooser.setInitialDirectory(new File("data"));
+            fileChooser.setInitialDirectory(new File("data"));
 
-        File selectedFile = fileChooser.showOpenDialog(app.stage);
-        if (selectedFile != null) {
-            System.out.println(selectedFile);
-            try {
+            File selectedFile = fileChooser.showOpenDialog(app.stage);
+            if (selectedFile != null) {
+                System.out.println(selectedFile);
+                repository = new Repository<>();
                 repository.load(selectedFile);
                 vehiclesTable.setVisible(true);
                 setTableData();
-            } catch (IOException | ClassNotFoundException exception) {
-                logger.warning(Arrays.toString(exception.getStackTrace()));
-                Crasher crasher = new Crasher();  // TODO
-                crasher.handle(exception);
-                crasher.showAndWait();
             }
+        } catch (IOException | ClassNotFoundException exception) {
+            logger.warning(Arrays.toString(exception.getStackTrace()));
+            Crasher crasher = new Crasher();
+            crasher.handle(exception);
+            crasher.showAndWait();
         }
     }
 
     @FXML
     protected void saveFile() {
-        if (repository.getFile() == null) {
-            saveFileAs();
-        } else {
-            try {
-                repository.save();
-            } catch (IOException exception) {
-                logger.warning(exception.getMessage());
-                Crasher crasher = new Crasher();  // TODO
-                crasher.handle(exception);
-                crasher.showAndWait();
+        try {
+            if (repository == null) {
+                throw new IOException("No database to save");
             }
+
+            if (repository.getFile() == null) {
+                saveFileAs();
+            } else {
+                repository.save();
+            }
+        } catch (IOException exception) {
+            logger.warning(exception.getMessage());
+            Crasher crasher = new Crasher();
+            crasher.handle(exception);
+            crasher.showAndWait();
         }
     }
 
     @FXML
     protected void saveFileAs() {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Save Database");
+        try {
+            if (repository == null) {
+                throw new IOException("No database to save");
+            }
 
-        ObservableList<ExtensionFilter> filters = fileChooser.getExtensionFilters();
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Save Database");
 
-        ExtensionFilter databaseFilter = new ExtensionFilter("Database files (*.db)", "*.db");
-        filters.add(databaseFilter);
+            ObservableList<ExtensionFilter> filters = fileChooser.getExtensionFilters();
 
-        ExtensionFilter otherFilter = new ExtensionFilter("Other", "*");
-        filters.add(otherFilter);
+            ExtensionFilter databaseFilter = new ExtensionFilter("Database files (*.db)", "*.db");
+            filters.add(databaseFilter);
 
-        fileChooser.setInitialDirectory(new File("data"));
+            ExtensionFilter otherFilter = new ExtensionFilter("Other", "*");
+            filters.add(otherFilter);
 
-        File savingFile = fileChooser.showSaveDialog(app.stage);
-        if (savingFile != null) {
-            System.out.println(savingFile);
-            try {
+            fileChooser.setInitialDirectory(new File("data"));
+
+            File savingFile = fileChooser.showSaveDialog(app.stage);
+            if (savingFile != null) {
+                System.out.println(savingFile);
                 savingFile.createNewFile();
                 repository.saveTo(savingFile);
-            } catch (IOException exception) {
-                logger.warning(exception.getMessage());
-                Crasher crasher = new Crasher();  // TODO
-                crasher.handle(exception);
-                crasher.showAndWait();
             }
+        } catch (IOException exception) {
+            logger.warning(exception.getMessage());
+            Crasher crasher = new Crasher();  // TODO
+            crasher.handle(exception);
+            crasher.showAndWait();
         }
     }
 
-    public void runName() {
-        DialogPane dialog = new DialogPane();
+    public void changeName() {
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.showAndWait();
     }
 
-    public void runPassword() {
-        DialogPane dialog = new DialogPane();
+    public void changePassword() {
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.showAndWait();
+    }
+
+    public void showAboutMe() throws IOException {
+        new AboutDialog();
     }
 }
