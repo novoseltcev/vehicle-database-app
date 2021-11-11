@@ -12,10 +12,15 @@ import java.io.IOException;
 public class AboutDialog{
     public AboutDialog() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("about-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 300, 200);
+        Scene scene = new Scene(fxmlLoader.load());
 
         Stage stage = new Stage();
         stage.initModality(Modality.APPLICATION_MODAL);
+
+        stage.setMinWidth(380);
+        stage.setMaxWidth(380);
+        stage.setMinHeight(280);
+        stage.setMaxHeight(280);
         stage.setScene(scene);
         stage.showAndWait();
     }

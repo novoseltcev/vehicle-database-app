@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="260" prefWidth="380" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controller.About">
+    <right>
+        <Pane prefHeight="260" prefWidth="15" BorderPane.alignment="CENTER" />
+    </right>
+    <left>
+        <Pane prefHeight="260" prefWidth="15" BorderPane.alignment="CENTER" />
+    </left>
+    <top>
+        <Pane prefHeight="15" prefWidth="380" BorderPane.alignment="CENTER" />
+    </top>
+    <bottom>
+        <Pane prefHeight="15" prefWidth="380" BorderPane.alignment="CENTER" />
+    </bottom>
+
+   <center>
+      <VBox prefHeight="230" prefWidth="350" BorderPane.alignment="CENTER">
+        <HBox prefHeight="80" prefWidth="350">
+            <ImageView fx:id="avatarImg" fitHeight="80" fitWidth="80" pickOnBounds="true" smooth="false" HBox.hgrow="ALWAYS" />
+            <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80" prefWidth="10" />
+            <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80" prefWidth="190">
+              <Label fx:id="nameLabel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="37" text="Stanislav Novoseltcev">
+                  <font>
+                     <Font name="System Bold" size="14.0" />
+                  </font></Label>
+              <Label fx:id="loginLabel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="37" textFill="#6f6f6f">
+                  <font>
+                     <Font name="Ligconsolata Regular" size="18.0" />
+                  </font></Label>
+            </VBox>
+            <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80" prefWidth="10" />
+            <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80" prefWidth="60">
+                <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="10" prefWidth="60" />
+                <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25" prefWidth="60" text="Follow" textAlignment="CENTER" />
+            </VBox>
+        </HBox>
+
+        <Separator prefHeight="15" prefWidth="350" />
+
+        <HBox prefHeight="40" prefWidth="350">
+            <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40" prefWidth="27" />
+
+            <VBox prefHeight="40" prefWidth="80">
+                <Label fx:id="reposLabel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20" prefWidth="80" text="0">
+                  <font>
+                     <Font name="System Bold" size="18.0" />
+                  </font>
+                </Label>
+                <Label maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20" prefWidth="80" text="Repos" textAlignment="CENTER">
+                  <font>
+                     <Font size="15.0" />
+                  </font>
+                </Label>
+            </VBox>
+
+            <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40" prefWidth="27" />
+
+            <VBox prefHeight="40" prefWidth="80">
+                <Label fx:id="gistsLabel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20" prefWidth="80" text="0">
+                    <font>
+                        <Font name="System Bold" size="18.0" />
+                    </font>
+                </Label>
+                <Label maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20" prefWidth="80" text="Gists" textAlignment="CENTER">
+                    <font>
+                        <Font size="15.0" />
+                    </font>
+                </Label>
+            </VBox>
+
+            <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40" prefWidth="27" />
+
+            <VBox prefHeight="40" prefWidth="80">
+                <Label fx:id="followersLabel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20" prefWidth="80" text="0">
+                    <font>
+                        <Font name="System Bold" size="18.0" />
+                    </font>
+                </Label>
+                <Label maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20" prefWidth="80" text="Followers" textAlignment="CENTER">
+                    <font>
+                        <Font size="15.0" />
+                    </font>
+                </Label>
+            </VBox>
+
+            <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40" prefWidth="27" />
+        </HBox>
+
+        <Separator prefHeight="15" prefWidth="350" />
+
+        <HBox prefHeight="80" prefWidth="350">
+           <VBox prefHeight="80.0" prefWidth="170">
+               <Label text="Bio" />
+               <Separator prefHeight="10" prefWidth="170" />
+               <Label fx:id="bioLabel" alignment="TOP_LEFT" contentDisplay="TOP" layoutX="10.0" layoutY="10.0" prefHeight="57.0" prefWidth="170.0" text="No content" wrapText="true" />
+           </VBox>
+            <Separator orientation="VERTICAL" prefHeight="80" prefWidth="10" />
+           <VBox prefHeight="80.0" prefWidth="170">
+             <HBox prefHeight="40.0" prefWidth="170">
+                 <Label alignment="TOP_LEFT" prefHeight="28.0" prefWidth="80" text="Company: " />
+                 <Label fx:id="companyLabel" alignment="TOP_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40" prefWidth="90" text="No data" wrapText="true" />
+             </HBox>
+             <HBox prefHeight="40" prefWidth="170">
+               <Label alignment="TOP_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="28.0" prefWidth="80" text="Location: " />
+               <Label fx:id="locationLabel" alignment="TOP_LEFT" prefHeight="40" prefWidth="90" text="No data" wrapText="true" />
+             </HBox>
+           </VBox>
+        </HBox>
+      </VBox>
+   </center>
+</BorderPane>
