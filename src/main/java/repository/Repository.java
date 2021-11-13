@@ -99,7 +99,7 @@ public class Repository<T> implements CRUD<T> {
     @Override
     public void delete(int id) {
         checkId(id);
-        container.remove(id);
+        container.remove(id, id);
     }
 
     @Override

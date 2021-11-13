@@ -16,53 +16,61 @@ public class VehicleFactory {
             case TRAILER    -> vehicle = new Trailer(brand, model, maxCargoWeight);
             default -> throw new InputMismatchException(name.name());
         }
-        check(vehicle);
+//        check(vehicle);
         return vehicle;
     }
 
-    public static Vehicle random() {
-        Name value = Name.values()[(int) (Math.random() * 4)];
+    private static Vehicle getByName(Name name) {
         try {
             return create(
-                    value,
+                    name,
                     String.valueOf(Math.random() * 1000000),
                     String.valueOf(Math.random() * 10000),
                     (int) (Math.random() * 100),
-                    (int) ( (value.equals(Name.BUS)) ? ((Math.random() + 8) * 10) : (Math.random() + 1) )
+                    (int) ( (name.equals(Name.BUS)) ? ((Math.random() + 8) * 10) : (Math.random() + 1) )
             );
         } catch (InvalidNumPassengerExceptions |InvalidBrandExceptions | InvalidCargoWeightExceptions | InvalidModelExceptions ignored) {
             throw new AssertionError();
         }
     }
 
-
-    public static void check(Vehicle vehicle) throws InvalidBrandExceptions, InvalidModelExceptions, InvalidCargoWeightExceptions, InvalidNumPassengerExceptions {
-        checkBrand(vehicle, vehicle.getBrand());
-        checkModel(vehicle, vehicle.getModel());
-        checkCargoWeight(vehicle, vehicle.getCargoWeight());
-        checkNumPassengers(vehicle, vehicle.getNumPassengers());
+    public static Vehicle random() {
+        Name name = Name.values()[(int) (Math.random() * 4)];
+        return getByName(name);
     }
 
-    public static void checkBrand(Vehicle vehicle, String value) throws InvalidBrandExceptions {
+
+    public static void check(Vehicle vehicle) throws InvalidBrandExceptions, InvalidModelExceptions, InvalidCargoWeightExceptions, InvalidNumPassengerExceptions {
+        checkBrand(vehicle.getType(), vehicle.getBrand());
+        checkModel(vehicle.getType(), vehicle.getModel());
+        checkCargoWeight(vehicle.getType(), vehicle.getCargoWeight());
+        checkNumPassengers(vehicle.getType(), vehicle.getNumPassengers());
+    }
+
+    public static void checkBrand(Name name, String value) throws InvalidBrandExceptions {
+        Vehicle vehicle = getByName(name);
         if (value.isEmpty()) {
             throw new InvalidBrandExceptions(value);
         }
     }
 
-    public static void checkModel(Vehicle vehicle, String value) throws InvalidModelExceptions {
+    public static void checkModel(Name name, String value) throws InvalidModelExceptions {
+        Vehicle vehicle = getByName(name);
         if (value.isEmpty()) {
             throw new InvalidModelExceptions(value);
         }
     }
 
-    public static void checkCargoWeight(Vehicle vehicle, int value) throws InvalidCargoWeightExceptions {
+    public static void checkCargoWeight(Name name, int value) throws InvalidCargoWeightExceptions {
+        Vehicle vehicle = getByName(name);
         int thresholdCargoWeight = vehicle.getThresholdCargoWeight();
-        if (value < 0 || thresholdCargoWeight < value) {
+        if (value <= 0 || thresholdCargoWeight < value) {
             throw new InvalidCargoWeightExceptions(thresholdCargoWeight);
         }
     }
 
-    public static void checkNumPassengers(Vehicle vehicle, int value) throws InvalidNumPassengerExceptions {
+    public static void checkNumPassengers(Name name, int value) throws InvalidNumPassengerExceptions {
+        Vehicle vehicle = getByName(name);
         int[] thresholdsNumPassengers = vehicle.getThresholdsNumPassengers();
         if (value < thresholdsNumPassengers[0] || thresholdsNumPassengers[1] < value) {
             throw new InvalidNumPassengerExceptions(thresholdsNumPassengers[0], thresholdsNumPassengers[1]);

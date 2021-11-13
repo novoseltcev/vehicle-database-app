@@ -1,7 +1,6 @@
 package controller;
 
 import app.App;
-import javafx.stage.Stage;
 import model.User;
 
 import java.util.logging.Logger;

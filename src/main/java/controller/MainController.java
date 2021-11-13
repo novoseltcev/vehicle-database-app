@@ -1,7 +1,7 @@
 package controller;
 
-import app.AboutDialog;
-import app.App;
+import app.*;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -9,9 +9,10 @@ import javafx.scene.control.*;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
-import model.vehicle.Motorcycle;
-import model.vehicle.Name;
-import model.vehicle.Vehicle;
+import javafx.util.converter.IntegerStringConverter;
+
+import model.vehicle.*;
+import model.vehicle.exception.*;
 import repository.Repository;
 
 import java.io.File;
@@ -68,6 +69,8 @@ public class MainController extends Controller {
     @FXML
     private TableColumn<Vehicle, Integer> passengersColumn;
 
+    @FXML
+    private Button addButton;
 
     private List<RadioMenuItem> languages;
     private Repository<Vehicle> repository;
@@ -80,16 +83,22 @@ public class MainController extends Controller {
     }
 
     private void initTable() {
-        idColumn.setCellValueFactory(        cellData -> cellData.getValue().idProperty().asObject());
-        typeColumn.setCellValueFactory(      cellData -> cellData.getValue().typeProperty());
-        brandColumn.setCellValueFactory(     cellData -> cellData.getValue().brandProperty());
-        modelColumn.setCellValueFactory(     cellData -> cellData.getValue().modelProperty());
-        cargoColumn.setCellValueFactory(     cellData -> cellData.getValue().cargoWeightProperty().asObject());
-        passengersColumn.setCellValueFactory(cellData -> cellData.getValue().numPassengersProperty().asObject());
-    }
+        idColumn.setCellValueFactory(cellData ->
+                new SimpleIntegerProperty(1 + vehiclesTable.getItems().indexOf(cellData.getValue())).asObject());
 
-    private void setTableData() {
-        vehiclesTable.setItems(repository.readAll());
+        typeColumn.setCellValueFactory(      cellData -> cellData.getValue().typeProperty());
+
+        brandColumn.setCellValueFactory(     cellData -> cellData.getValue().brandProperty());
+        brandColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+
+        modelColumn.setCellValueFactory(     cellData -> cellData.getValue().modelProperty());
+        modelColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+
+        cargoColumn.setCellValueFactory(     cellData -> cellData.getValue().cargoWeightProperty().asObject());
+        cargoColumn.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+
+        passengersColumn.setCellValueFactory(cellData -> cellData.getValue().numPassengersProperty().asObject());
+        passengersColumn.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
     }
 
     private void initMenu() {
@@ -108,6 +117,13 @@ public class MainController extends Controller {
         }
     }
 
+    private void setTableData() {
+        vehiclesTable.setItems(repository.readAll());
+
+        vehiclesTable.setVisible(true);
+        addButton.setVisible(true);
+    }
+
     private void setRoot() {
         if (user.isSudoMode()) {
             preDebugSeparator.setVisible(true);
@@ -120,6 +136,8 @@ public class MainController extends Controller {
 
             autotestRunMenu.setVisible(true);
         }
+        vehiclesTable.setVisible(false);
+        addButton.setVisible(false);
     }
 
     @Override
@@ -130,6 +148,7 @@ public class MainController extends Controller {
                     app.getLangData().get(column.getId())
             );
         }
+        addButton.setText(app.getLangData().get(addButton.getId()));
 
         List<MenuItem> menuItems = new ArrayList<>() {{
             add(fileMenu);
@@ -204,13 +223,14 @@ public class MainController extends Controller {
         repository = new Repository<>();
 
         repository.add(new Motorcycle("dd", "dfd", 12, 1));
+        repository.add(new Car("VAZ", "Volga", 102, 4));
         setTableData();
 
         vehiclesTable.setVisible(true);
     }
 
     @FXML
-    protected void openFile() {
+    protected void openFile() throws Exception {
         try {
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Open Database");
@@ -235,14 +255,12 @@ public class MainController extends Controller {
             }
         } catch (IOException | ClassNotFoundException exception) {
             logger.warning(Arrays.toString(exception.getStackTrace()));
-            Crasher crasher = new Crasher();
-            crasher.handle(exception);
-            crasher.showAndWait();
+            new NotifyApp(exception, Alert.AlertType.WARNING);
         }
     }
 
     @FXML
-    protected void saveFile() {
+    protected void saveFile() throws Exception {
         try {
             if (repository == null) {
                 throw new IOException("No database to save");
@@ -255,14 +273,12 @@ public class MainController extends Controller {
             }
         } catch (IOException exception) {
             logger.warning(exception.getMessage());
-            Crasher crasher = new Crasher();
-            crasher.handle(exception);
-            crasher.showAndWait();
+            new NotifyApp(exception, Alert.AlertType.WARNING);
         }
     }
 
     @FXML
-    protected void saveFileAs() {
+    protected void saveFileAs() throws Exception {
         try {
             if (repository == null) {
                 throw new IOException("No database to save");
@@ -289,9 +305,7 @@ public class MainController extends Controller {
             }
         } catch (IOException exception) {
             logger.warning(exception.getMessage());
-            Crasher crasher = new Crasher();  // TODO
-            crasher.handle(exception);
-            crasher.showAndWait();
+            new NotifyApp(exception, Alert.AlertType.WARNING);
         }
     }
 
@@ -305,8 +319,9 @@ public class MainController extends Controller {
         dialog.showAndWait();
     }
 
-    public void showAboutMe() throws Exception {
-        App aboutDialog = new AboutDialog();
+    @FXML
+    protected void showAboutMe() throws Exception {
+        App aboutDialog = new AboutApp();
         aboutDialog.start(new Stage());
     }
 }
