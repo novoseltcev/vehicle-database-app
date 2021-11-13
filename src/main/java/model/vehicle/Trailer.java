@@ -1,13 +1,12 @@
 package model.vehicle;
 
-import javafx.beans.property.SimpleObjectProperty;
 import model.vehicle.exception.NonSelfWalkableVehicleException;
 
 
 public class Trailer extends Vehicle {
     public Trailer(String brand, String model, Integer cargoWeight) {
         super(brand, model, cargoWeight, 0);
-        type = new SimpleObjectProperty<>(Name.TRAILER);
+        type = Name.TRAILER;
     }
 
     public int getThresholdSpeed() throws NonSelfWalkableVehicleException {

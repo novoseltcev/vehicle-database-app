@@ -1,5 +1,7 @@
 package model.vehicle;
 
-public enum Name {
+import java.io.Serializable;
+
+public enum Name implements Serializable {
     MOTORCYCLE, CAR, TRUCK, BUS, TRAILER, VEHICLE
 }

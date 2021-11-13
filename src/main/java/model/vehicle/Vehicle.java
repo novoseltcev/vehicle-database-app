@@ -8,39 +8,62 @@ import java.util.Objects;
 
 
 public abstract class Vehicle implements Serializable {
-    protected transient static int counter = 0;
-    protected transient IntegerProperty id;
-    protected transient StringProperty brand;
-    protected transient StringProperty model;
-    protected transient IntegerProperty cargoWeight;
-    protected transient IntegerProperty numPassengers;
+    protected static int counter = 0;
+    protected int     id;
+    protected String  brand;
+    protected String  model;
+    protected int     cargoWeight;
+    protected int     numPassengers;
 
-    protected transient ObjectProperty<Name> type = new SimpleObjectProperty<>(Name.VEHICLE);
+    protected Name type = Name.VEHICLE;
 
-    public int getId() { return id.get(); }
-    public String  getType() { return type.get().name(); }
-    public String  getBrand() { return brand.get(); }
-    public String  getModel() { return model.get(); }
-    public int getCargoWeight() { return cargoWeight.get(); }
-    public int getNumPassengers() { return numPassengers.get(); }
+    public int getId() { return id; }
+    public String  getType() { return type.name(); }
+    public String  getBrand() { return brand; }
+    public String  getModel() { return model; }
+    public int getCargoWeight() { return cargoWeight; }
+    public int getNumPassengers() { return numPassengers; }
 
-    public IntegerProperty idProperty() { return id; }
-    public ObjectProperty<Name>  typeProperty() { return type; }
-    public StringProperty  brandProperty() { return brand; }
-    public StringProperty  modelProperty() { return model; }
-    public IntegerProperty cargoWeightProperty() { return cargoWeight; }
-    public IntegerProperty numPassengersProperty() { return numPassengers; }
+    public IntegerProperty idProperty() {
+        System.out.println("id=" + id);
+        return new SimpleIntegerProperty(id);
+    }
+
+    public ObjectProperty<Name> typeProperty() {
+        System.out.println("type=" + type);
+        return new SimpleObjectProperty<>(type);
+    }
+
+    public StringProperty brandProperty() {
+        System.out.println("brand=" + brand);
+        return new SimpleStringProperty(brand);
+    }
+
+    public StringProperty modelProperty() {
+        System.out.println("model=" + model);
+        return new SimpleStringProperty(model);
+    }
+
+    public IntegerProperty cargoWeightProperty() {
+        System.out.println("cargoWeight=" + cargoWeight);
+        return new SimpleIntegerProperty(cargoWeight);
+    }
+
+    public IntegerProperty numPassengersProperty() {
+        System.out.println("numPassengers=" + numPassengers);
+        return new SimpleIntegerProperty(numPassengers);
+    }
 
     abstract int getThresholdSpeed() throws NonSelfWalkableVehicleException;
     abstract int getThresholdCargoWeight();
     abstract int[] getThresholdsNumPassengers();
 
     Vehicle(String brand, String model, int cargoWeight, int numPassengers) {
-        this.id = new SimpleIntegerProperty(++counter);
-        this.brand = new SimpleStringProperty(brand);
-        this.model = new SimpleStringProperty(model);
-        this.cargoWeight = new SimpleIntegerProperty(cargoWeight);
-        this.numPassengers = new SimpleIntegerProperty(numPassengers);
+        this.id = ++counter;
+        this.brand = brand;
+        this.model = model;
+        this.cargoWeight = cargoWeight;
+        this.numPassengers = numPassengers;
     }
 
     @Override
@@ -58,7 +81,7 @@ public abstract class Vehicle implements Serializable {
 
     @Override
     public String toString() {
-        String result =  type.get().name() + "{" +
+        String result =  "{" + //type.name() +
                 "brand='" + getBrand() + '\'' +
                 ", model='" + getModel() + '\'' +
                 ", maxCargoWeight=" + getCargoWeight() +

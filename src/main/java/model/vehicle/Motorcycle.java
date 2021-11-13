@@ -1,12 +1,10 @@
 package model.vehicle;
 
 
-import javafx.beans.property.SimpleObjectProperty;
-
 public class Motorcycle extends Vehicle{
     public Motorcycle(String brand, String model, int cargoWeight, int numPassengers) {
         super(brand, model, cargoWeight, numPassengers);
-        type = new SimpleObjectProperty<>(Name.MOTORCYCLE);
+        type = Name.MOTORCYCLE;
     }
 
     @Override

@@ -1,23 +1,16 @@
-package app.controller;
+package controller;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.channels.Channels;
-import java.nio.channels.FileChannel;
-import java.nio.channels.ReadableByteChannel;
-import java.nio.file.Path;
 import java.util.*;
 
 
-public class About {
+public class About extends Controller {
     @FXML
     private ImageView avatarImg;
 
@@ -47,8 +40,11 @@ public class About {
     private Label locationLabel;
 
 
+    @Override
+    protected void setLang() {}
+
     @FXML
-    private void initialize() throws InterruptedException {
+    public void initialize() throws Exception {
         try {
             URL githubApi = new URL("https://api.github.com/users/st-a-novoseltcev");
             Scanner scanner = new Scanner(githubApi.openStream());
