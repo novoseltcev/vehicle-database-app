@@ -1,15 +1,15 @@
 package app;
 
+import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import model.User;
 
-import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Arrays;
 
-public class EntryPoint extends App {
-    public EntryPoint() throws Exception {
-        this.setLogger();
+public class MainApp extends App {
+    public MainApp() throws Exception {
+        this.initLogger();
 
         logger.config("Loading user config...");
         this.user = new User(Path.of("data", "users.ini"));
@@ -37,17 +37,15 @@ public class EntryPoint extends App {
         this.stage.show();
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         try {
-            launch( (EntryPoint.class));
+            launch( (MainApp.class));
 //        logger.info("Application has been stopped");
         } catch (Exception e) { //// TODO
             System.out.println(Arrays.toString(e.getStackTrace()));
+            new NotifyApp(e, Alert.AlertType.ERROR);
 //            launch(EntryPoint.class);
 //            logger.severe("Application has been interrupted");
-
-//            throw e;
-//            new EntryPoint("crasher-view.fxml", "Crasher", new int[] {320, 320, 240, 240});
         }
     }
 }

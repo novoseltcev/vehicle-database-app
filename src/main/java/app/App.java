@@ -17,10 +17,10 @@ import java.util.logging.Logger;
 
 public abstract class App extends Application {
     protected Stage stage;
-    
-    protected User user;
     protected Logger logger;
-    protected String enteredPassword;
+
+    protected static User user;
+    protected static String enteredPassword;
 
 
     public Stage getStage() {
@@ -33,6 +33,10 @@ public abstract class App extends Application {
 
     public Logger getLogger() {
         return logger;
+    }
+
+    public void setLogger(Logger logger) {
+        this.logger = logger;
     }
 
     public HashMap<String, String> getLangData() {
@@ -65,7 +69,7 @@ public abstract class App extends Application {
         this.stage.setMaxHeight(maxHeight);
     }
 
-    public void setPosition(int X, int Y) {
+    public void setPosition(double X, double Y) {
         this.stage.setX(X);
         this.stage.setY(Y);
     }
@@ -86,7 +90,7 @@ public abstract class App extends Application {
         }
     }
 
-    protected void setLogger() throws IOException {
+    protected void initLogger() throws IOException {
         new File("log").mkdir();
 
         logger = Logger.getLogger(this.getClass().getSimpleName());

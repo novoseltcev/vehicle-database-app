@@ -18,9 +18,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
-public class Main extends Controller {
+public class MainController extends Controller {
 
     public Menu fileMenu;
+
     @FXML
     private MenuItem newFileMenu;
     @FXML

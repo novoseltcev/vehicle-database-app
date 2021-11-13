@@ -1,6 +1,6 @@
 package controller;
 
-import javafx.scene.control.Alert;
+import app.NotifyApp;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
@@ -11,12 +11,12 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.WriteAbortedException;
 
-public class Crasher extends Alert {
-    public Crasher() {
-        super(AlertType.ERROR);
-    }
+public class NotifyController extends Controller {
 
-    public void handle(Exception error) {
+    @Override
+    protected void initialize() throws Exception {
+        Exception error = ((NotifyApp)app).getException();
+
         Class<? extends Exception> errorType = error.getClass();
         String msg = error.getMessage();
         String errorText = "Handling unexpected error";
@@ -48,10 +48,13 @@ public class Crasher extends Alert {
             expContent.add(label, 0, 0);
             expContent.add(textArea, 0, 1);
 
-            this.getDialogPane().setExpandableContent(expContent);
+//            this.getDialogPane().setExpandableContent(expContent);
         }
 
-        this.setHeaderText(errorText);
-        this.setContentText(msg);
+//        this.setHeaderText(errorText);
+//        this.setContentText(msg);
     }
+
+    @Override
+    protected void setLang() {}
 }

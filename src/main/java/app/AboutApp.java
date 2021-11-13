@@ -7,7 +7,7 @@ import javafx.stage.Stage;
 import java.nio.file.Path;
 
 
-public class AboutDialog extends App {
+public class AboutApp extends App {
     @Override
     public void start(Stage primaryStage) throws Exception {
         this.stage = primaryStage;

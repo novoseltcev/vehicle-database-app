@@ -1,5 +1,6 @@
 package controller;
 
+import app.AboutApp;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
@@ -8,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class Login extends Controller {
+public class LoginController extends Controller {
     @FXML
     private Label usernameText;
 
@@ -46,7 +47,7 @@ public class Login extends Controller {
         app.setEnteredPassword(passwordInput.getText());
         if (user.checkPassword(app.getEnteredPassword())) {
             app.changeScene(Path.of("main-view.fxml"), "Main");
-            app.setBoundary(900, 1920, 400, 1080);
+            app.setBoundary(900, 1920, 450, 1080);
             app.setPositionToCentral();
             logger.fine(String.format("User %s successfully authorized", user.getName()));
         } else {

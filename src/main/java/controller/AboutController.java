@@ -10,7 +10,7 @@ import java.net.URL;
 import java.util.*;
 
 
-public class About extends Controller {
+public class AboutController extends Controller {
     @FXML
     private ImageView avatarImg;
 
