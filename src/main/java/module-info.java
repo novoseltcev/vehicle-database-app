@@ -7,6 +7,6 @@ module main {
 
     opens app to javafx.fxml;
     exports app;
-    exports app.controller;
-    opens app.controller to javafx.fxml;
+    exports controller;
+    opens controller to javafx.fxml;
 }

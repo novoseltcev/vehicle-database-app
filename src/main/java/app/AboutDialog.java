@@ -1,27 +1,22 @@
 package app;
 
 
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import java.io.IOException;
+import java.nio.file.Path;
 
 
-public class AboutDialog{
-    public AboutDialog() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("about-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
+public class AboutDialog extends App {
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        this.stage = primaryStage;
 
-        Stage stage = new Stage();
-        stage.initModality(Modality.APPLICATION_MODAL);
+        this.changeScene(Path.of("about-view.fxml"), "About");
+        this.setBoundary(380, 380, 280, 280);
+        this.setPositionToCentral();
 
-        stage.setMinWidth(380);
-        stage.setMaxWidth(380);
-        stage.setMinHeight(280);
-        stage.setMaxHeight(280);
-        stage.setScene(scene);
-        stage.showAndWait();
+        this.stage.initModality(Modality.APPLICATION_MODAL);
+        this.stage.showAndWait();
     }
 }
