@@ -6,6 +6,10 @@
 # Build results
 *.class
 
+# Local source dirs
+log/
+data/
+
 # Local data sources
 *.log
 *.db
