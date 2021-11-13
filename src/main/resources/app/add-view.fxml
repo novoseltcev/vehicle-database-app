@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane prefHeight="450" prefWidth="400" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AddController">
+    <top>
+        <AnchorPane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="15" BorderPane.alignment="CENTER" />
+    </top>
+    <left>
+        <AnchorPane maxWidth="-Infinity" minWidth="-Infinity" prefWidth="15" BorderPane.alignment="CENTER" />
+    </left>
+    <right>
+        <AnchorPane maxWidth="-Infinity" minWidth="-Infinity" prefWidth="15" BorderPane.alignment="CENTER" />
+    </right>
+    <bottom>
+      <AnchorPane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="15" BorderPane.alignment="CENTER" />
+   </bottom>
+   <center>
+       <VBox prefHeight="420" prefWidth="370" BorderPane.alignment="CENTER">
+           <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="70" prefWidth="370">
+               <Label fx:id="typeLabel" alignment="CENTER" prefHeight="45.0" prefWidth="100" text="Type: " textAlignment="CENTER">
+                   <font>
+                       <Font size="15.0" />
+                   </font>
+               </Label>
+               <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="45.0" prefWidth="15.0" />
+               <VBox alignment="TOP_CENTER" prefHeight="33.0" prefWidth="200.0">
+                   <Label fx:id="typeError" alignment="CENTER_RIGHT" prefHeight="22.0" prefWidth="200.0" text=" Required field" textAlignment="CENTER" textFill="#db5856" />
+                   <ChoiceBox fx:id="typeChoosier" prefHeight="26.0" prefWidth="200.0" />
+               </VBox>
+           </HBox>
+           <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="70" prefWidth="370">
+               <Label fx:id="brandLabel" alignment="CENTER" prefHeight="45.0" prefWidth="100" text="Brand: " textAlignment="CENTER">
+                   <font>
+                       <Font size="15.0" />
+                   </font>
+               </Label>
+               <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="45.0" prefWidth="15.0" />
+               <VBox alignment="TOP_CENTER" prefHeight="33.0" prefWidth="200.0">
+                   <Label fx:id="brandError" alignment="CENTER_RIGHT" prefHeight="22.0" prefWidth="200.0" text="Invalid (must not be empty)" textAlignment="CENTER" textFill="#db5856" />
+                   <TextField fx:id="brandTextField" prefHeight="26.0" prefWidth="200.0" />
+               </VBox>
+           </HBox>
+           <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="70" prefWidth="370">
+               <Label fx:id="modelLabel" alignment="CENTER" prefHeight="45.0" prefWidth="100" text="Model: " textAlignment="CENTER">
+                   <font>
+                       <Font size="15.0" />
+                   </font>
+               </Label>
+               <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="45.0" prefWidth="15.0" />
+               <VBox alignment="TOP_CENTER" prefHeight="33.0" prefWidth="200.0">
+                   <Label fx:id="modelError" alignment="CENTER_RIGHT" prefHeight="22.0" prefWidth="200.0" text="Invalid (must not be empty)" textAlignment="CENTER" textFill="#db5856" />
+                   <TextField fx:id="modelTextField" prefHeight="26.0" prefWidth="200.0" />
+               </VBox>
+           </HBox>
+           <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="70" prefWidth="370">
+               <Label fx:id="cargoLabel" prefHeight="45.0" prefWidth="100" text="Cargo Weight: " textAlignment="CENTER" wrapText="true">
+                   <font>
+                       <Font size="14.0" />
+                   </font>
+               </Label>
+               <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="45.0" prefWidth="15.0" />
+               <VBox alignment="TOP_CENTER" prefHeight="33.0" prefWidth="200.0">
+                   <Label fx:id="cargoError" alignment="CENTER_RIGHT" prefHeight="22.0" prefWidth="200.0" text="Invalid" textAlignment="CENTER" textFill="#db5856" />
+                   <TextField fx:id="cargoTextField" prefHeight="26.0" prefWidth="200.0" />
+               </VBox>
+           </HBox>
+           <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="70" prefWidth="370">
+               <Label fx:id="passengersLabel" alignment="CENTER" prefHeight="45.0" prefWidth="100" text="Number of Passengers:" textAlignment="CENTER" wrapText="true">
+                   <font>
+                       <Font size="14.0" />
+                   </font>
+               </Label>
+               <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="45.0" prefWidth="15.0" />
+               <VBox alignment="TOP_CENTER" prefHeight="33.0" prefWidth="200.0">
+                   <Label fx:id="passengersError" alignment="CENTER_RIGHT" prefHeight="22.0" prefWidth="200.0" text="Invalid" textAlignment="CENTER" textFill="#db5856" />
+                   <TextField fx:id="passengersTextField" prefHeight="26.0" prefWidth="200.0" />
+               </VBox>
+           </HBox>
+           <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="70" prefWidth="370">
+               <Button fx:id="createButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#createAction" prefHeight="40.0" prefWidth="150.0" text="Create">
+                   <font>
+                       <Font size="14.0" />
+                   </font>
+               </Button>
+           </HBox>
+       </VBox>
+   </center>
+</BorderPane>

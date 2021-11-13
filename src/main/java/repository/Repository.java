@@ -2,7 +2,6 @@ package repository;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import model.vehicle.Vehicle;
 import repository.exception.InvalidIDError;
 
 import java.io.*;

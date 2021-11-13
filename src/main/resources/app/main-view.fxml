@@ -41,7 +41,7 @@
    </top>
 
     <center>
-        <TableView fx:id="vehiclesTable" visible="false" editable="true" prefHeight="361.0" prefWidth="601.0" tableMenuButtonVisible="true">
+        <TableView fx:id="vehiclesTable" editable="true" onKeyPressed="#tableKeyPressed" prefHeight="361.0" prefWidth="601.0" tableMenuButtonVisible="true">
             <columns>
                 <TableColumn fx:id="idColumn" prefWidth="0.06" text="id" />
                 <TableColumn fx:id="typeColumn" prefWidth="0.06" text="type" />

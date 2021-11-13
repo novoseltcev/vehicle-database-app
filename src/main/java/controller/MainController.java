@@ -6,6 +6,9 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
@@ -225,8 +228,6 @@ public class MainController extends Controller {
         repository.add(new Motorcycle("dd", "dfd", 12, 1));
         repository.add(new Car("VAZ", "Volga", 102, 4));
         setTableData();
-
-        vehiclesTable.setVisible(true);
     }
 
     @FXML
@@ -250,7 +251,6 @@ public class MainController extends Controller {
                 System.out.println(selectedFile);
                 repository = new Repository<>();
                 repository.load(selectedFile);
-                vehiclesTable.setVisible(true);
                 setTableData();
             }
         } catch (IOException | ClassNotFoundException exception) {
@@ -323,5 +323,85 @@ public class MainController extends Controller {
     protected void showAboutMe() throws Exception {
         App aboutDialog = new AboutApp();
         aboutDialog.start(new Stage());
+    }
+
+
+    public void commitEditBrandColumn(TableColumn.CellEditEvent<? extends Vehicle, String> vehicleStringCellEditEvent) throws Exception {
+        Vehicle vehicle = vehicleStringCellEditEvent.getRowValue();
+        String newValue = vehicleStringCellEditEvent.getNewValue();
+        try {
+            VehicleFactory.checkBrand(vehicle.getType(), newValue);
+            vehicle.setBrand(newValue);
+        } catch (InvalidBrandExceptions e) {
+            new NotifyApp(e, Alert.AlertType.WARNING);
+            vehiclesTable.refresh();
+        }
+    }
+
+    public void commitEditModelColumn(TableColumn.CellEditEvent<? extends Vehicle, String> vehicleStringCellEditEvent) throws Exception {
+        Vehicle vehicle = vehicleStringCellEditEvent.getRowValue();
+        String newValue = vehicleStringCellEditEvent.getNewValue();
+        try {
+            VehicleFactory.checkModel(vehicle.getType(), newValue);
+            vehicle.setModel(newValue);
+        } catch (InvalidModelExceptions e) {
+            new NotifyApp(e, Alert.AlertType.WARNING);
+            vehiclesTable.refresh();
+        }
+    }
+
+    public void commitEditCargoColumn(TableColumn.CellEditEvent<? extends Vehicle, Integer> vehicleIntegerCellEditEvent) throws Exception {
+        Vehicle vehicle = vehicleIntegerCellEditEvent.getRowValue();
+        int newValue = vehicleIntegerCellEditEvent.getNewValue();
+        try {
+            VehicleFactory.checkCargoWeight(vehicle.getType(), newValue);
+            vehicle.setCargoWeight(newValue);
+        } catch (InvalidCargoWeightExceptions e) {
+            new NotifyApp(e, Alert.AlertType.WARNING);
+            vehiclesTable.refresh();
+        }
+    }
+
+    public void commitEditPassengersColumn(TableColumn.CellEditEvent<? extends Vehicle, Integer> vehicleIntegerCellEditEvent) throws Exception {
+        Vehicle vehicle = vehicleIntegerCellEditEvent.getRowValue();
+        int newValue = vehicleIntegerCellEditEvent.getNewValue();
+        try {
+            VehicleFactory.checkNumPassengers(vehicle.getType(), newValue);
+            vehicle.setNumPassengers(newValue);
+        } catch (InvalidNumPassengerExceptions e) {
+            new NotifyApp(e, Alert.AlertType.WARNING);
+            vehiclesTable.refresh();
+        }
+    }
+
+    public void tableKeyPressed(KeyEvent event) {
+        System.out.println(event);
+        if (event.getCode() == KeyCode.DELETE){
+            TableView<Vehicle> tableView = (TableView<Vehicle>) event.getTarget();
+            TableSelectionModel<Vehicle> model = tableView.getSelectionModel();
+            Vehicle vehicle = model.getSelectedItem();
+            int index = model.getSelectedIndex();
+            logger.fine("Delete index: " + index);
+            logger.finest("Delete: " + vehicle);
+            if (vehicle != null && index != -1) {
+                tableView.getItems().remove(vehicle);
+            }
+        }
+    }
+
+    public void addObject() throws Exception {
+        AddApp<Vehicle> addApp = new AddApp<>();
+        addApp.setLogger(app.getLogger());
+        addApp.start(new Stage());
+        addApp.setPosition(app.getStage().getX() + app.getStage().getWidth(), app.getStage().getY());
+        Vehicle vehicle = addApp.getObject();
+        if (vehicle != null) {
+            logger.info("Successfully create new vehicle");
+            logger.finest("Created Vehicle: " + vehicle);
+            vehiclesTable.getItems().add(vehicle);
+            logger.info("Successfully add new vehicle");
+        } else {
+            logger.info("Cancel or failed creating new vehicle");
+        }
     }
 }
