@@ -1,4 +1,4 @@
-package app.controller;
+package controller;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;

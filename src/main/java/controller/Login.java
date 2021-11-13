@@ -1,15 +1,14 @@
-package app.controller;
+package controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
-import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class Login extends Base {
+public class Login extends Controller {
     @FXML
     private Label usernameText;
 
@@ -37,23 +36,18 @@ public class Login extends Base {
 
         for (Labeled item : items) {
             item.setText(
-                    app.langData.get(item.getId())
+                    app.getLangData().get(item.getId())
             );
         }
     }
 
     @FXML
-    void buttonClickHandler() throws IOException {
-        app.enteredPassword = passwordInput.getText();
-        if (user.checkPassword(app.enteredPassword)) {
-            app.changeScene(Path.of("main-view.fxml"));
-            app.stage.setMinWidth(900);
-            app.stage.setMinHeight(400);
-            app.stage.setMaxWidth(1920);
-            app.stage.setMaxHeight(1080);
-            app.stage.setX((1920 - 900) >> 1);
-            app.stage.setY((1080 - 400) >> 1);
-            app.stage.setTitle("Main");
+    void buttonClickHandler() throws Exception {
+        app.setEnteredPassword(passwordInput.getText());
+        if (user.checkPassword(app.getEnteredPassword())) {
+            app.changeScene(Path.of("main-view.fxml"), "Main");
+            app.setBoundary(900, 1920, 400, 1080);
+            app.setPositionToCentral();
             logger.fine(String.format("User %s successfully authorized", user.getName()));
         } else {
             passwordInput.clear();
@@ -62,7 +56,7 @@ public class Login extends Base {
     }
 
     @FXML
-    void passwordEnterKeyHandler() throws IOException {
+    void passwordEnterKeyHandler() throws Exception {
         buttonClickHandler();
     }
 

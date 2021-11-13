@@ -1,18 +1,18 @@
-package app.controller;
+package controller;
 
-import app.EntryPoint;
+import app.App;
+import javafx.stage.Stage;
 import model.User;
 
 import java.util.logging.Logger;
 
 
-public abstract class Base {
-    protected EntryPoint app;
+public abstract class Controller {
+    protected App app;
     protected User user;
     protected Logger logger;
 
-
-    public void setApp(EntryPoint app) {
+    public void setApp(App app) throws Exception {
         System.out.println("setApp");
         this.app = app;
         this.user = app.getUser();
@@ -22,6 +22,6 @@ public abstract class Base {
     }
 
     protected abstract void setLang();
-    protected abstract void initialize();
+    protected abstract void initialize() throws Exception;
 
 }

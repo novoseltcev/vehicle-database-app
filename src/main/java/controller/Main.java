@@ -1,12 +1,14 @@
-package app.controller;
+package controller;
 
 import app.AboutDialog;
+import app.App;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
+import javafx.stage.Stage;
 import model.vehicle.Motorcycle;
 import model.vehicle.Name;
 import model.vehicle.Vehicle;
@@ -16,7 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
-public class Main extends Base {
+public class Main extends Controller {
 
     public Menu fileMenu;
     @FXML
@@ -77,11 +79,11 @@ public class Main extends Base {
     }
 
     private void initTable() {
-        idColumn.setCellValueFactory(cellData -> cellData.getValue().idProperty().asObject());
-        typeColumn.setCellValueFactory(cellData -> cellData.getValue().typeProperty());
-        brandColumn.setCellValueFactory(cellData -> cellData.getValue().brandProperty());
-        modelColumn.setCellValueFactory(cellData -> cellData.getValue().modelProperty());
-        cargoColumn.setCellValueFactory(cellData -> cellData.getValue().cargoWeightProperty().asObject());
+        idColumn.setCellValueFactory(        cellData -> cellData.getValue().idProperty().asObject());
+        typeColumn.setCellValueFactory(      cellData -> cellData.getValue().typeProperty());
+        brandColumn.setCellValueFactory(     cellData -> cellData.getValue().brandProperty());
+        modelColumn.setCellValueFactory(     cellData -> cellData.getValue().modelProperty());
+        cargoColumn.setCellValueFactory(     cellData -> cellData.getValue().cargoWeightProperty().asObject());
         passengersColumn.setCellValueFactory(cellData -> cellData.getValue().numPassengersProperty().asObject());
     }
 
@@ -124,7 +126,7 @@ public class Main extends Base {
         List<? extends TableColumn<Vehicle, ?>> columns = vehiclesTable.getColumns().stream().map(item -> (TableColumn<Vehicle, ?>) item).toList();
         for (TableColumn<Vehicle, ?> column : columns) {
             column.setText(
-                    app.langData.get(column.getId())
+                    app.getLangData().get(column.getId())
             );
         }
 
@@ -149,7 +151,7 @@ public class Main extends Base {
         }};
         for (MenuItem menuItem : menuItems) {
             menuItem.setText(
-                    app.langData.get(menuItem.getId())
+                    app.getLangData().get(menuItem.getId())
             );
         }
     }
@@ -178,7 +180,7 @@ public class Main extends Base {
     @FXML
     protected void switchDebug(ActionEvent event) throws IOException {
         RadioMenuItem target = (RadioMenuItem) event.getTarget();
-        if (!user.setDebug(app.enteredPassword, target.isSelected())) {
+        if (!user.setDebug(app.getEnteredPassword(), target.isSelected())) {
             throw new AssertionError();
         } app.changeLoggerLevel(user.isDebug());
     }
@@ -186,7 +188,7 @@ public class Main extends Base {
     @FXML
     protected void switchAutotests(ActionEvent event) throws IOException {
         RadioMenuItem target = (RadioMenuItem) event.getTarget();
-        if (!user.setTests(app.enteredPassword, target.isSelected())) {
+        if (!user.setTests(app.getEnteredPassword(), target.isSelected())) {
             throw new AssertionError();
         }
     }
@@ -222,7 +224,7 @@ public class Main extends Base {
 
             fileChooser.setInitialDirectory(new File("data"));
 
-            File selectedFile = fileChooser.showOpenDialog(app.stage);
+            File selectedFile = fileChooser.showOpenDialog(app.getStage());
             if (selectedFile != null) {
                 System.out.println(selectedFile);
                 repository = new Repository<>();
@@ -278,7 +280,7 @@ public class Main extends Base {
 
             fileChooser.setInitialDirectory(new File("data"));
 
-            File savingFile = fileChooser.showSaveDialog(app.stage);
+            File savingFile = fileChooser.showSaveDialog(app.getStage());
             if (savingFile != null) {
                 System.out.println(savingFile);
                 savingFile.createNewFile();
@@ -302,7 +304,8 @@ public class Main extends Base {
         dialog.showAndWait();
     }
 
-    public void showAboutMe() throws IOException {
-        new AboutDialog();
+    public void showAboutMe() throws Exception {
+        App aboutDialog = new AboutDialog();
+        aboutDialog.start(new Stage());
     }
 }
