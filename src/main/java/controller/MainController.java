@@ -51,7 +51,9 @@ public class MainController extends Controller {
     @FXML
     private RadioMenuItem autotestSettingsMenu;
 
-    public Menu autotestRunMenu;
+    public Menu autotestMenu;
+    @FXML
+    private MenuItem autotestRunMenu;
 
     public Menu helpMenu;
     @FXML
@@ -137,7 +139,7 @@ public class MainController extends Controller {
             autotestSettingsMenu.setVisible(true);
             autotestSettingsMenu.setSelected(user.isTests());
 
-            autotestRunMenu.setVisible(true);
+            autotestMenu.setVisible(true);
         }
         vehiclesTable.setVisible(false);
         addButton.setVisible(false);
@@ -167,6 +169,7 @@ public class MainController extends Controller {
             add(debugSettingsMenu);
             add(autotestSettingsMenu);
 
+            add(autotestMenu);
             add(autotestRunMenu);
 
             add(helpMenu);
@@ -217,8 +220,9 @@ public class MainController extends Controller {
     }
 
     @FXML
-    protected void startAutotests() {
-        // TODO
+    protected void startAutotests() throws Exception {
+        App autotestApp = new AutotestsApp();
+        autotestApp.start(new Stage());
     }
 
     @FXML

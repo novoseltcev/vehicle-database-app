@@ -39,13 +39,10 @@ public class MainApp extends App {
 
     public static void main(String[] args) throws Exception {
         try {
-            launch( (MainApp.class));
-//        logger.info("Application has been stopped");
+            launch();
         } catch (Exception e) { //// TODO
             System.out.println(Arrays.toString(e.getStackTrace()));
             new NotifyApp(e, Alert.AlertType.ERROR);
-//            launch(EntryPoint.class);
-//            logger.severe("Application has been interrupted");
         }
     }
 }

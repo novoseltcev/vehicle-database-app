@@ -31,8 +31,8 @@
                <SeparatorMenuItem fx:id="preAutotestsSeparator" mnemonicParsing="false" visible="false" />
                <RadioMenuItem fx:id="autotestSettingsMenu" onAction="#switchAutotests" text="Autotests on" visible="false" />
            </Menu>
-           <Menu fx:id="autotestRunMenu" mnemonicParsing="false" onAction="#startAutotests" text="Start Autotests" visible="false">
-               <MenuItem onAction="#startAutotests" />
+           <Menu fx:id="autotestMenu" mnemonicParsing="false" text="Autotests" visible="false">
+               <MenuItem fx:id="autotestRunMenu" onAction="#startAutotests" text="Run"/>
            </Menu>
            <Menu fx:id="helpMenu" mnemonicParsing="false" text="Help">
                <MenuItem fx:id="aboutHelpMenu" mnemonicParsing="false" onAction="#showAboutMe" text="About Us" />
