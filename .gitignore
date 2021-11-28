@@ -1,15 +1,16 @@
-# Default ignored files
-/shelf/
-/workspace.xml
-# Datasource local storage ignored files
-/dataSources/
-/dataSources.local.xml
-# Editor-based HTTP Client requests
-/httpRequests/
+# IDEA files
 .idea/
-*.class
 *.iml
-out/
-tmp/
-*log*
+.attach_pid*
+
+# Build results
+*.class
+
+# Local source dirs
+log/
+data/
+
+# Local data sources
+*.log
 *.db
+*.log.lck

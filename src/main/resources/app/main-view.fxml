@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400" prefWidth="900" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainController">
+    <top>
+       <MenuBar minHeight="-Infinity" minWidth="-Infinity" BorderPane.alignment="CENTER">
+           <Menu fx:id="fileMenu" mnemonicParsing="false" text="Database">
+               <MenuItem fx:id="newFileMenu" mnemonicParsing="false" onAction="#newFile" text="New" />
+               <SeparatorMenuItem mnemonicParsing="false" />
+               <MenuItem fx:id="openFileMenu" mnemonicParsing="false" onAction="#openFile" text="Open" />
+               <SeparatorMenuItem mnemonicParsing="false" />
+               <MenuItem fx:id="saveFileMenu" mnemonicParsing="false" onAction="#saveFile" text="Save" />
+               <SeparatorMenuItem mnemonicParsing="false" />
+               <MenuItem fx:id="saveAsFileMenu" mnemonicParsing="false" onAction="#saveFileAs" text="Save As" />
+           </Menu>
+           <Menu fx:id="settingsMenu" mnemonicParsing="false" text="Settings">
+               <MenuItem fx:id="nameSettingsMenu" mnemonicParsing="false" onAction="#changeName" text="Change name" />
+               <SeparatorMenuItem mnemonicParsing="false" />
+               <MenuItem fx:id="passwordSettingsMenu" mnemonicParsing="false" onAction="#changePassword" text="Change password" />
+               <SeparatorMenuItem mnemonicParsing="false" />
+               <Menu fx:id="languageSettingsMenu" mnemonicParsing="false" text="Languages">
+                   <RadioMenuItem fx:id="english" onAction="#chooseLanguage" text="English" />
+                   <SeparatorMenuItem mnemonicParsing="false" />
+                   <RadioMenuItem fx:id="russian" onAction="#chooseLanguage" text="Русский" />
+               </Menu>
+               <SeparatorMenuItem fx:id="preDebugSeparator" mnemonicParsing="false" visible="false" />
+               <RadioMenuItem fx:id="debugSettingsMenu" onAction="#switchDebug" text="Debug on" visible="false" />
+               <SeparatorMenuItem fx:id="preAutotestsSeparator" mnemonicParsing="false" visible="false" />
+               <RadioMenuItem fx:id="autotestSettingsMenu" onAction="#switchAutotests" text="Autotests on" visible="false" />
+           </Menu>
+           <Menu fx:id="autotestMenu" mnemonicParsing="false" text="Autotests" visible="false">
+               <MenuItem fx:id="autotestRunMenu" onAction="#startAutotests" text="Run"/>
+           </Menu>
+           <Menu fx:id="helpMenu" mnemonicParsing="false" text="Help">
+               <MenuItem fx:id="aboutHelpMenu" mnemonicParsing="false" onAction="#showAboutMe" text="About Us" />
+           </Menu>
+       </MenuBar>
+   </top>
+
+    <center>
+        <TableView fx:id="vehiclesTable" editable="true" onKeyPressed="#tableKeyPressed" prefHeight="361.0" prefWidth="601.0" tableMenuButtonVisible="true">
+            <columns>
+                <TableColumn fx:id="idColumn" prefWidth="0.06" text="id" />
+                <TableColumn fx:id="typeColumn" prefWidth="0.06" text="type" />
+                <TableColumn fx:id="brandColumn" onEditCommit="#commitEditBrandColumn" prefWidth="151" text="brand" />
+                <TableColumn fx:id="modelColumn" onEditCommit="#commitEditModelColumn" prefWidth="146" text="model" />
+                <TableColumn fx:id="cargoColumn" onEditCommit="#commitEditCargoColumn" prefWidth="100" text="maxCargoWeight" />
+                <TableColumn fx:id="passengersColumn" onEditCommit="#commitEditPassengersColumn" prefWidth="125" text="numPassengers" />
+            </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
+        </TableView>
+    </center>
+    <left>
+        <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="10" />
+    </left>
+    <right>
+        <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="10" />
+    </right>
+    <bottom>
+        <VBox>
+            <HBox>
+                <AnchorPane minHeight="-Infinity" nodeOrientation="RIGHT_TO_LEFT" prefHeight="30" prefWidth="790.0" HBox.hgrow="ALWAYS">
+               <cursor>
+                  <Cursor fx:constant="DEFAULT" />
+               </cursor></AnchorPane>
+                <Button fx:id="addButton" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+                        nodeOrientation="RIGHT_TO_LEFT" prefHeight="30" prefWidth="100.0"
+                        text="Add" textAlignment="CENTER" textOverrun="CLIP" HBox.hgrow="ALWAYS" onAction="#addObject">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></Button>
+                <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30" prefWidth="10" />
+            </HBox>
+            <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="10" />
+        </VBox>
+    </bottom>
+</BorderPane>

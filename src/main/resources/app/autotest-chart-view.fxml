@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="800" prefWidth="1000" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AutotestController">
+
+    <center>
+      <GridPane alignment="CENTER" gridLinesVisible="true">
+          <LineChart fx:id="chartMeanAdd" legendSide="RIGHT" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400" prefWidth="500" title="Add: mean time" BorderPane.alignment="CENTER">
+              <xAxis>
+                  <NumberAxis label="Size" prefHeight="40.0" prefWidth="360.0" side="BOTTOM" />
+              </xAxis>
+              <yAxis>
+                  <NumberAxis label="Elapsed nanos" prefHeight="329.0" prefWidth="110.0" side="LEFT" />
+              </yAxis>
+          </LineChart>
+          <LineChart fx:id="chartMeanRm" legendSide="RIGHT" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400" prefWidth="500" title="Remove: mean time" BorderPane.alignment="CENTER" GridPane.columnIndex="1">
+              <xAxis>
+                  <NumberAxis label="Size" prefHeight="40.0" prefWidth="360.0" side="BOTTOM" />
+              </xAxis>
+              <yAxis>
+                  <NumberAxis label="Elapsed nanos" prefHeight="329.0" prefWidth="110.0" side="LEFT" />
+              </yAxis>
+          </LineChart>
+          <LineChart fx:id="chartTotalAdd" legendSide="RIGHT" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400" prefWidth="500" title="Add: total time" BorderPane.alignment="CENTER" GridPane.rowIndex="1">
+              <xAxis>
+                  <NumberAxis label="Size" prefHeight="40.0" prefWidth="360.0" side="BOTTOM" />
+              </xAxis>
+              <yAxis>
+                  <NumberAxis label="Elapsed nanos" prefHeight="329.0" prefWidth="110.0" side="LEFT" />
+              </yAxis>
+          </LineChart>
+          <LineChart fx:id="chartTotalRm" legendSide="RIGHT" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400" prefWidth="500" title="Remove: total time" BorderPane.alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1">
+              <xAxis>
+                  <NumberAxis label="Size" prefHeight="40.0" prefWidth="360.0" side="BOTTOM" />
+              </xAxis>
+              <yAxis>
+                  <NumberAxis label="Elapsed nanos" prefHeight="329.0" prefWidth="110.0" side="LEFT" />
+              </yAxis>
+          </LineChart>
+         <columnConstraints>
+            <ColumnConstraints />
+            <ColumnConstraints />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints />
+            <RowConstraints />
+         </rowConstraints>
+      </GridPane>
+   </center>
+
+    <right>
+        <Pane prefHeight="400" prefWidth="15" BorderPane.alignment="CENTER" />
+    </right>
+    <left>
+        <Pane prefHeight="400" prefWidth="15" BorderPane.alignment="CENTER" />
+    </left>
+    <top>
+        <Pane prefHeight="15" prefWidth="600" BorderPane.alignment="CENTER" />
+    </top>
+    <bottom>
+        <Pane prefHeight="15" prefWidth="600" BorderPane.alignment="CENTER" />
+    </bottom>
+
+</BorderPane>
