@@ -4,7 +4,7 @@ module main {
     requires java.logging;
     requires com.fasterxml.jackson.core;
 
-
+    exports model;
     opens app to javafx.fxml;
     exports app;
     exports controller;

@@ -1,18 +1,19 @@
 package app;
 
 import javafx.scene.control.Alert;
-import javafx.stage.Stage;
 import model.User;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Arrays;
-
 public class MainApp extends App {
-    public MainApp() throws Exception {
-        this.initLogger();
 
+    public MainApp() throws IOException {
+        super("login-view.fxml", "Login", 320, 140, 320, 140);
+
+        this.initLogger();
         logger.config("Loading user config...");
-        this.user = new User(Path.of("data", "users.ini"));
+        MainApp.user = new User(Path.of("data", "users.ini"));
         logger.config("Successful loaded user config");
         logger.finest("Successful loaded user config: " + user.toString());
 
@@ -26,14 +27,8 @@ public class MainApp extends App {
     }
 
     @Override
-    public void start(Stage stage) throws Exception {
-        this.stage = stage;
-
-        this.logger.info("Loading scene...");
-        this.changeScene(Path.of("login-view.fxml").normalize(), "Login");
-        this.setBoundary(320, 320, 140, 140);
+    protected void show() {
         this.setPositionToCentral();
-
         this.stage.show();
     }
 
@@ -42,7 +37,7 @@ public class MainApp extends App {
             launch();
         } catch (Exception e) { //// TODO
             System.out.println(Arrays.toString(e.getStackTrace()));
-            new NotifyApp(e, Alert.AlertType.ERROR);
+//            new NotifyApp(e, Alert.AlertType.ERROR);
         }
     }
 }

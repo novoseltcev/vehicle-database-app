@@ -4,27 +4,11 @@ import javafx.scene.control.Alert;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import java.nio.file.Path;
 
 public class NotifyApp extends App {
     private final Exception exception;
-    private final Alert.AlertType alertType;
 
-    public NotifyApp(Exception exception, Alert.AlertType alertType) throws Exception {
-        super();
-        this.alertType = alertType;
-        this.exception = exception;
-        start(new Stage());
-    }
-
-    public Exception getException() {
-        return exception;
-    }
-
-
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        this.stage = primaryStage;
+    private static String getTitle(Alert.AlertType alertType) {
         String title;
         switch (alertType) {
             case ERROR        -> title="Program will be crashed";
@@ -33,11 +17,26 @@ public class NotifyApp extends App {
             case CONFIRMATION -> title="Confirm";
             default           -> title="None";
         }
-        this.changeScene(Path.of("notify-view.fxml"), title);
-        this.setBoundary(380, 380, 280, 280);
+        return title;
+    }
+
+    public NotifyApp(Exception exception, Alert.AlertType alertType) throws Exception {
+        super("notify-view.fxml", getTitle(alertType), 380, 280, 380, 280);
+        this.exception = exception;
+        start(new Stage());
+    }
+
+    @Override
+    protected void show() {
         this.setPositionToCentral();
 
         this.stage.initModality(Modality.APPLICATION_MODAL);
         this.stage.showAndWait();
     }
+
+    public Exception getException() {
+        return exception;
+    }
+
+
 }

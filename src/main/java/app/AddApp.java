@@ -1,21 +1,17 @@
 package app;
 
 import javafx.stage.Modality;
-import javafx.stage.Stage;
 
-import java.nio.file.Path;
 
 public class AddApp<T> extends App{
-
     private T enteredResult;
 
+    public AddApp() {
+        super("add-view.fxml", "Create", 400, 500, 400, 500);
+    }
+
     @Override
-    public void start(Stage primaryStage) throws Exception {
-        this.stage = primaryStage;
-
-        this.changeScene(Path.of("add-view.fxml"), "Create");
-        this.setBoundary(400, 400, 500, 500);
-
+    protected void show() {
         this.stage.initModality(Modality.APPLICATION_MODAL);
         this.stage.showAndWait();
     }

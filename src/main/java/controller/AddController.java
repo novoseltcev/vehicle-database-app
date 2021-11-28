@@ -53,7 +53,7 @@ public class AddController extends Controller {
 
     @Override
     protected void setLang() {
-        HashMap<String, String> lang = app.getLangData();
+        HashMap<String, String> lang = user.getLanguageData();
 
         Label[] labels = {
                 typeLabel,

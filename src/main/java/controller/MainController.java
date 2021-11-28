@@ -150,10 +150,10 @@ public class MainController extends Controller {
         List<? extends TableColumn<Vehicle, ?>> columns = vehiclesTable.getColumns().stream().map(item -> (TableColumn<Vehicle, ?>) item).toList();
         for (TableColumn<Vehicle, ?> column : columns) {
             column.setText(
-                    app.getLangData().get(column.getId())
+                    user.getLanguageData().get(column.getId())
             );
         }
-        addButton.setText(app.getLangData().get(addButton.getId()));
+        addButton.setText( user.getLanguageData().get(addButton.getId()));
 
         List<MenuItem> menuItems = new ArrayList<>() {{
             add(fileMenu);
@@ -177,7 +177,7 @@ public class MainController extends Controller {
         }};
         for (MenuItem menuItem : menuItems) {
             menuItem.setText(
-                    app.getLangData().get(menuItem.getId())
+                    user.getLanguageData().get(menuItem.getId())
             );
         }
     }
@@ -206,15 +206,15 @@ public class MainController extends Controller {
     @FXML
     protected void switchDebug(ActionEvent event) throws IOException {
         RadioMenuItem target = (RadioMenuItem) event.getTarget();
-        if (!user.setDebug(app.getEnteredPassword(), target.isSelected())) {
+        if (!user.setDebug(App.getEnteredPassword(), target.isSelected())) {
             throw new AssertionError();
-        } app.changeLoggerLevel(user.isDebug());
+        } App.changeLoggerLevel(user.isDebug());
     }
 
     @FXML
     protected void switchAutotests(ActionEvent event) throws IOException {
         RadioMenuItem target = (RadioMenuItem) event.getTarget();
-        if (!user.setTests(app.getEnteredPassword(), target.isSelected())) {
+        if (!user.setTests(App.getEnteredPassword(), target.isSelected())) {
             throw new AssertionError();
         }
     }
@@ -395,7 +395,7 @@ public class MainController extends Controller {
 
     public void addObject() throws Exception {
         AddApp<Vehicle> addApp = new AddApp<>();
-        addApp.setLogger(app.getLogger());
+        addApp.setLogger(App.getLogger());
         addApp.start(new Stage());
         addApp.setPosition(app.getStage().getX() + app.getStage().getWidth(), app.getStage().getY());
         Vehicle vehicle = addApp.getObject();

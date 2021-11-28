@@ -1,9 +1,5 @@
 package app;
 
-import controller.Controller;
-import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 import model.User;
 
@@ -15,73 +11,40 @@ import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public abstract class App extends Application {
-    protected Stage stage;
-    protected Logger logger;
-
+public abstract class App extends CustomApp {
+    protected static Logger logger;
     protected static User user;
     protected static String enteredPassword;
 
-
-    public Stage getStage() {
-        return stage;
+    protected App(String startFxmlFilename, String title, int... borders) {
+        super(startFxmlFilename, title, borders);
     }
 
-    public User getUser() {
+    public static User getUser() {
         return user;
     }
 
-    public Logger getLogger() {
+    public static Logger getLogger() {
         return logger;
     }
 
     public void setLogger(Logger logger) {
-        this.logger = logger;
+        App.logger = logger;
     }
 
     public HashMap<String, String> getLangData() {
         return user.getLanguageData();
     }
 
-    public String getEnteredPassword() {
+    public static String getEnteredPassword() {
         return enteredPassword;
     }
 
-    public void setEnteredPassword(String text) {
+    public static void setEnteredPassword(String text) {
         enteredPassword = text;
     }
 
-
-    public void changeScene(Path scenePath, String title) throws Exception {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(scenePath.toString()));
-        Scene scene = new Scene(fxmlLoader.load());
-        Controller controller = fxmlLoader.getController();
-        System.out.println(controller);
-        controller.setApp(this);
-        this.stage.setScene(scene);
-        this.stage.setTitle(title);
-    }
-
-    public void setBoundary(int minWidth, int maxWidth, int minHeight, int maxHeight) {
-        this.stage.setMinWidth(minWidth);
-        this.stage.setMaxWidth(maxWidth);
-        this.stage.setMinHeight(minHeight);
-        this.stage.setMaxHeight(maxHeight);
-    }
-
-    public void setPosition(double X, double Y) {
-        this.stage.setX(X);
-        this.stage.setY(Y);
-    }
-
-    public void setPositionToCentral() {
-        setPosition(
-                (int) (1920 - this.stage.getMinWidth()) >> 1,
-                (int) (1080 - this.stage.getMinHeight()) >> 1
-        );
-    }
-
-    public void changeLoggerLevel(boolean isDebug) {
+    public static void changeLoggerLevel(boolean isDebug) {
         if (isDebug) {
             logger.setLevel(Level.ALL);
             logger.fine("Logger change self level to \"ALL\"");

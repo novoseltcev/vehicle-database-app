@@ -32,7 +32,7 @@ public class AutotestController extends Controller {
                 chartTotalAdd,
                 chartTotalRm
         };
-        
+
         for (LineChart chart: charts) {
             chart.getXAxis().setLabel("Size");
             chart.getYAxis().setLabel("Elapsed Nanos");

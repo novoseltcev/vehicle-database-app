@@ -1,21 +1,22 @@
 package controller;
 
 import app.App;
+import app.CustomApp;
 import model.User;
 
 import java.util.logging.Logger;
 
 
 public abstract class Controller {
-    protected App app;
+    protected CustomApp app;
     protected User user;
     protected Logger logger;
 
-    public void setApp(App app) throws Exception {
+    public void setApp(CustomApp app) throws Exception {
         System.out.println("setApp");
         this.app = app;
-        this.user = app.getUser();
-        this.logger = app.getLogger();
+        this.user = App.getUser();
+        this.logger = App.getLogger();
         setLang();
         initialize();
     }
